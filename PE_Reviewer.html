@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PE Reviewer — Lessons 1–4</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a1a0f; --surface:#0f2218; --card:#152b1e;
+    --border:#1e3d2a; --accent:#4caf82; --accent2:#f9c74f;
+    --accent3:#90e0ef; --accent4:#ef5350; --accent5:#ab47bc;
+    --text:#dff0e6; --muted:#6a9a7a; --tag-bg:rgba(76,175,130,.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.75;}
+
+  header{background:linear-gradient(135deg,#0a1a0f,#0f2a1a,#081510);border-bottom:1px solid var(--border);padding:36px 20px 28px;text-align:center;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(76,175,130,.12) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(249,199,79,.07) 0%,transparent 60%);pointer-events:none;}
+  .course-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;border:1px solid rgba(76,175,130,.3);padding:4px 14px;border-radius:2px;margin-bottom:14px;}
+  header h1{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,44px);font-weight:900;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+  header p{color:var(--muted);font-size:13px;}
+  .credit{margin-top:10px;font-size:12px;color:#2a4a32;font-family:'DM Mono',monospace;}
+
+  .tabs-wrapper{position:sticky;top:0;z-index:100;background:rgba(10,26,15,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;gap:2px;padding:0 12px;-webkit-overflow-scrolling:touch;}
+  .tab-btn{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:15px 16px;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+  .tab-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .2s;}
+  .tab-btn.active{color:var(--accent);}
+  .tab-btn.active::after{transform:scaleX(1);}
+
+  .tab-content{display:none;padding:28px 16px;max-width:860px;margin:0 auto;}
+  .tab-content.active{display:block;}
+
+  .section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  h3{font-size:12px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 12px;}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:12px;}
+  .card-title{font-weight:600;font-size:15px;color:#fff;margin-bottom:8px;}
+  .card p,.card li{color:var(--muted);font-size:14px;}
+  .card ul{padding-left:18px;}
+  .card li{margin-bottom:4px;}
+
+  .def-card{background:var(--card);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:8px;}
+  .def-card .term{font-weight:600;color:#fff;font-size:14px;margin-bottom:2px;}
+  .def-card .def{color:var(--muted);font-size:13.5px;}
+  .def-card.yellow{border-left-color:var(--accent2);}
+  .def-card.blue{border-left-color:var(--accent3);}
+  .def-card.red{border-left-color:var(--accent4);}
+  .def-card.purple{border-left-color:var(--accent5);}
+
+  .highlight{border-radius:8px;padding:14px 16px;margin-bottom:12px;font-size:14px;}
+  .highlight.green{background:rgba(76,175,130,.07);border:1px solid rgba(76,175,130,.2);}
+  .highlight.yellow{background:rgba(249,199,79,.07);border:1px solid rgba(249,199,79,.2);}
+  .highlight.blue{background:rgba(144,224,239,.07);border:1px solid rgba(144,224,239,.2);}
+  .highlight.red{background:rgba(239,83,80,.07);border:1px solid rgba(239,83,80,.2);}
+  .highlight strong{color:#fff;}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  @media(max-width:580px){.two-col{grid-template-columns:1fr;}}
+
+  .num-list{list-style:none;padding:0;}
+  .num-list li{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid rgba(30,61,42,.6);color:var(--text);font-size:14px;align-items:flex-start;}
+  .num-list li:last-child{border-bottom:none;}
+  .num-list .num{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);background:var(--tag-bg);padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:3px;}
+
+  .styled-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13.5px;}
+  .styled-table th{background:rgba(76,175,130,.08);color:var(--accent);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
+  .styled-table td{padding:9px 12px;border-bottom:1px solid rgba(30,61,42,.4);color:var(--muted);}
+  .styled-table tr:hover td{color:var(--text);}
+
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0;}
+
+  .quiz-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px;}
+  .quiz-section h4{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .quiz-section h4::before{content:'';display:inline-block;width:16px;height:2px;background:var(--accent);}
+  .q-item{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .q-text{font-size:14px;color:var(--text);font-weight:500;margin-bottom:8px;}
+  .q-answer{display:none;background:rgba(76,175,130,.07);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;color:var(--accent);margin-top:8px;}
+  .reveal-btn{background:none;border:1px solid rgba(76,175,130,.3);color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:5px 14px;border-radius:4px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+  .reveal-btn:hover,.reveal-btn:active{background:rgba(76,175,130,.1);}
+
+  ::-webkit-scrollbar{width:5px;height:5px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="course-tag">Physical Education</div>
+  <h1>PE Reviewer</h1>
+  <p>Lessons 1–4 · Physical Fitness, Safety, Warm-Up/Cool Down & Fitness Programs</p>
+  <p class="credit">Reviewer by Reindel Andrada</p>
+</header>
+
+<nav class="tabs-wrapper">
+  <button class="tab-btn active" onclick="showTab('l1',this)">Lesson 1: Fitness</button>
+  <button class="tab-btn" onclick="showTab('l2',this)">Lesson 2: Safety</button>
+  <button class="tab-btn" onclick="showTab('l3',this)">Lesson 3: Warm-Up</button>
+  <button class="tab-btn" onclick="showTab('l4',this)">Lesson 4: Programs</button>
+  <button class="tab-btn" onclick="showTab('qa',this)">Q&A Practice</button>
+</nav>
+
+<!-- ===== LESSON 1 ===== -->
+<div id="l1" class="tab-content active">
+  <div class="section-label">Lesson 1</div>
+  <h2>Physical Fitness & Its Components</h2>
+
+  <h3>Definition of Physical Fitness</h3>
+  <div class="highlight green">
+    <strong>ACSM Definition:</strong> The ability to perform moderate to vigorous levels of physical activity without undue fatigue and the capability of maintaining such ability throughout life.
+  </div>
+  <div class="highlight yellow">
+    Physical fitness is an <strong>individual condition</strong> that varies from person to person. It is influenced by: age, gender, heredity, personal health habits, amount and level of exercise, and eating practices.
+  </div>
+
+  <h3>2 Components of Physical Fitness</h3>
+  <div class="two-col">
+    <div class="card" style="border-top:3px solid var(--accent);">
+      <div class="card-title">Health-Related Fitness</div>
+      <ul>
+        <li>Body Composition</li>
+        <li>Cardiorespiratory Endurance</li>
+        <li>Flexibility</li>
+        <li>Muscular Endurance</li>
+        <li>Muscular Strength</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent2);">
+      <div class="card-title">Skill-Related Fitness</div>
+      <ul>
+        <li>Agility</li>
+        <li>Balance</li>
+        <li>Coordination</li>
+        <li>Power</li>
+        <li>Reaction Time</li>
+        <li>Speed</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>5 Benefits of Physical Fitness</h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Reduces risk of stress and depression — promotes mental health</li>
+    <li><span class="num">2</span>Weight management</li>
+    <li><span class="num">3</span>Boosts overall health</li>
+    <li><span class="num">4</span>Increases strength and stamina for more rigorous activity</li>
+    <li><span class="num">5</span>Reduces risks of diseases and illnesses</li>
+  </ul>
+
+  <hr>
+
+  <h3>General Principles of Fitness Training</h3>
+  <div class="def-card">
+    <div class="term">Principle of Individualization</div>
+    <div class="def">Training should be tailored to the individual's specific needs and abilities.</div>
+  </div>
+  <div class="def-card yellow">
+    <div class="term">Principle of Specificity</div>
+    <div class="def">Training should be specific to the goals and activities the person wants to improve in.</div>
+  </div>
+  <div class="def-card blue">
+    <div class="term">Principle of Overload — FITT</div>
+    <div class="def">
+      <strong style="color:#fff">F</strong> — Frequency: increasing the number of times you train per week<br>
+      <strong style="color:#fff">I</strong> — Intensity: increasing the difficulty of the exercise (e.g., running 12 km/h instead of 10)<br>
+      <strong style="color:#fff">T</strong> — Type: the kind of exercises a person does<br>
+      <strong style="color:#fff">T</strong> — Time: increasing the length of each training session (e.g., cycling 45 min instead of 30)
+    </div>
+  </div>
+</div>
+
+<!-- ===== LESSON 2 ===== -->
+<div id="l2" class="tab-content">
+  <div class="section-label">Lesson 2</div>
+  <h2>Safety in Physical Activity</h2>
+
+  <h3>Pre-Exercise Screening</h3>
+  <div class="highlight green">
+    <strong>Pre-exercise screening</strong> serves as a checkpoint or "safety net" to help you determine if the possible advantages of exercise outweigh the risks. Read the pre-exercise self-screening tool before beginning any program.
+  </div>
+
+  <h3>Safety Rules in Physical Activity</h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Consider the technique used and your individual condition (injury history, fitness level)</li>
+    <li><span class="num">2</span>Exercises that cause pain or discomfort should be avoided or modified</li>
+    <li><span class="num">3</span>Do not ignore signs of exhaustion, discomfort, and pain</li>
+    <li><span class="num">4</span>Injuries require rest — "pushing through" pain damages delicate muscle tissue and delays healing</li>
+    <li><span class="num">5</span>Have at least one recovery day, preferably two, every week</li>
+  </ul>
+
+  <h3>Safety Concerns During Exercise</h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Exercise in a secure location and at a secure time of day</li>
+    <li><span class="num">2</span>Dress appropriately — light colors or reflective coverings, loose-fitting clothing</li>
+    <li><span class="num">3</span>Wear shoes that fit properly and are appropriate for the activity</li>
+    <li><span class="num">4</span>Always warm up before and cool down after exercise to reduce risk of strains and sprains</li>
+    <li><span class="num">5</span>Take appropriate breaks during activity</li>
+    <li><span class="num">6</span>Do not exercise on an empty stomach — eat something light (e.g., toast with jam, skimmed milk)</li>
+    <li><span class="num">7</span>Do not exercise immediately after a full meal — it affects digestion</li>
+    <li><span class="num">8</span>Listen to your body — stop if you feel dizziness, shortness of breath, chest pain, nausea, or muscle/joint pain</li>
+  </ul>
+
+  <hr>
+
+  <h3>Types of Diet</h3>
+  <table class="styled-table">
+    <thead><tr><th>Diet</th><th>Key Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:#fff">Paleo Diet</strong></td><td>Whole foods, lean protein, vegetables, fruits, nuts, seeds. NO processed foods, sugar, dairy, or grains.</td></tr>
+      <tr><td><strong style="color:#fff">Vegan Diet</strong></td><td>Restricts ALL animal products — for ethical, environmental, or health reasons.</td></tr>
+      <tr><td><strong style="color:#fff">Low-Carb Diet</strong></td><td>Emphasizes unlimited protein and fat while severely limiting carb intake.</td></tr>
+      <tr><td><strong style="color:#fff">Dukan Diet</strong></td><td>High-protein, low-carb. Based on unlimited high-protein foods and mandatory oat bran.</td></tr>
+      <tr><td><strong style="color:#fff">Ultra Low-Fat Diet</strong></td><td>Fat restricted to under 10% of daily calories. Mostly plant-based, limited animal products.</td></tr>
+      <tr><td><strong style="color:#fff">Ketogenic Diet</strong></td><td>High fat (55–60%), moderate protein (30–35%), very low carbs (5–10%).</td></tr>
+      <tr><td><strong style="color:#fff">Mediterranean Diet</strong></td><td>Large quantities of fresh fruits, vegetables, nuts, fish, and olive oil.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== LESSON 3 ===== -->
+<div id="l3" class="tab-content">
+  <div class="section-label">Lesson 3</div>
+  <h2>Warm-Up & Cool Down</h2>
+
+  <h3>What is a Warm-Up?</h3>
+  <div class="highlight green">
+    A warm-up consists of different <strong>gentle exercises that gradually increase in intensity</strong> — including stretching and simple moderate-intensity exercises that cause sweating and gradually increase muscle temperature. It helps <strong>prevent injuries and accidents</strong> while doing exercise.
+  </div>
+
+  <h3>7 Benefits of Warm-Up Exercises</h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Increases blood flow to muscles — enhances delivery of oxygen and nutrients</li>
+    <li><span class="num">2</span>Warms muscles — promotes energy-releasing reactions and makes muscles more supple</li>
+    <li><span class="num">3</span>Prepares muscles for more tedious stretching</li>
+    <li><span class="num">4</span>Prepares the heart for an increase in activity</li>
+    <li><span class="num">5</span>Prepares mental setup for upcoming heavier exercises</li>
+    <li><span class="num">6</span>Enhances ability to learn and perform skilled movements</li>
+    <li><span class="num">7</span>Reduces risk of injury in joints, muscles, and tendons</li>
+  </ul>
+
+  <hr>
+
+  <h3>What is Cool Down?</h3>
+  <div class="highlight blue">
+    Also called <strong>warming down</strong>. It is the gradual conversion of the intensity of exercise from hard → moderate → easy, allowing gradual decrease in the body's exerted energy until it reaches the resting or near-resting state.
+  </div>
+
+  <h3>5 Benefits of Cool Down</h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Allows heart rate to return to its normal resting state</li>
+    <li><span class="num">2</span>Helps avoid fainting or dizziness</li>
+    <li><span class="num">3</span>Helps prepare muscles for the next time you exercise</li>
+    <li><span class="num">4</span>Prevents Delayed Onset Muscle Soreness (DOMS)</li>
+    <li><span class="num">5</span>Prevents blood pooling</li>
+  </ul>
+</div>
+
+<!-- ===== LESSON 4 ===== -->
+<div id="l4" class="tab-content">
+  <div class="section-label">Lesson 4</div>
+  <h2>Designing a Fitness Program</h2>
+
+  <h3>How to Design an Effective Fitness Program</h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Environmental factors</li>
+    <li><span class="num">2</span>Need analysis</li>
+    <li><span class="num">3</span>Program Variables / Training Guidelines</li>
+  </ul>
+
+  <hr>
+
+  <h3>6 Types of Training Exercises</h3>
+  <div class="def-card">
+    <div class="term">Continuous Training</div>
+    <div class="def">Any form of training that maintains the heart rate at a desired level over a sustained period of time.</div>
+  </div>
+  <div class="def-card yellow">
+    <div class="term">Circuit Training</div>
+    <div class="def">Involves exercises at a variety of different stations. Example: 6 stations with 30 seconds of activity at each.</div>
+  </div>
+  <div class="def-card blue">
+    <div class="term">Weight Training</div>
+    <div class="def">A method of training using weights.</div>
+  </div>
+  <div class="def-card">
+    <div class="term">Interval Training</div>
+    <div class="def">Exercising with periods of rest planned into the session.</div>
+  </div>
+  <div class="def-card red">
+    <div class="term">Plyometric Training</div>
+    <div class="def">Involves exercises with short bursts of high intensity.</div>
+  </div>
+  <div class="def-card purple">
+    <div class="term">Flexibility Training</div>
+    <div class="def">Completing certain exercises that will improve a person's range of motion around a joint.</div>
+  </div>
+
+  <hr>
+
+  <h3>Training Techniques — DO's and DON'Ts</h3>
+  <div class="two-col">
+    <div class="card" style="border-top:3px solid var(--accent);">
+      <div class="card-title" style="color:var(--accent)">✅ DO's</div>
+      <ul>
+        <li>Lift an appropriate amount of weight</li>
+        <li>Use proper form</li>
+        <li>Breathe and rest</li>
+        <li>Seek balance</li>
+        <li>Add strength training in your routine</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent4);">
+      <div class="card-title" style="color:var(--accent4)">❌ DON'Ts</div>
+      <ul>
+        <li>Don't skip the warm-up</li>
+        <li>Don't rush</li>
+        <li>Don't overdo</li>
+        <li>Don't ignore pain</li>
+        <li>Don't forget your shoes</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Q&A ===== -->
+<div id="qa" class="tab-content">
+  <div class="section-label">Practice</div>
+  <h2>Q&A Practice</h2>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:22px;">Think first before revealing the answer!</p>
+
+  <div class="quiz-section">
+    <h4>Lesson 1 — Physical Fitness</h4>
+
+    <div class="q-item">
+      <div class="q-text">Define Physical Fitness according to ACSM.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">The ability to perform moderate to vigorous levels of physical activity without undue fatigue and the capability of maintaining such ability throughout life.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 5 Health-Related Fitness Components.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Body Composition · 2. Cardiorespiratory Endurance · 3. Flexibility · 4. Muscular Endurance · 5. Muscular Strength</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 6 Skill-Related Fitness Components.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Agility · 2. Balance · 3. Coordination · 4. Power · 5. Reaction Time · 6. Speed</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What does FITT stand for under the Principle of Overload?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">F — Frequency · I — Intensity · T — Type · T — Time</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 General Principles of Fitness Training.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Principle of Individualization · 2. Principle of Specificity · 3. Principle of Overload</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">TRUE or FALSE: Physical fitness is the same for all people regardless of age or gender.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — Physical fitness is an individual condition that varies from person to person.</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Lesson 2 — Safety & Diet</h4>
+
+    <div class="q-item">
+      <div class="q-text">What is the purpose of pre-exercise screening?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">It serves as a checkpoint or "safety net" to help determine if the possible advantages of exercise outweigh the risks for you before beginning a physical activity or exercise program.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What should you do if you feel dizziness, shortness of breath, or chest pain during exercise?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Stop the activity and seek medical advice as soon as possible.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Which diet is high fat (55–60%), moderate protein (30–35%), and very low carbs (5–10%)?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ketogenic Diet</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Which diet restricts ALL animal products?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Vegan Diet</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Which diet is high-protein, low-carb and based on mandatory oat bran?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Dukan Diet</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Which diet restricts fat to under 10% of daily calories and is mostly plant-based?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ultra Low-Fat Diet</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Which diet emphasizes large quantities of fresh fruits, vegetables, nuts, fish, and olive oil?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Mediterranean Diet</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">TRUE or FALSE: You should exercise immediately after a full meal to burn calories faster.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — Do NOT exercise immediately after a full meal because it will affect digestion.</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Lesson 3 — Warm-Up & Cool Down</h4>
+
+    <div class="q-item">
+      <div class="q-text">What is a warm-up exercise?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">A warm-up consists of different gentle exercises that gradually increase in intensity, including stretching and simple moderate-intensity exercises that cause sweating and gradually increase muscle temperature.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate at least 5 benefits of warm-up exercises.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Increases blood flow to muscles · 2. Warms muscles, makes them more supple · 3. Prepares muscles for stretching · 4. Prepares the heart for activity · 5. Mental preparation · 6. Enhances ability to learn skilled movements · 7. Reduces risk of injury in joints, muscles, tendons</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What is another term for cool down?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Warming down</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What are the 5 benefits of cool down?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Heart rate returns to normal resting state · 2. Helps avoid fainting or dizziness · 3. Prepares muscles for next exercise session · 4. Prevents Delayed Onset Muscle Soreness (DOMS) · 5. Prevents blood pooling</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">TRUE or FALSE: Cool down is the gradual increase of exercise intensity after a workout.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — Cool down is the gradual DECREASE of intensity from hard → moderate → easy until reaching a resting state.</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Lesson 4 — Fitness Programs & Training</h4>
+
+    <div class="q-item">
+      <div class="q-text">What type of training maintains the heart rate at a desired level over a sustained period of time?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Continuous Training</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What type of training involves exercises at a variety of different stations?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Circuit Training</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What type of training involves short bursts of high intensity?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Plyometric Training</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What type of training involves exercising with periods of rest planned into the session?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Interval Training</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What type of training improves a person's range of motion around a joint?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Flexibility Training</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 factors to consider when designing an effective fitness program.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Environmental factors · 2. Need analysis · 3. Program Variables / Training Guidelines</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 6 types of training exercises.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Continuous Training · 2. Circuit Training · 3. Weight Training · 4. Interval Training · 5. Plyometric Training · 6. Flexibility Training</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Give 3 DO's and 3 DON'Ts in training techniques.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">DO's: Lift appropriate weight · Use proper form · Breathe and rest · Seek balance · Add strength training<br>DON'Ts: Don't skip warm-up · Don't rush · Don't overdo · Don't ignore pain · Don't forget your shoes</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  el.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+}
+function revealAnswer(btn) {
+  var ans = btn.nextElementSibling;
+  if (ans.style.display === 'block') {
+    ans.style.display = 'none';
+    btn.textContent = 'Reveal Answer';
+  } else {
+    ans.style.display = 'block';
+    btn.textContent = 'Hide Answer';
+  }
+}
+</script>
+</body>
+</html>
