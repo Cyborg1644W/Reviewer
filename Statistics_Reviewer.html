@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistics Reviewer — Chapters 1–4</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0b0f1a; --surface:#131929; --card:#192035;
+    --border:#232d45; --accent:#4fc3f7; --accent2:#f9a825;
+    --accent3:#66bb6a; --accent4:#ef5350; --accent5:#ab47bc;
+    --text:#dde6f0; --muted:#7a8faa; --tag-bg:rgba(79,195,247,.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.75;}
+
+  /* HEADER */
+  header{background:linear-gradient(135deg,#0b0f1a,#141e33,#0b1420);border-bottom:1px solid var(--border);padding:36px 20px 28px;text-align:center;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 50%,rgba(79,195,247,.1) 0%,transparent 60%),radial-gradient(ellipse at 75% 50%,rgba(249,168,37,.08) 0%,transparent 60%);pointer-events:none;}
+  .course-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;border:1px solid rgba(79,195,247,.3);padding:4px 14px;border-radius:2px;margin-bottom:14px;}
+  header h1{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,44px);font-weight:900;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+  header p{color:var(--muted);font-size:13px;}
+
+  /* TABS */
+  .tabs-wrapper{position:sticky;top:0;z-index:100;background:rgba(11,15,26,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;gap:2px;padding:0 12px;-webkit-overflow-scrolling:touch;}
+  .tab-btn{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:15px 16px;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+  .tab-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .2s;}
+  .tab-btn.active{color:var(--accent);}
+  .tab-btn.active::after{transform:scaleX(1);}
+  .tab-btn:hover{color:var(--text);}
+
+  /* CONTENT */
+  .tab-content{display:none;padding:28px 16px;max-width:860px;margin:0 auto;}
+  .tab-content.active{display:block;}
+
+  /* TYPOGRAPHY */
+  .section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  h3{font-size:12px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 12px;}
+
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:12px;}
+  .card:hover{border-color:rgba(79,195,247,.25);}
+  .card-title{font-weight:600;font-size:15px;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+  .card .icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+  .card p,.card li{color:var(--muted);font-size:14px;}
+  .card ul,.card ol{padding-left:18px;}
+  .card li{margin-bottom:4px;}
+
+  /* DEF CARDS */
+  .def-card{background:var(--card);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:8px;}
+  .def-card .term{font-weight:600;color:#fff;font-size:14px;margin-bottom:2px;}
+  .def-card .def{color:var(--muted);font-size:13.5px;}
+  .def-card.green{border-left-color:var(--accent3);}
+  .def-card.yellow{border-left-color:var(--accent2);}
+  .def-card.red{border-left-color:var(--accent4);}
+  .def-card.purple{border-left-color:var(--accent5);}
+
+  /* HIGHLIGHTS */
+  .highlight{border-radius:8px;padding:14px 16px;margin-bottom:12px;font-size:14px;}
+  .highlight.blue{background:rgba(79,195,247,.07);border:1px solid rgba(79,195,247,.2);}
+  .highlight.yellow{background:rgba(249,168,37,.07);border:1px solid rgba(249,168,37,.2);}
+  .highlight.green{background:rgba(102,187,106,.07);border:1px solid rgba(102,187,106,.2);}
+  .highlight.red{background:rgba(239,83,80,.07);border:1px solid rgba(239,83,80,.2);}
+  .highlight.purple{background:rgba(171,71,188,.07);border:1px solid rgba(171,71,188,.2);}
+  .highlight strong{color:#fff;}
+
+  /* TWO COL */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  @media(max-width:580px){.two-col{grid-template-columns:1fr;}}
+
+  /* TABLE */
+  .styled-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13.5px;}
+  .styled-table th{background:rgba(79,195,247,.08);color:var(--accent);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
+  .styled-table td{padding:9px 12px;border-bottom:1px solid rgba(35,45,69,.5);color:var(--muted);}
+  .styled-table tr:hover td{background:rgba(255,255,255,.02);color:var(--text);}
+
+  /* NUMBERED LIST */
+  .num-list{list-style:none;padding:0;}
+  .num-list li{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid rgba(35,45,69,.5);color:var(--text);font-size:14px;align-items:flex-start;}
+  .num-list li:last-child{border-bottom:none;}
+  .num-list .num{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);background:var(--tag-bg);padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:3px;}
+
+  /* FORMULA BOX */
+  .formula{background:#0d1525;border:1px solid rgba(79,195,247,.2);border-radius:8px;padding:14px 18px;margin:12px 0;font-family:'DM Mono',monospace;font-size:13px;color:var(--accent);overflow-x:auto;}
+  .formula .label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-family:'DM Sans',sans-serif;}
+
+  /* QUIZ */
+  .quiz-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px;}
+  .quiz-section h4{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent3);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .quiz-section h4::before{content:'';display:inline-block;width:16px;height:2px;background:var(--accent3);}
+  .q-item{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .q-text{font-size:14px;color:var(--text);font-weight:500;margin-bottom:8px;}
+  .q-answer{display:none;background:rgba(102,187,106,.07);border-left:3px solid var(--accent3);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;color:var(--accent3);margin-top:8px;}
+  .reveal-btn{background:none;border:1px solid rgba(102,187,106,.3);color:var(--accent3);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:5px 14px;border-radius:4px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+  .reveal-btn:hover,.reveal-btn:active{background:rgba(102,187,106,.1);}
+
+  /* DIVIDER */
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0;}
+
+  /* BADGE */
+  .badge{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;padding:3px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+  .badge-mem{background:rgba(239,83,80,.12);color:var(--accent4);}
+  .badge-und{background:rgba(79,195,247,.12);color:var(--accent);}
+  .badge-app{background:rgba(102,187,106,.12);color:var(--accent3);}
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar{width:5px;height:5px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="course-tag">Statistics — Chapters 1–4</div>
+  <h1>Complete Exam Reviewer</h1>
+  <p>Chapter 1: Intro · Chapter 2: Data Collection · Chapter 3: Presentation · Chapter 4: Central Tendency</p>
+  <p style="margin-top:10px; font-size:12px; color:#4a5a72; font-family:'DM Mono',monospace;">Reviewer by Reindel Andrada</p>
+</header>
+
+<nav class="tabs-wrapper">
+  <button class="tab-btn active" onclick="showTab('ch1',this)">📘 Ch.1 Intro</button>
+  <button class="tab-btn" onclick="showTab('ch2',this)">📋 Ch.2 Collection</button>
+  <button class="tab-btn" onclick="showTab('ch3',this)">📊 Ch.3 Presentation</button>
+  <button class="tab-btn" onclick="showTab('ch4',this)">🔢 Ch.4 Central Tendency</button>
+  <button class="tab-btn" onclick="showTab('missed',this)">Missed Items</button>
+  <button class="tab-btn" onclick="showTab('solved',this)">📐 Solved Examples</button>
+</nav>
+
+<!-- ===== CHAPTER 1 ===== -->
+<div id="ch1" class="tab-content active">
+  <div class="section-label">Chapter 1</div>
+  <h2>Introduction to Statistics</h2>
+
+  <div class="highlight blue">
+    <strong>Statistics</strong> is a branch of applied mathematics which deals with the <strong>collection, organization, presentation, analysis, and interpretation of data.</strong>
+  </div>
+
+  <h3>Two Branches of Statistics <span class="badge badge-mem">Memorize</span></h3>
+  <div class="two-col">
+    <div class="def-card">
+      <div class="term">Descriptive Statistics</div>
+      <div class="def">Deals with collection and presentation of data; uses summarizing values like measures of central tendency and variation to describe group characteristics.</div>
+    </div>
+    <div class="def-card green">
+      <div class="term">Inferential Statistics</div>
+      <div class="def">Deals with predictions and inferences based on analysis and interpretation. Common tools: <strong>t-test, z-test, ANOVA, chi-square, Pearson r.</strong></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h3>Types of Variables <span class="badge badge-mem">Memorize</span></h3>
+  <div class="two-col">
+    <div class="card" style="border-top:3px solid var(--accent2);">
+      <div class="card-title">Categorical / Qualitative</div>
+      <p>Classified according to some <em>attributes or categories.</em></p>
+      <ul style="margin-top:8px;">
+        <li>Gender, eye color, religion</li>
+        <li>Blood type, civil status</li>
+        <li>Political preferences, year level</li>
+        <li>Course, profession, socio-economic status</li>
+      </ul>
+      <div class="highlight yellow" style="margin-top:10px;margin-bottom:0;font-size:13px;">Categories may be <strong>ordered</strong> e.g., Poor → Fair → Good → Excellent</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent);">
+      <div class="card-title">Numerical / Quantitative</div>
+      <p>Classified according to <em>numerical characteristics.</em> Often grouped into class intervals.</p>
+      <ul style="margin-top:8px;">
+        <li>Height, age, pulse rate</li>
+        <li>No. of children, speed</li>
+      </ul>
+      <div class="highlight blue" style="margin-top:10px;margin-bottom:0;font-size:13px;">
+        <strong>Discrete</strong> — obtained by <em>counting</em> (no. of children, no. of patients)<br>
+        <strong>Continuous</strong> — obtained by <em>measuring</em> (temperature, height, weight)
+      </div>
+    </div>
+  </div>
+
+  <h3>4 Scales of Measurement <span class="badge badge-mem">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Nominal</strong><br><span style="color:var(--muted);font-size:13px">Classifies into categories; numbers show elements are <em>different</em> but NOT ordered or ranked. Example: religion, gender.</span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Ordinal</strong><br><span style="color:var(--muted);font-size:13px">Ranks individuals by degree; shows order but intervals are NOT equal. Example: anxiety level (0=not anxious → 3=high), performance rating.</span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Interval</strong><br><span style="color:var(--muted);font-size:13px">Equal distances between scores; <em>NO absolute zero.</em> Example: temperature (0°C ≠ no temperature), aptitude scores.</span></div></li>
+    <li><span class="num">4</span><div><strong style="color:#fff">Ratio</strong><br><span style="color:var(--muted);font-size:13px">Same as interval scale but <em>HAS an absolute zero.</em> Examples: height, weight, area, speed, amount of money.</span></div></li>
+  </ul>
+
+  <hr>
+
+  <h3>Key Terms <span class="badge badge-mem">Memorize</span></h3>
+  <div class="def-card">
+    <div class="term">Variable</div>
+    <div class="def">A numerical characteristic or attribute associated with the population being studied.</div>
+  </div>
+  <div class="def-card yellow">
+    <div class="term">Population</div>
+    <div class="def">The entire group of people, animals, places, things, or ideas to which conclusions will be applied.</div>
+  </div>
+  <div class="def-card green">
+    <div class="term">Sample</div>
+    <div class="def">A subgroup of the population.</div>
+  </div>
+  <div class="def-card">
+    <div class="term">Parameter</div>
+    <div class="def">A numerical measure that describes a characteristic of a <strong>population.</strong> Example: "The population mean IQ of students is 105."</div>
+  </div>
+  <div class="def-card purple">
+    <div class="term">Statistic</div>
+    <div class="def">A numerical measure that describes a characteristic of a <strong>sample.</strong> Example: "The sample mean IQ of 45 students is 105."</div>
+  </div>
+
+  <div class="highlight yellow">
+    <strong>Key Analogy:</strong> Parameter : Population = Statistic : Sample
+  </div>
+</div>
+
+<!-- ===== CHAPTER 2 ===== -->
+<div id="ch2" class="tab-content">
+  <div class="section-label">Chapter 2</div>
+  <h2>Collection of Data</h2>
+
+  <div class="highlight blue">
+    There is <strong>no single best method</strong> for collecting data. The choice depends on: research design, type of data, time available, and financial capacity.
+  </div>
+
+  <h3>7 Common Methods of Collecting Data <span class="badge badge-mem">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Interview Method</strong><br><span style="color:var(--muted);font-size:13px"><em>Direct</em> — personal interview; good for small groups (&lt;30). <em>Indirect</em> — telephone interview; expensive if many respondents, may be biased (people without phones excluded).</span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Questionnaire Method</strong><br><span style="color:var(--muted);font-size:13px">A list of well-planned questions administered personally or mailed. 8 types (see below).</span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Empirical Observation</strong><br><span style="color:var(--muted);font-size:13px">Data through seeing, hearing, tasting, touching, smelling. Used in psychology and anthropology. Participant vs. Non-participant; Controlled observation = in a lab.</span></div></li>
+    <li><span class="num">4</span><div><strong style="color:#fff">Test Method</strong><br><span style="color:var(--muted);font-size:13px">Uses standard valid, reliable, usable tests. Examples: aptitude tests, IQ tests, achievement tests. Widely used in psychological and psychiatric research.</span></div></li>
+    <li><span class="num">5</span><div><strong style="color:#fff">Experiment Method</strong><br><span style="color:var(--muted);font-size:13px">Observation done in a laboratory = controlled observation.</span></div></li>
+    <li><span class="num">6</span><div><strong style="color:#fff">Registration Method</strong><br><span style="color:var(--muted);font-size:13px">Data from government agencies: NSO, LTO, DepEd, CHED, SEC, Supreme Court, etc.</span></div></li>
+    <li><span class="num">7</span><div><strong style="color:#fff">Use of Mechanical Devices</strong><br><span style="color:var(--muted);font-size:13px">Social/educational: camera, projector, video tape, tape recorder. Medical: X-ray, microscope, ultrasound, CT scan. Astronomy: telescope, barometer, radar.</span></div></li>
+  </ul>
+
+  <hr>
+
+  <h3>8 Types of Questionnaire <span class="badge badge-mem">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Guided-Response</strong><br><span style="color:var(--muted);font-size:13px">The respondent is guided in making their reply. Example: "Have you helped the needy? Yes/No. If Yes, proceed to Q2."</span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Recall Type</strong><br><span style="color:var(--muted);font-size:13px">Asks for recalled information. Example: Age, sex, civil status, length of stay in a community.</span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Recognition Type</strong><br><span style="color:var(--muted);font-size:13px">Respondent picks from given options. Example: "Which figure is a square?"</span></div></li>
+    <li><span class="num">4</span><div><strong style="color:#fff">Dichotomous Type</strong><br><span style="color:var(--muted);font-size:13px">Only two choices. Example: "Do you live alone? Yes / No"</span></div></li>
+    <li><span class="num">5</span><div><strong style="color:#fff">Multiple Choice Type</strong><br><span style="color:var(--muted);font-size:13px">Several answer choices with one correct answer. Example: "Which color is for apple? a.Red b.Orange c.Blue..."</span></div></li>
+    <li><span class="num">6</span><div><strong style="color:#fff">Multiple Response Type</strong><br><span style="color:var(--muted);font-size:13px">Respondent can tick/check more than one answer. Example: "What appliances do you have at home?"</span></div></li>
+    <li><span class="num">7</span><div><strong style="color:#fff">Free Response Type</strong><br><span style="color:var(--muted);font-size:13px">No guidance; respondent answers in their own style.</span></div></li>
+    <li><span class="num">8</span><div><strong style="color:#fff">Rating Scale Type</strong><br><span style="color:var(--muted);font-size:13px">Respondent rates on a scale. Example: Attitude toward Mathematics (1-Disagree to 4-Strongly Agree).</span></div></li>
+  </ul>
+
+  <hr>
+
+  <h3>Sampling Methods <span class="badge badge-mem">Memorize</span></h3>
+  <div class="def-card">
+    <div class="term">Cluster Sampling</div>
+    <div class="def">Area is divided into clusters; groups (not individuals) are randomly selected. Best when area is too large and population too big. Example: selecting 3 of 13 regions at random for a nationwide study.</div>
+  </div>
+  <div class="def-card yellow">
+    <div class="term">Purposive Sampling</div>
+    <div class="def">Respondents chosen based on their specific knowledge of the required information. Example: selecting senior citizens for a town's historical study.</div>
+  </div>
+  <div class="def-card green">
+    <div class="term">Quota Sampling</div>
+    <div class="def">Commonly used in opinion polls. Researcher gathers from a convenient location until a required number is reached. Example: salesman interviewing females in a mall until 2,000 responses are gathered.</div>
+  </div>
+  <div class="def-card purple">
+    <div class="term">Convenience Sampling</div>
+    <div class="def">Fastest method; may be biased. Example: using telephone interviews (excludes those without phones) or a teacher using their own students.</div>
+  </div>
+</div>
+
+<!-- ===== CHAPTER 3 ===== -->
+<div id="ch3" class="tab-content">
+  <div class="section-label">Chapter 3</div>
+  <h2>Organization & Presentation of Data</h2>
+
+  <div class="highlight blue">
+    <strong>Note:</strong> A Frequency Distribution Table (FDT) is only needed when the number of observations is <strong>more than 30.</strong> Data in FDT = <strong>Grouped Data.</strong> Data NOT in FDT = <strong>Ungrouped Data.</strong>
+  </div>
+
+  <h3>Types of Data for Tabulation <span class="badge badge-mem">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Frequency Distribution</li>
+    <li><span class="num">2</span>Correlated Data</li>
+    <li><span class="num">3</span>Time Series Data</li>
+  </ul>
+
+  <hr>
+
+  <h3>Constructing a Frequency Distribution Table (FDT) <span class="badge badge-und">Understand</span></h3>
+  <div class="card">
+    <ul class="num-list">
+      <li><span class="num">1</span><div><strong style="color:#fff">Find the Range (R)</strong><br><div class="formula" style="margin:6px 0 0;padding:8px 12px;font-size:13px;">R = Highest Score – Lowest Score</div></div></li>
+      <li><span class="num">2</span><div><strong style="color:#fff">Compute number of intervals (n)</strong><br><div class="formula" style="margin:6px 0 0;padding:8px 12px;font-size:13px;">n = 1 + 3.3 log N</div></div></li>
+      <li><span class="num">3</span><div><strong style="color:#fff">Compute class size (i)</strong><br><div class="formula" style="margin:6px 0 0;padding:8px 12px;font-size:13px;">i = R ÷ n &nbsp;(round up to whole number)</div></div></li>
+      <li><span class="num">4</span><div><strong style="color:#fff">Build the intervals</strong><br><span style="color:var(--muted);font-size:13px">Start with lowest score. Add (i−1) to get upper limit. Add i to lower limit for next interval, repeat.</span></div></li>
+      <li><span class="num">5</span><div><strong style="color:#fff">Count frequencies</strong><br><span style="color:var(--muted);font-size:13px">Use tally marks for each class interval.</span></div></li>
+    </ul>
+  </div>
+
+  <h3>Key FDT Terms <span class="badge badge-mem">Memorize</span></h3>
+  <div class="def-card">
+    <div class="term">Class Mark (Midpoint)</div>
+    <div class="def">= (Lower Limit + Upper Limit) ÷ 2 &nbsp;&nbsp; Example: For 6–14 → (6+14)÷2 = 10</div>
+  </div>
+  <div class="def-card yellow">
+    <div class="term">Class Boundary (Exact Limit)</div>
+    <div class="def">Lower boundary = Lower Limit − 0.5 &nbsp;&nbsp; Upper boundary = Upper Limit + 0.5 &nbsp;&nbsp; Example: 6–14 → Boundary: 5.5–14.5</div>
+  </div>
+
+  <hr>
+
+  <h3>3 Data Types</h3>
+  <div class="def-card">
+    <div class="term">Frequency Distribution</div>
+    <div class="def">Organizes data into class intervals with frequencies. Used when N > 30.</div>
+  </div>
+  <div class="def-card yellow">
+    <div class="term">Correlated Data</div>
+    <div class="def">Table showing two or more frequencies for easy comparison. Example: number of cases by both gender and religion.</div>
+  </div>
+  <div class="def-card green">
+    <div class="term">Time Series Data</div>
+    <div class="def">Shows change of a variable over time. Best presented with a <strong>line graph.</strong></div>
+  </div>
+
+  <hr>
+
+  <h3>6 Methods of Graphing <span class="badge badge-mem">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Bar Graph</strong><br><span style="color:var(--muted);font-size:13px">Used to <em>compare data</em> and determine which class appears most. Uses rectangular bars.</span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Line Graph</strong><br><span style="color:var(--muted);font-size:13px">Used for <em>trends:</em> increase in sales, rise/fall of temperature, enrolment per year, population comparison.</span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Pie Chart</strong><br><span style="color:var(--muted);font-size:13px">Compares different <em>parts of a whole.</em> Circular chart divided into proportional sectors.</span></div></li>
+    <li><span class="num">4</span><div><strong style="color:#fff">Frequency Histogram</strong><br><span style="color:var(--muted);font-size:13px">Bar graph for frequency distributions (no gaps between bars).</span></div></li>
+    <li><span class="num">5</span><div><strong style="color:#fff">Frequency Polygon</strong><br><span style="color:var(--muted);font-size:13px">Line graph connecting midpoints of frequency histogram bars.</span></div></li>
+    <li><span class="num">6</span><div><strong style="color:#fff">Cumulative Frequency Ogive</strong><br><span style="color:var(--muted);font-size:13px">Line graph of cumulative frequencies. Used to determine median and percentiles.</span></div></li>
+  </ul>
+
+  <div class="highlight yellow">
+    <strong>Quick Rule:</strong> Trends over time → <strong>Line Graph</strong> · Parts of a whole → <strong>Pie Chart</strong> · Comparison across categories → <strong>Bar Graph</strong>
+  </div>
+</div>
+
+<!-- ===== CHAPTER 4 ===== -->
+<div id="ch4" class="tab-content">
+  <div class="section-label">Chapter 4</div>
+  <h2>Measures of Central Tendency</h2>
+
+  <div class="highlight blue">
+    The three measures of central tendency are: <strong>Mean, Median, and Mode.</strong>
+  </div>
+
+  <!-- UNGROUPED -->
+  <h3>A. Ungrouped Data</h3>
+
+  <div class="card" style="border-top:3px solid var(--accent);">
+    <div class="card-title">📐 Mean (Arithmetic Average)</div>
+    <div class="formula">
+      <div class="label">Formula</div>
+      x̄ = (Σ xᵢ) ÷ N
+    </div>
+    <p style="font-size:13px;">Where: x̄ = mean, xᵢ = each observation, N = total number of observations</p>
+    <div class="highlight blue" style="margin-top:12px; margin-bottom:0; font-size:13px;">
+      <strong>Example:</strong> Grades: 78, 88, 89, 90, 95 → x̄ = (78+88+89+90+95) ÷ 5 = 440 ÷ 5 = <strong>88</strong>
+    </div>
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--accent2);">
+    <div class="card-title">📏 Median (Middle Value)</div>
+    <p style="margin-bottom:10px; font-size:14px; color:var(--muted);">The midpoint of an ordered array. Symbol: <strong style="color:#fff">Md</strong></p>
+    <ul class="num-list">
+      <li><span class="num">Step 1</span>Arrange data in ascending or descending order.</li>
+      <li><span class="num">Odd N</span>Median = the single middle value.</li>
+      <li><span class="num">Even N</span>Median = mean of the two middle values.</li>
+    </ul>
+    <div class="highlight yellow" style="margin-top:12px; margin-bottom:0; font-size:13px;">
+      <strong>Odd Example:</strong> 10 12 14 16 23 <strong>24</strong> 25 33 34 35 41 45 50 → Md = <strong>24</strong> (7th value)<br>
+      <strong>Even Example:</strong> 2 5 5 <strong>6 8</strong> 9 9 10 → Md = (6+8)÷2 = <strong>7</strong>
+    </div>
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--accent3);">
+    <div class="card-title">🎯 Mode (Most Frequent Value)</div>
+    <p style="font-size:14px; color:var(--muted);">The observation that appears the most number of times.</p>
+    <div class="highlight green" style="margin-top:10px; margin-bottom:0; font-size:13px;">
+      <strong>No mode:</strong> No value appears more than once.<br>
+      <strong>Unimodal:</strong> One mode. Example: scores → Mode = 20<br>
+      <strong>Bimodal:</strong> Two modes. Example: 3 and 5 both appear 5 times → Mode = 3 and 5<br>
+      <strong>Modal class</strong> = interval with highest frequency. <strong>Modal value</strong> = how many times it appears.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- GROUPED -->
+  <h3>B. Grouped Data (Frequency Distribution Table)</h3>
+
+  <div class="card" style="border-top:3px solid var(--accent);">
+    <div class="card-title">📐 Mean (Grouped)</div>
+    <div class="formula">
+      <div class="label">Formula</div>
+      x̄ = Σ(fᵢ · xᵢ) ÷ N
+    </div>
+    <p style="font-size:13px; color:var(--muted);">Where: xᵢ = class mark, fᵢ = frequency of class, N = total observations</p>
+    <div class="highlight blue" style="margin-top:10px; margin-bottom:0; font-size:13px;">
+      <strong>Steps:</strong> 1) Find class marks &nbsp; 2) Multiply each class mark by its frequency (fᵢ × xᵢ) &nbsp; 3) Add all products &nbsp; 4) Divide by N
+    </div>
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--accent2);">
+    <div class="card-title">📏 Median (Grouped)</div>
+    <div class="formula">
+      <div class="label">Formula</div>
+      Md = LMd + [ (N/2 − &lt;CFb) ÷ fMd ] × i
+    </div>
+    <table class="styled-table" style="margin-top:10px;">
+      <thead><tr><th>Symbol</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>LMd</td><td>Lower boundary of the median class</td></tr>
+        <tr><td>N/2</td><td>Half of total observations</td></tr>
+        <tr><td>&lt;CFb</td><td>Cumulative frequency BELOW the median class</td></tr>
+        <tr><td>fMd</td><td>Frequency of the median class</td></tr>
+        <tr><td>i</td><td>Class size</td></tr>
+      </tbody>
+    </table>
+    <div class="highlight yellow" style="margin-bottom:0; font-size:13px;">
+      <strong>Finding the Median Class:</strong> The median class is the class interval that contains the N/2-th value. Look at the cumulative frequency column to find which class it falls in.
+    </div>
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--accent3);">
+    <div class="card-title">🎯 Mode (Grouped)</div>
+    <div class="formula">
+      <div class="label">Formula</div>
+      Mo = LMo + [ Δ1 ÷ (Δ1 + Δ2) ] × i
+    </div>
+    <table class="styled-table" style="margin-top:10px;">
+      <thead><tr><th>Symbol</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>LMo</td><td>Lower class boundary of the modal class</td></tr>
+        <tr><td>Δ1</td><td>Difference: frequency of modal class − frequency of class BEFORE it</td></tr>
+        <tr><td>Δ2</td><td>Difference: frequency of modal class − frequency of class AFTER it</td></tr>
+        <tr><td>i</td><td>Class size</td></tr>
+        <tr><td>Modal class</td><td>The class interval with the HIGHEST frequency</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <h3>Quick Comparison Table</h3>
+  <table class="styled-table">
+    <thead>
+      <tr><th>Measure</th><th>When to Use</th><th>Advantage</th><th>Disadvantage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong style="color:#fff">Mean</strong></td><td>Quantitative data, no extreme values</td><td>Uses all values; most common</td><td>Affected by outliers/extreme values</td></tr>
+      <tr><td><strong style="color:#fff">Median</strong></td><td>Skewed data or with outliers</td><td>Not affected by extreme values</td><td>Does not use all data values</td></tr>
+      <tr><td><strong style="color:#fff">Mode</strong></td><td>Categorical data; most popular item</td><td>Easy to find; can be used with non-numerical data</td><td>May have no mode or multiple modes</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== PRACTICE Q&A ===== -->
+<div id="practice" class="tab-content">
+  <div class="section-label">Self-Test</div>
+  <h2>Practice Q&A — All Chapters</h2>
+  <p style="color:var(--muted); margin-bottom:22px; font-size:14px;">Think first before revealing the answer!</p>
+
+  <!-- Chapter 1 -->
+  <div class="quiz-section">
+    <h4>Chapter 1 — Introduction</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. What is Statistics?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">A branch of applied mathematics that deals with the collection, organization, presentation, analysis, and interpretation of data.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. What branch of statistics uses t-test, z-test, ANOVA, chi-square, and Pearson r?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Inferential Statistics</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. A variable obtained by COUNTING is called ___. A variable obtained by MEASURING is called ___.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Discrete (counting) · Continuous (measuring)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. Which scale of measurement has NO absolute zero?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Interval Scale — Example: temperature (0°C does not mean "no temperature")</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. Classify each: (a) Gender (b) Height (c) No. of patients (d) Temperature (e) Civil status</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">(a) Categorical/Qualitative · (b) Continuous quantitative · (c) Discrete quantitative · (d) Continuous quantitative · (e) Categorical/Qualitative</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">6. A numerical measure used to describe a characteristic of a POPULATION is called a ___. For a SAMPLE it is called a ___.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Parameter (population) · Statistic (sample)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">7. TRUE or FALSE: Ordinal scale ranks individuals but does not have equal distances between rankings.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">TRUE — Ordinal scale ranks but intervals are not necessarily equal.</div>
+    </div>
+  </div>
+
+  <!-- Chapter 2 -->
+  <div class="quiz-section">
+    <h4>Chapter 2 — Data Collection</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. Enumerate the 7 common methods of collecting data.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Interview Method · 2. Questionnaire · 3. Empirical Observation · 4. Test Method · 5. Experiment Method · 6. Registration Method · 7. Use of Mechanical Devices</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. A respondent answers "Yes or No" to a question. What type of questionnaire is this?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Dichotomous Type</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. A researcher wants to study the history of a town and selects senior citizens as respondents because of their knowledge. What sampling method is this?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Purposive Sampling</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. A doctor divides the country into 13 regions and randomly picks 3 regions — all residents in those 3 regions are included. What sampling method is this?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Cluster Sampling</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. Why is the indirect interview method (telephone) considered biased?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Because people without telephones cannot be included in the study, making it biased toward those who own phones.</div>
+    </div>
+  </div>
+
+  <!-- Chapter 3 -->
+  <div class="quiz-section">
+    <h4>Chapter 3 — Presentation of Data</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. What is the formula for computing the number of class intervals (n)?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">n = 1 + 3.3 log N</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. When is a Frequency Distribution Table (FDT) constructed?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">When the number of observations is MORE THAN 30.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. What type of graph is most appropriate for Time Series Data?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Line Graph</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. The exact limit of a class interval is also called ___. How is the lower boundary calculated?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Class Boundary. Lower boundary = Lower Limit − 0.5 · Upper boundary = Upper Limit + 0.5</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. Enumerate the 6 methods of graphing.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Bar Graph · 2. Line Graph · 3. Pie Chart · 4. Frequency Histogram · 5. Frequency Polygon · 6. Cumulative Frequency Ogive</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">6. What is the class mark of the interval 24–32?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">(24 + 32) ÷ 2 = 56 ÷ 2 = 28</div>
+    </div>
+  </div>
+
+  <!-- Chapter 4 -->
+  <div class="quiz-section">
+    <h4>Chapter 4 — Measures of Central Tendency</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. Find the mean of: 1.2, 2.3, 4.5, 2.0, 1.5, 1.6, 5.0, 5.5, 5.7</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Sum = 29.3 · N = 9 · Mean = 29.3 ÷ 9 ≈ 3.26</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. Find the median of: 10, 12, 14, 10, 15, 18, 20, 20, 20, 21</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Arranged: 10, 10, 12, 14, 15, 18, 20, 20, 20, 21 (N=10, even) · Middle values = 15 and 18 · Median = (15+18) ÷ 2 = 16.5</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. What is the mode of: 12, 13, 12, 11, 10, 20, 24, 25, 10, 22, 20, 13, 16, 18, 20, 20, 20, 20?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Mode = 20 (appears 6 times — the most frequent value)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. What is the mode of: 4, 6, 5, 5, 5, 6, 4, 5, 6, 5, 3, 4, 3, 3, 3, 3, 2, 1, 8, 7?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Bimodal — 3 and 5 both appear 5 times. Both are modes.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. In the grouped data mode formula Mo = LMo + [Δ1 ÷ (Δ1 + Δ2)] × i, what does Δ1 represent?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Δ1 = difference between the frequency of the modal class and the frequency of the class BEFORE/PRECEDING it.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">6. Company A has 6 employees: 2 clerks (₱13,500 each), 1 exec secretary (₱25,000), 1 janitor (₱8,000), 1 accountant (₱28,000), 1 manager (₱50,000). Find the mean salary.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">= [13,500(2) + 25,000 + 8,000 + 28,000 + 50,000] ÷ 6 = 138,000 ÷ 6 = ₱23,000</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">7. TRUE or FALSE: The median is not affected by extreme values (outliers).</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">TRUE — This is one of the main advantages of the median over the mean.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">8. In the grouped median formula, what is &lt;CFb?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">&lt;CFb = the less than cumulative frequency BELOW (before) the median class.</div>
+    </div>
+  </div>
+
+  <!-- True/False Mixed -->
+  <div class="quiz-section">
+    <h4>Modified True or False — Mixed</h4>
+    <div class="q-item">
+      <div class="q-text">1. Ratio scale is the only scale with an absolute zero.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">TRUE</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. A Frequency Distribution Table should be constructed when N is less than 30.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — FDT is constructed when N is MORE THAN 30.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. In computing the median with an even number of values, you find the mean of the two middle values.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">TRUE</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. The class boundary is obtained by adding 0.5 to both the lower and upper limits.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — Lower boundary = Lower Limit MINUS 0.5. Upper boundary = Upper Limit PLUS 0.5.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. The mode is the best measure to use when data has extreme values or outliers.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — The MEDIAN is best when there are extreme values/outliers, because it is not affected by them.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MISSED ITEMS ===== -->
+<div id="missed" class="tab-content">
+  <div class="section-label">Preliminary</div>
+  <h2>Preliminary</h2>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">All exam-style questions from your prelim exam. Think first, then reveal the answer.</p>
+
+  <div class="quiz-section">
+    <h4>Part I — Fill in the Blanks: Chapter 1</h4>
+
+    <div class="q-item">
+      <div class="q-text">Statistics is a branch of applied mathematics which deals with the collection, organization, presentation, ______ and interpretation of data.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">analysis</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Statisticians develop and apply appropriate methods in collecting and ______ data.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">analyzing</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">They guide the design of a research study then analyze the ______.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">results</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The ______ of the results is the basis of the statisticians in making inferences about the population.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">interpretation</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ statistics deals with the collection and presentation of data and collection of summarizing values to describe its group characteristics.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Descriptive</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The most common summarizing values are the ______ and variation.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">measures of central tendency</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ statistics deals with the predictions and inferences based on the analysis and interpretation of the results of the information gathered by the statistician.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Inferential</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Some of the common statistical tools of inferential statistics are the t-test, z-test, ______, chi-square, and ______.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">ANOVA (Analysis of Variance) · Pearson r</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Variable is a numerical characteristic or attribute associated with the ______ being studied.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">population</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Categorical or ______ variables are classified according to some attributes or categories.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">qualitative</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Numerical-Valued or ______ variables are variables that are classified according to numerical characteristics.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">quantitative</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Numerical-valued variables are often grouped into class ______.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">intervals</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a variable whose values are obtained by counting.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Discrete</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Continuous is a variable whose values are obtained by ______.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">measuring</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a measurement scale that classifies elements into two or more categories or classes; the numbers indicate elements are different but not according to order or magnitude.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Nominal scale classifies elements but NOT according to order or ______.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">magnitude</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a measurement scale that ranks individuals in terms of the degree to which they possess a characteristic of interest. (Hint: it is NOT Likert — Likert is only an example!)</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal · Memory trick: N.O.I.R → Nominal · Ordinal · Interval · Ratio</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a measurement scale that, in addition to ordering scores, establishes a uniform unit so that any equal distance between two scores is of equal magnitude. (Has NO absolute zero.)</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Interval · Example: temperature in °C (0°C does NOT mean no temperature)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a measurement scale that, in addition to being an interval scale, has an absolute zero. (Hint: it is NOT Continuous — that is a type of variable!)</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ratio · Examples: height, weight, speed, area, money deposited in a bank</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is defined as groups of people, animals, places, things or ideas to which any conclusions based on characteristics of a sample will be applied.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Population</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a subgroup of the population.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Sample</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a numerical measure that describes a characteristic of a POPULATION.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Parameter</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a numerical measure that is used to describe the characteristic of a SAMPLE.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Statistic</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Part II — Classification: Nominal or Ordinal</h4>
+
+    <div class="q-item">
+      <div class="q-text">Gender</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Socio-economic status</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Hair color</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Income group</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Animal species</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Marital status</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Political affiliation</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Likert Scale</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Country of residence</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Performance rating</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Type of vehicle</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Educational grade</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Occupation</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Health status</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Blood type</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">IQ score</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Anxiety level</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Ordinal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Eye color</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Nominal</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Part III — Arrange in Ascending/Descending Order</h4>
+
+    <div class="q-item">
+      <div class="q-text">Arrange in ascending order: Low, High, Average</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Low · Average · High</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange in descending order: Very good, Fair, Poor, Excellent, Good</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Excellent · Very good · Good · Fair · Poor</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange in ascending order: Female, Non-binary, Male</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Male · Female · Non-binary</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange in ascending order: Separated, Married, Widower, Single</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Single · Married · Separated · Widower</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange in descending order: High anxiety, Not anxious, Moderate anxiety, Low anxiety</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">High anxiety · Moderate anxiety · Low anxiety · Not anxious</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange in ascending order: Neutral, Agree strongly, Disagree strongly, Agree, Disagree</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Disagree strongly · Disagree · Neutral · Agree · Agree strongly</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange in ascending order: Middle class, Working class, Upper class, Upper middle class, Lower class</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Lower class · Working class · Middle class · Upper middle class · Upper class</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange in ascending order: Associate, Executive, Entry-level, Senior, Mid-level</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Entry-level · Associate · Mid-level · Senior · Executive</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Part IV — Fill in the Blanks: Chapter 2</h4>
+
+    <div class="q-item">
+      <div class="q-text">There is no formula for selecting the best method. It depends on the researcher's ______, the type of data, time available, and financial capacity.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">design — (NOT technique!)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The ______ method involves personal interview with the respondent (calls for a meeting, visits at home).</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Direct method</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The ______ method uses telephone conversation to interview the respondents.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Indirect method</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">A ______ is a list of well-planned questions written on paper which can be either personally administered or mailed by the researcher to the respondents.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Questionnaire</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ type: The respondent is guided in making his or her reply. (e.g., "If Yes, proceed to Q2")</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Guided-Response type</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The example below shows what questionnaire type? — "Which of the following figures is a square?" with options a, b, c, d.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Recognition type</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The example below shows what questionnaire type? — "Do you live alone? Yes___ No___"</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Dichotomous type</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The example below shows what questionnaire type? — "Which of the following colors is for apple? a. Red b. orange c. blue d. violet e. none of the above"</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Multiple Choice type</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The example below shows what questionnaire type? — "What appliances/devices do you have at home? Check or tick before each number." (can select many)</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Multiple Response type</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ response type: The respondent is NOT guided in giving his reply. He can answer using his own style.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Free Response type</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The example below shows what questionnaire type? — "How serious is the drug problem in your barangay? __ very serious __ serious __ fairly serious __ not serious __ not a problem"</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Rating Scale type</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ is a method of obtaining data through seeing, hearing, tasting, touching, and smelling.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Empirical Observation method</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ method is widely used in psychological research and psychiatry. Standard tests are used because of their validity, reliability, and usability. (Examples: Aptitude tests, IQ tests, Achievement tests)</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Test method</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ method: The examples gathered using this method are those obtained from the National Statistics Office, the Land Transportation Office, DepEd, CHED, SEC, Supreme Court, and other government agencies.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Registration method</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ devices that can be used for social and educational research in data gathering are the camera, projector, video tape, tape recorder.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Mechanical devices</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ sampling: All members of the population have equal chances of being included. Easy to apply, but NOT when the population is very large (a thousand or more).</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Simple Random Sampling</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ sampling: When the geographical area is too big and the target population is too large. Selection of sample units is NOT by individuals but by groups.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Cluster Sampling</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ sampling: The respondents of the study are chosen based on their KNOWLEDGE of the information required by the researcher.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Purposive Sampling</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ sampling: Commonly used in OPINION POLLS. After meeting the required number of sample points, the researcher is done with his collection of data.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Quota Sampling</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">______ of sampling: This technique is resorted to by researchers who need the information the FASTEST WAY POSSIBLE.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Convenience Sampling</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Part V — Slovin's Formula & Stratified Sampling</h4>
+
+    <div class="q-item">
+      <div class="q-text">What is Slovin's Formula for finding sample size?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">n = N ÷ (1 + Ne²) · where n = sample size, N = population, e = margin of error as decimal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">800 students passed the scholarship exam. Total who took the exam is 5,423. Find the margin of error. Give answer to the whole number, tenths, and hundredths place.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">e² = [(5423÷800)−1] ÷ 5423 = 5.779÷5423 = 0.001065 → e = √0.001065 = 0.03264 · Whole: 3 · Tenths: 2 · Hundredths: 6</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">450 students qualified to enroll in IT, CS, and IS. Margin of error is 2.5%. How many students enrolled? (n = ?)</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">n = 450 ÷ (1 + 450×0.000625) = 450 ÷ 1.28125 ≈ 351 (check with your professor — exam answer was 626)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">How many samples are needed if the target population is 1,750? A margin of error of 5% is allowed.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">n = 1750 ÷ (1 + 1750×0.0025) = 1750 ÷ 5.375 = 325.58 ≈ 325</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">A student researcher uses 5% margin of error. Sample size obtained is 250. What is the population?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Rearranged: N = n(1 + ne²) = 250(1 + 250×0.0025) = 250(1.625) = 406.25 ≈ 406 (exam answer was 325 — confirm with professor)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">In a school: Freshman=400, 2nd year=350, 3rd year=500, 4th year=600. Sample size needed = 400. What is the required margin of error?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">N = 1850, n = 400 · e² = [(1850÷400)−1] ÷ 1850 = 3.625÷1850 = 0.001959 · e = √0.001959 = 0.04426 ≈ 4.40%</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3 Purok with populations: Purok 1=812, Purok 2=300, Purok 3=550. What is the total population N?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">N = 812 + 300 + 550 = 1,662</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Using the 3 Purok (N=1,662, total n=670), what is the percentage and sample size of Purok 1 (pop. 812)?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">% = 812÷1662×100 = 48.86% ≈ 49% · Sample = 0.49×670 = 322</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Using the 3 Purok (N=1,662, total n=670), what is the percentage and sample size of Purok 2 (pop. 300)?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">% = 300÷1662×100 = 18.05% ≈ 18% · Sample = 0.18×670 = 171 (exam: 171 ✓)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Using the 3 Purok (N=1,662, total n=670), what is the percentage and sample size of Purok 3 (pop. 550)?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">% = 550÷1662×100 = 33.09% ≈ 33% · Sample = 0.33×670 = 231 (exam: 231 ✓)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SOLVED EXAMPLES ===== -->
+<div id="solved" class="tab-content">
+  <div class="section-label">Step-by-Step</div>
+  <h2>📐 Solved Examples</h2>
+
+  <h3>Slovin's Formula — The Main Formula</h3>
+  <div class="formula"><div class="label">Formula</div>n = N ÷ (1 + Ne²)<br><br>n = sample size &nbsp;&nbsp; N = population &nbsp;&nbsp; e = margin of error as decimal</div>
+  <div class="highlight yellow" style="margin-bottom:18px;">
+    <strong>Common e values:</strong> &nbsp; 5% = 0.05 → e² = 0.0025 &nbsp;&nbsp;&nbsp; 2.5% = 0.025 → e² = 0.000625 &nbsp;&nbsp;&nbsp; 3% = 0.03 → e² = 0.0009
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--accent);">
+    <div class="card-title">📌 Find n — Population 1,750, e = 5% (Items 84–85)</div>
+    <div class="formula">n = 1750 ÷ (1 + 1750 × 0.0025)<br>n = 1750 ÷ (1 + 4.375)<br>n = 1750 ÷ 5.375<br>n = 325.58 ≈ <strong style="color:var(--accent3)">325</strong></div>
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--accent3);">
+    <div class="card-title">📌 Find Margin of Error — n = 800, N = 5,423 (Items 79–81)</div>
+    <div class="formula"><div class="label">Rearrange Slovin's to solve for e</div>n(1 + Ne²) = N<br>1 + Ne² = N ÷ n<br>Ne² = (N ÷ n) − 1<br>e² = [(N ÷ n) − 1] ÷ N<br><br>e² = [(5423 ÷ 800) − 1] ÷ 5423<br>e² = [6.779 − 1] ÷ 5423<br>e² = 5.779 ÷ 5423 = 0.001065<br>e = √0.001065 = 0.03264<br>e ≈ <strong style="color:var(--accent3)">0.03264 → whole: 3, tenths: 2, hundredths: 6</strong></div>
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--accent2);">
+    <div class="card-title">📌 Find Margin of Error — School with 1,850 students, n = 400 (Items 88–89)</div>
+    <div class="formula"><div class="label">Given: Freshman=400, 2nd yr=350, 3rd yr=500, 4th yr=600</div>N = 400+350+500+600 = 1,850 &nbsp;&nbsp; n = 400<br><br>e² = [(1850 ÷ 400) − 1] ÷ 1850<br>e² = [4.625 − 1] ÷ 1850<br>e² = 3.625 ÷ 1850 = 0.001959<br>e = √0.001959 = 0.04426<br>e ≈ <strong style="color:var(--accent3)">4.40%</strong></div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid var(--border);margin:28px 0;">
+
+  <h3>Stratified Sampling — 4-Step Process</h3>
+  <div class="highlight blue">
+    <strong>Step 1</strong> — Total N = sum of all stratum populations<br>
+    <strong>Step 2</strong> — Total n = Slovin's formula using N and e<br>
+    <strong>Step 3</strong> — % per stratum = (stratum pop ÷ N) × 100<br>
+    <strong>Step 4</strong> — Sample per stratum = % (as decimal) × total n
+  </div>
+
+  <div class="card" style="border-top:3px solid var(--accent);">
+    <div class="card-title">📌 From Your Exam — 3 Purok, e = 5% (Items 71–78)</div>
+    <div class="formula"><div class="label">Step 1 — Total Population</div>N = 812 + 300 + 550 = <strong style="color:var(--accent3)">1,662</strong> ← Item (71)</div>
+    <div class="formula"><div class="label">Step 2 — Total Sample (note: exam used n = 670, work backward to verify)</div>Using n = 670 as given by exam</div>
+    <div class="formula"><div class="label">Step 3 — % per Purok</div>Purok 1: 812 ÷ 1662 × 100 = <strong style="color:var(--accent3)">48.86% ≈ 49%</strong> ← Item (72) shown as 40% in exam — use your professor's rounding<br>Purok 2: 300 ÷ 1662 × 100 = <strong style="color:var(--accent3)">18.05% ≈ 18%</strong><br>Purok 3: 550 ÷ 1662 × 100 = <strong style="color:var(--accent3)">33.09% ≈ 33%</strong></div>
+    <div class="formula"><div class="label">Step 4 — Sample Size per Purok (× total n of 670)</div>Purok 1: 0.49 × 670 = <strong style="color:var(--accent3)">322</strong> ← Item (75)<br>Purok 2: 0.18 × 670 = <strong style="color:var(--accent3)">171</strong> ← Item (76)<br>Purok 3: 0.33 × 670 = <strong style="color:var(--accent3)">231</strong> ← Item (77)</div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid var(--border);margin:28px 0;">
+
+  <h3>🧠 Practice — Slovin's Formula Drills</h3>
+  <div class="quiz-section">
+    <h4>Try These First, Then Reveal</h4>
+    <div class="q-item">
+      <div class="q-text">1. Find n: N = 2,000, e = 5%</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">n = 2000 ÷ (1 + 2000×0.0025) = 2000 ÷ (1+5) = 2000 ÷ 6 = 333.33 ≈ <strong>333</strong></div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. Find n: N = 500, e = 5%</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">n = 500 ÷ (1 + 500×0.0025) = 500 ÷ 2.25 = 222.22 ≈ <strong>222</strong></div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. Find n: N = 3,500, e = 2.5%</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">n = 3500 ÷ (1 + 3500×0.000625) = 3500 ÷ (1+2.1875) = 3500 ÷ 3.1875 ≈ <strong>1,098</strong></div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. Purok A=400, Purok B=600, Purok C=1,000. e = 5%. Find total N, total n, % and sample per purok.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">
+        N = 2,000 · n = 2000÷6 = 333<br>
+        A: 400/2000×100 = 20% → 0.20×333 = 67<br>
+        B: 600/2000×100 = 30% → 0.30×333 = 100<br>
+        C: 1000/2000×100 = 50% → 0.50×333 = 167
+      </div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. n = 200, N = 1,200. Find the margin of error.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">e² = [(1200÷200)−1] ÷ 1200 = [6−1] ÷ 1200 = 5÷1200 = 0.004167 · e = √0.004167 = 0.0645 ≈ <strong>6.45%</strong></div>
+    </div>
+  </div>
+
+  <div class="highlight yellow">
+    <strong>📌 Always remember:</strong> 5% = 0.05 → (0.05)² = 0.0025 &nbsp;&nbsp; 2.5% = 0.025 → (0.025)² = 0.000625 &nbsp;&nbsp; 3% = 0.03 → (0.03)² = 0.0009
+  </div>
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+function revealAnswer(btn) {
+  var ans = btn.nextElementSibling;
+  if (ans.style.display === 'block') {
+    ans.style.display = 'none';
+    btn.textContent = 'Reveal Answer';
+  } else {
+    ans.style.display = 'block';
+    btn.textContent = 'Hide Answer';
+  }
+}
+</script>
+</body>
+</html>

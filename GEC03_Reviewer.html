@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEC-03 The Contemporary World — Exam Reviewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e14;
+    --surface: #16161f;
+    --card: #1d1d2b;
+    --border: #2a2a3e;
+    --accent: #c8a86b;
+    --accent2: #7b68ee;
+    --accent3: #5ec4a0;
+    --accent4: #e07b7b;
+    --text: #e8e6f0;
+    --muted: #8a88a0;
+    --tag-bg: rgba(200,168,107,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0e0e14 0%, #1a1530 50%, #0e1420 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(123,104,238,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(200,168,107,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .course-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    border: 1px solid rgba(200,168,107,0.3);
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px,5vw,48px);
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 300;
+  }
+  .exam-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .exam-type-badge {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* TABS */
+  .tabs-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14,14,20,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 16px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  .tab-btn.active { color: var(--accent); }
+  .tab-btn.active::after { transform: scaleX(1); }
+  .tab-btn:hover { color: var(--text); }
+
+  /* CONTENT */
+  .tab-content { display: none; padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 28px 0 14px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(200,168,107,0.3); }
+  .card-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title .icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .card p, .card li { color: var(--muted); font-size: 14px; }
+  .card ul, .card ol { padding-left: 18px; }
+  .card li { margin-bottom: 4px; }
+
+  /* DEFINITION CARDS */
+  .def-card {
+    background: var(--card);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+  .def-card .term {
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .def-card .def { color: var(--muted); font-size: 13.5px; }
+  .def-card .source {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    margin-top: 4px;
+  }
+
+  /* HIGHLIGHT BOXES */
+  .highlight-box {
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    font-size: 14px;
+  }
+  .highlight-box.gold {
+    background: rgba(200,168,107,0.08);
+    border: 1px solid rgba(200,168,107,0.25);
+  }
+  .highlight-box.purple {
+    background: rgba(123,104,238,0.08);
+    border: 1px solid rgba(123,104,238,0.25);
+  }
+  .highlight-box.green {
+    background: rgba(94,196,160,0.08);
+    border: 1px solid rgba(94,196,160,0.25);
+  }
+  .highlight-box.red {
+    background: rgba(224,123,123,0.08);
+    border: 1px solid rgba(224,123,123,0.25);
+  }
+  .highlight-box strong { color: #fff; }
+
+  /* TWO COLUMN */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media(max-width:600px){ .two-col { grid-template-columns:1fr; } }
+
+  /* TABLE */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+    font-size: 13.5px;
+  }
+  .styled-table th {
+    background: rgba(200,168,107,0.1);
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .styled-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(42,42,62,0.5);
+    color: var(--muted);
+  }
+  .styled-table tr:hover td { background: rgba(255,255,255,0.02); color: var(--text); }
+
+  /* NUMBERED LIST STYLE */
+  .num-list { list-style: none; padding: 0; }
+  .num-list li {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(42,42,62,0.5);
+    color: var(--text);
+    font-size: 14px;
+    align-items: flex-start;
+  }
+  .num-list li:last-child { border-bottom: none; }
+  .num-list .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--tag-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* QUIZ SECTION */
+  .quiz-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .quiz-section h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quiz-section h4::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 2px;
+    background: var(--accent3);
+  }
+  .q-item {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .q-text {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .q-answer {
+    display: none;
+    background: rgba(94,196,160,0.08);
+    border-left: 3px solid var(--accent3);
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13.5px;
+    color: var(--accent3);
+    margin-top: 8px;
+  }
+  .reveal-btn {
+    background: none;
+    border: 1px solid rgba(94,196,160,0.3);
+    color: var(--accent3);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reveal-btn:hover {
+    background: rgba(94,196,160,0.1);
+  }
+
+  /* ESSAY GUIDE */
+  .essay-prompt {
+    background: linear-gradient(135deg, rgba(123,104,238,0.05), rgba(200,168,107,0.05));
+    border: 1px solid rgba(123,104,238,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .essay-prompt .prompt-text {
+    font-size: 14px;
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .essay-prompt .guide-points { list-style: none; padding: 0; }
+  .essay-prompt .guide-points li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .essay-prompt .guide-points li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+  }
+
+  /* PROGRESS TAG */
+  .progress-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .tag-memorize { background: rgba(224,123,123,0.15); color: var(--accent4); }
+  .tag-understand { background: rgba(123,104,238,0.15); color: var(--accent2); }
+  .tag-apply { background: rgba(94,196,160,0.15); color: var(--accent3); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 28px 0;
+  }
+
+  /* MATERIALS BOX */
+  .materials-box {
+    background: rgba(200,168,107,0.06);
+    border: 1px dashed rgba(200,168,107,0.3);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+  .material-item {
+    font-size: 13px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .material-item::before { content: '✦'; font-size: 10px; }
+
+  /* WORLD SYSTEM TABLE */
+  .wsystem {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media(max-width:600px){ .wsystem { grid-template-columns: 1fr; } }
+  .wsystem-card {
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .wsystem-card .wlabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .wsystem-card .wdesc { font-size: 13px; color: var(--muted); }
+  .core-card { background: rgba(224,123,123,0.08); border: 1px solid rgba(224,123,123,0.2); }
+  .core-card .wlabel { color: var(--accent4); }
+  .semi-card { background: rgba(200,168,107,0.08); border: 1px solid rgba(200,168,107,0.2); }
+  .semi-card .wlabel { color: var(--accent); }
+  .peri-card { background: rgba(94,196,160,0.08); border: 1px solid rgba(94,196,160,0.2); }
+  .peri-card .wlabel { color: var(--accent3); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="course-tag">GEC-03 · The Contemporary World</div>
+  <h1>Exam Reviewer</h1>
+  <p>Topics 1–3 · Globalization, Structuring the Economy & Market Integration</p>
+  <p style="margin-top:10px; font-size:12px; color:#4a3d2a; font-family:'DM Mono',monospace;">Reviewer by Reindel Andrada</p>
+  <div class="exam-types">
+    <span class="exam-type-badge">Multiple Choice</span>
+    <span class="exam-type-badge">Modified True or False</span>
+    <span class="exam-type-badge">Identification</span>
+    <span class="exam-type-badge">Enumeration</span>
+    <span class="exam-type-badge">Essay</span>
+  </div>
+</header>
+
+<nav class="tabs-wrapper">
+  <button class="tab-btn active" onclick="showTab('materials', this)">📋 Exam Info</button>
+  <button class="tab-btn" onclick="showTab('topic1', this)">Topic 1: Globalization</button>
+  <button class="tab-btn" onclick="showTab('topic2', this)">Topic 2: Structuring</button>
+  <button class="tab-btn" onclick="showTab('topic3', this)">Topic 3: Market Integration</button>
+  <button class="tab-btn" onclick="showTab('practice', this)">🧠 Practice Q&A</button>
+  <button class="tab-btn" onclick="showTab('essay', this)">✍️ Essay Guide</button>
+</nav>
+
+<!-- ========== EXAM INFO ========== -->
+<div id="materials" class="tab-content active">
+  <div class="section-label">Before You Start</div>
+  <h2>Exam Information</h2>
+
+  <p style="color:var(--muted); margin-bottom:20px;">Bring the following materials to the examination:</p>
+  <div class="materials-box">
+    <div class="material-item">Yellow Pad Paper</div>
+    <div class="material-item">Pencil</div>
+    <div class="material-item">Ballpen / Ballpoint Pen</div>
+    <div class="material-item">Correction Tape / Eraser</div>
+    <div class="material-item">Long Folder</div>
+  </div>
+
+  <h3>Exam Format</h3>
+  <div class="card">
+    <ul class="num-list">
+      <li><span class="num">01</span><div><strong style="color:#fff">Multiple Choice</strong><br><span style="color:var(--muted); font-size:13px">Select the best answer from the given options. Watch for trick words like "EXCEPT" or "NOT."</span></div></li>
+      <li><span class="num">02</span><div><strong style="color:#fff">Modified True or False</strong><br><span style="color:var(--muted); font-size:13px">If a statement is False, you may need to write the correct word/phrase that makes it true.</span></div></li>
+      <li><span class="num">03</span><div><strong style="color:#fff">Identification</strong><br><span style="color:var(--muted); font-size:13px">Name the concept, person, organization, or term being described. Be specific and spell correctly.</span></div></li>
+      <li><span class="num">04</span><div><strong style="color:#fff">Enumeration</strong><br><span style="color:var(--muted); font-size:13px">List items in order when required (e.g., 5 vectors, 4 IMF aspects, 4 types of protectionism).</span></div></li>
+      <li><span class="num">05</span><div><strong style="color:#fff">Essay</strong><br><span style="color:var(--muted); font-size:13px">Answer fully with arguments, examples, and analysis. Structure your response with introduction, body, and conclusion.</span></div></li>
+    </ul>
+  </div>
+
+  <h3>Topics Covered</h3>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title"><div class="icon" style="background:rgba(200,168,107,0.15)">🌐</div>Topic 1</div>
+      <p>Key Concepts in Globalization — definitions, scholars, pros/cons, vectors, world-system theory, impacts</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="icon" style="background:rgba(123,104,238,0.15)">🏛️</div>Topic 2</div>
+      <p>Structuring the Globalization — UN, MDGs vs SDGs, extreme poverty, economic globalization, TNCs, protectionism vs free trade</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="icon" style="background:rgba(94,196,160,0.15)">📈</div>Topic 3</div>
+      <p>Market Integration — Agricultural & Industrial Revolution, capitalism vs socialism, Bretton Woods, financial institutions, global governance</p>
+    </div>
+  </div>
+
+  <div class="highlight-box gold">
+    <strong>💡 Study Tip:</strong> Focus on names + definitions (scholars, organizations, years), the enumerated lists (4 IMF aspects, 5 vectors, 3 types of global governance), and how globalization's pros and cons connect to real-world examples.
+  </div>
+</div>
+
+<!-- ========== TOPIC 1 ========== -->
+<div id="topic1" class="tab-content">
+  <div class="section-label">Topic 1</div>
+  <h2>Key Concepts in Globalization</h2>
+
+  <h3>What is Globalization?</h3>
+  <div class="highlight-box gold">
+    <strong>Core Idea:</strong> A satisfactory definition of globalization must address <strong>EXTENSION, INTENSITY, CELERITY (speed), and IMPACT.</strong>
+  </div>
+
+  <h3>Scholar Definitions <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <div class="def-card">
+    <div class="term">Thomas Larsson</div>
+    <div class="def">Globalization is the process of the <em>shrinking of the world</em>, the shortening of distances, and the closeness of things.</div>
+    <div class="source">The Race to the Top: The Real Story of Globalization</div>
+  </div>
+  <div class="def-card">
+    <div class="term">Roland Robertson</div>
+    <div class="def">Understanding of the world and the increased <em>perception of the world as a whole.</em></div>
+  </div>
+  <div class="def-card">
+    <div class="term">Martin Albrow & Elizabeth King</div>
+    <div class="def">All those processes by which the peoples of the world are incorporated into a <em>single world society.</em></div>
+  </div>
+  <div class="def-card">
+    <div class="term">David Held</div>
+    <div class="def">Rapid global interconnection, deep and on large scale — requires complex research.</div>
+  </div>
+  <div class="def-card">
+    <div class="term">Charles Russell Tazel</div>
+    <div class="def">First used the term <em>"giant corporations"</em> in <strong>1897</strong> to describe big national trusts and large enterprises.</div>
+  </div>
+  <div class="def-card">
+    <div class="term">Vladislav Inozemtsev</div>
+    <div class="def">One of the most popular social studies terms today, but is at the same time <em>an empty term.</em></div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>IMF's 4 Basic Aspects of Globalization (Year 2000) <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Trade and Transactions</li>
+    <li><span class="num">2</span>Capital Movements and Investment</li>
+    <li><span class="num">3</span>Migration</li>
+    <li><span class="num">4</span>Movement of People and the Spreading of Knowledge</li>
+  </ul>
+
+  <hr class="divider">
+
+  <h3>Pros & Cons of Globalization</h3>
+  <div class="two-col">
+    <div class="card" style="border-left: 3px solid var(--accent3);">
+      <div class="card-title" style="color:var(--accent3)">✅ Proponents Say</div>
+      <p>Globalization is <em>desirable and necessary</em> for human society. Measured by:</p>
+      <ul style="padding-left:16px; margin-top:8px;">
+        <li style="color:var(--muted); font-size:14px;">Economy</li>
+        <li style="color:var(--muted); font-size:14px;">Infrastructure</li>
+        <li style="color:var(--muted); font-size:14px;">Tourist destination</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--accent4);">
+      <div class="card-title" style="color:var(--accent4)">❌ Critics Say</div>
+      <p>Globalization is <em>detrimental to social welfare</em>. Concerns include:</p>
+      <ul style="padding-left:16px; margin-top:8px;">
+        <li style="color:var(--muted); font-size:14px;">Food security</li>
+        <li style="color:var(--muted); font-size:14px;">Technology dependence</li>
+        <li style="color:var(--muted); font-size:14px;">Data privacy</li>
+        <li style="color:var(--muted); font-size:14px;">Digital era issues</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>Wallerstein's World-System Theory <span class="progress-tag tag-understand">Understand</span></h3>
+  <div class="wsystem">
+    <div class="wsystem-card core-card">
+      <div class="wlabel">Core</div>
+      <div style="font-size:12px; color:#fff; margin-bottom:6px; font-weight:600">Most Developed</div>
+      <div class="wdesc">Dominate & exploit periphery for labor & raw materials. Powerful, high-skill, industrialized. <br><em>Examples: Western Europe, North America, Japan</em></div>
+    </div>
+    <div class="wsystem-card semi-card">
+      <div class="wlabel">Semi-Periphery</div>
+      <div style="font-size:12px; color:#fff; margin-bottom:6px; font-weight:600">Middle Ground</div>
+      <div class="wdesc">Less dependent on core. Intermediate economic position with more diversified economies. <br><em>Examples: India, Brazil</em></div>
+    </div>
+    <div class="wsystem-card peri-card">
+      <div class="wlabel">Periphery</div>
+      <div style="font-size:12px; color:#fff; margin-bottom:6px; font-weight:600">Least Developed</div>
+      <div class="wdesc">Dependent on core for capital. Low-skill, labor-intensive, historically colonized. <br><em>Examples: Parts of Africa, Asia, Middle East</em></div>
+    </div>
+  </div>
+  <div class="highlight-box red">
+    <strong>Result:</strong> Global Inequality — peripheral countries become more dependent on core/central economies.
+  </div>
+
+  <hr class="divider">
+
+  <h3>5 Vectors of Globalization <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Economic</li>
+    <li><span class="num">2</span>Military</li>
+    <li><span class="num">3</span>Political</li>
+    <li><span class="num">4</span>Religious</li>
+    <li><span class="num">5</span>Cultural</li>
+  </ul>
+
+  <hr class="divider">
+
+  <h3>Cultural Concepts</h3>
+  <div class="two-col">
+    <div class="def-card" style="border-left-color: var(--accent4);">
+      <div class="term">Assimilation</div>
+      <div class="def">We adapt to a new culture. The <em>original culture is replaced.</em></div>
+    </div>
+    <div class="def-card" style="border-left-color: var(--accent3);">
+      <div class="term">Acculturation</div>
+      <div class="def">The original culture is <em>maintained</em> even when adopting a new culture. Both are preserved.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>3 Impacts of Globalization <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Delocalization and Over-territoriality</strong><br><span style="color:var(--muted); font-size:13px">Economic activities are global; work can be done in real-time on a planetary scale from a distance.</span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Decline of Power of National Governments</strong><br><span style="color:var(--muted); font-size:13px">Policies are market-driven. Governments must adapt to transnational market forces to survive.</span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Emergence of Global Brands and Institutions</strong><br><span style="color:var(--muted); font-size:13px">Multinationals affect communities worldwide, exploiting cheapest labor and resources. Examples: Coca-Cola, Nike.</span></div></li>
+  </ul>
+
+  <div class="highlight-box gold">
+    <strong>📌 Key Fact:</strong> The "brand" shift is exemplified by corporations like <strong>Coca-Cola</strong> and <strong>Nike</strong> that have become part of life for a very large number of people worldwide.
+  </div>
+</div>
+
+<!-- ========== TOPIC 2 ========== -->
+<div id="topic2" class="tab-content">
+  <div class="section-label">Topic 2</div>
+  <h2>Structuring the Globalization</h2>
+
+  <h3>United Nations & MDGs</h3>
+  <div class="card">
+    <div class="card-title"><div class="icon" style="background:rgba(123,104,238,0.15)">🇺🇳</div>The UN & Millennium Development Goals</div>
+    <ul style="padding-left:18px; margin-top:8px;">
+      <li style="color:var(--muted); font-size:14px; margin-bottom:4px;">The UN created <strong style="color:#fff">8 Millennium Development Goals (MDGs)</strong> in <strong style="color:#fff">2000</strong></li>
+      <li style="color:var(--muted); font-size:14px; margin-bottom:4px;">UN (2015): <strong style="color:#fff">836 million</strong> people still live in extreme poverty (down from <strong style="color:#fff">1.9 billion</strong>)</li>
+      <li style="color:var(--muted); font-size:14px;">World Bank predicted: by <strong style="color:#fff">2030</strong>, extreme poverty could drop to under <strong style="color:#fff">400 million</strong></li>
+    </ul>
+  </div>
+
+  <h3>MDGs vs SDGs <span class="progress-tag tag-understand">Understand</span></h3>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>MDGs</th>
+        <th>SDGs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Single set of goals for the 21st century</td><td>Universal goals for all countries</td></tr>
+      <tr><td>Applied primarily to developing countries</td><td>Require "buy-in" from all countries (developed & developing)</td></tr>
+      <tr><td>7 social goals, 1 environmental goal</td><td>Three dimensions: economic, social, environmental</td></tr>
+      <tr><td>Established in 2000, expired in 2015</td><td>Strongly linked to Johannesburg Plan of Implementation, Agenda 21</td></tr>
+      <tr><td>Set global poverty eradication as norm</td><td>Post-2015 development agenda</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Extreme Poverty</h3>
+  <div class="highlight-box purple">
+    <strong>Philippine Poverty Threshold:</strong> Living on ₱275/day or ₱100,534/year<br><br>
+    <strong>UN Definition of Extreme Poverty (2015):</strong> Severe deprivation of basic human needs including food, safe drinking water, sanitation, health, shelter, education, and information.
+  </div>
+
+  <h3>Why is Extreme Poverty Falling?</h3>
+  <ul class="num-list">
+    <li><span class="num">1</span>Better access to education</li>
+    <li><span class="num">2</span>Humanitarian aid</li>
+    <li><span class="num">3</span>Policies of international organizations like the UN</li>
+    <li><span class="num">4</span><strong style="color:var(--accent)">Economic Globalization</strong> — the greatest contributor</li>
+  </ul>
+
+  <hr class="divider">
+
+  <h3>Economic Globalization</h3>
+  <div class="two-col">
+    <div class="def-card" style="border-left-color: var(--accent);">
+      <div class="term">Internalization</div>
+      <div class="def">Extension of economic activities of nation-states <em>across borders.</em></div>
+    </div>
+    <div class="def-card" style="border-left-color: var(--accent2);">
+      <div class="term">Externalization</div>
+      <div class="def">Functional integration between internationally <em>dispersed activities.</em></div>
+    </div>
+  </div>
+  <div class="highlight-box gold">
+    <strong>Dickens (2004):</strong> "Economic globalization is rather a qualitative transformation than just a quantitative change."
+  </div>
+  <div class="highlight-box purple">
+    <strong>Boyer & Drache (1996):</strong> Globalization redefined the role of the nation-state as an effective manager of the national economy. New actors appear — the major players are <strong>Transnational Corporations (TNCs)</strong>, which are constantly evolving.
+  </div>
+
+  <h3>4 Dimensions of Economic Globalization <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">a</span>Globalization of trade of goods and services</li>
+    <li><span class="num">b</span>Globalization of financial and capital markets</li>
+    <li><span class="num">c</span>Globalization of technology and communication</li>
+    <li><span class="num">d</span>Globalization of production</li>
+  </ul>
+
+  <hr class="divider">
+
+  <h3>Type 1: Protectionism <span class="progress-tag tag-understand">Understand</span></h3>
+  <div class="card">
+    <p style="color:var(--muted); margin-bottom:14px;"><strong style="color:#fff">Definition:</strong> A policy of systematic government intervention in foreign trade to encourage domestic production by giving preferential treatment to domestic producers. (McAleese, 2007)</p>
+    <h4 style="font-size:12px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">4 Types of Protectionism</h4>
+    <ul class="num-list">
+      <li><span class="num">1</span><div><strong style="color:#fff">Tariffs</strong><br><span style="color:var(--muted);font-size:13px">Taxes/duties on imports that increase their price in the domestic market, reducing demand. Example: "Chicken Tax" — 25% tariff on certain imported vehicles imposed by President Lyndon Johnson in 1963, still in effect.</span></div></li>
+      <li><span class="num">2</span><div><strong style="color:#fff">Quotas</strong><br><span style="color:var(--muted);font-size:13px">Restrictions on the volume of imports for a good/service over a period. Known as "non-tariff trade barrier."</span></div></li>
+      <li><span class="num">3</span><div><strong style="color:#fff">Subsidies</strong><br><span style="color:var(--muted);font-size:13px">Negative taxes/tax credits given by the government to domestic producers. Creates a price discrepancy between consumers and producers.</span></div></li>
+      <li><span class="num">4</span><div><strong style="color:#fff">Standardization</strong><br><span style="color:var(--muted);font-size:13px">Government may require foreign products to meet certain guidelines, tending to reduce foreign products in the market.</span></div></li>
+    </ul>
+  </div>
+
+  <h3>Type 2: Trade Liberalization / Free Trade</h3>
+  <div class="card">
+    <p style="color:var(--muted); font-size:14px; margin-bottom:12px;">Policy between two or more nations permitting unlimited import/export. Eliminates tariffs and makes corporations more competitive.</p>
+    <ul class="num-list">
+      <li><span class="num">1948</span><strong style="color:#fff">GATT</strong> — General Agreement on Tariffs and Trade. U.S. + 100+ countries agreed to reduce tariffs and trade barriers.</li>
+      <li><span class="num">1995</span>GATT replaced by <strong style="color:#fff">WTO (World Trade Organization)</strong>. Today: <strong style="color:#fff">164 countries</strong> = 98% of all world trade.</li>
+    </ul>
+    <div class="highlight-box green" style="margin-top:12px; margin-bottom:0;">
+      <strong>Comparative Advantage (David Ricardo, 1817):</strong> All countries benefit from cooperation and free trade. A country's ability to produce goods at a lower cost than others. Source: <em>Principles of Political Economy and Taxation.</em>
+    </div>
+  </div>
+  <div class="highlight-box gold">
+    <strong>Key Conclusion:</strong> The goal of business = higher profit. The goal of government = protect its people. <em>Neither unrestricted free trade nor total protectionism will accomplish both.</em>
+  </div>
+</div>
+
+<!-- ========== TOPIC 3 ========== -->
+<div id="topic3" class="tab-content">
+  <div class="section-label">Topic 3</div>
+  <h2>Market Integration</h2>
+
+  <h3>Economic Revolutions</h3>
+  <div class="two-col">
+    <div class="card" style="border-left:3px solid var(--accent);">
+      <div class="card-title">🌾 Agricultural Revolution</div>
+      <ul style="padding-left:16px;">
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">First major economic change (Pomeranz, 2000)</li>
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">Domesticated plants & animals — more productive than hunter-gatherer</li>
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">Farming created surpluses</li>
+        <li style="color:var(--muted);font-size:14px;">Led to: permanent settlements, trade networks, population growth</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent2);">
+      <div class="card-title">⚙️ Industrial Revolution (1800s)</div>
+      <ul style="padding-left:16px;">
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">Second major economic revolution</li>
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">New tools: steam engines, manufacturing, mass production</li>
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">Factories changed how work functioned</li>
+        <li style="color:var(--muted);font-size:14px;">Start of wage labor and skilled workers</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Economic Casualties</h3>
+  <div class="highlight-box red">
+    <strong>19th Century Issues:</strong> Factory workers (mainly poor women and children) worked in dangerous conditions for low wages. "Barons" (industrialists) gained greater wealth, but also <em>greater economic inequality.</em>
+  </div>
+  <div class="card">
+    <div class="card-title"><div class="icon" style="background:rgba(94,196,160,0.15)">✊</div>Labor Unions</div>
+    <p>Organizations of workers that improved wages and working conditions through collective action, strikes, and negotiations. Inspired by Marxist principles. Led to: minimum wage laws, reasonable working hours, safety regulations.</p>
+  </div>
+
+  <hr class="divider">
+
+  <h3>Economic Models</h3>
+  <div class="two-col">
+    <div class="card" style="border-top:3px solid var(--accent4);">
+      <div class="card-title" style="color:var(--accent4)">🏦 Capitalism</div>
+      <ul style="padding-left:16px;">
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">Natural resources & means of production are <em>privately owned</em></li>
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">Profit maximization & competition as key drivers</li>
+        <li style="color:var(--muted);font-size:14px;">Incentivized by improving quality & reducing prices</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent2);">
+      <div class="card-title" style="color:var(--accent2)">🏛️ Socialism</div>
+      <ul style="padding-left:16px;">
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">Means of production under <em>collective ownership</em></li>
+        <li style="color:var(--muted);font-size:14px;margin-bottom:4px;">Property owned by government, allocated to citizens</li>
+        <li style="color:var(--muted);font-size:14px;">Higher value on meeting everyone's basic needs over individual profit</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Information Revolution</h3>
+  <div class="highlight-box purple">
+    Technology has reduced the role of human labor, shifting from a manufacturing-based economy. Computers and technologies are replacing many jobs through <strong>automation</strong> or <strong>outsourcing jobs offshore.</strong>
+  </div>
+
+  <hr class="divider">
+
+  <h3>Market Integration: Financial Institutions <span class="progress-tag tag-memorize">Memorize</span></h3>
+
+  <div class="card">
+    <div class="card-title"><div class="icon" style="background:rgba(200,168,107,0.15)">💱</div>Bretton Woods System (1944)</div>
+    <p>Expression of currency in terms of gold to establish a par value (Boughton, 2007).</p>
+  </div>
+
+  <table class="styled-table">
+    <thead>
+      <tr><th>Organization</th><th>Key Facts</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong style="color:#fff">World Bank & IMF</strong></td><td>Founded after WWII for peace advocacy and economic stability. IMF = lender of last resort. World Bank = long-term approach.</td></tr>
+      <tr><td><strong style="color:#fff">OECD</strong></td><td>Organization for Economic Cooperation & Development. 35 member states. Highly influential.</td></tr>
+      <tr><td><strong style="color:#fff">OPEC</strong></td><td>Saudi Arabia, Iraq, Kuwait, Iran, Venezuela + UAE, Algeria, Libya, Qatar, Nigeria, Indonesia. Goal: increase oil price to keep with inflation.</td></tr>
+      <tr><td><strong style="color:#fff">European Union</strong></td><td>Uses Euro as basic currency. Euro increased prices in Eurozones, resulting in depressed economic growth rate.</td></tr>
+      <tr><td><strong style="color:#fff">NAFTA</strong></td><td>Free Trade Agreements determining tariffs, duties, and subsidies between partner nations.</td></tr>
+      <tr><td><strong style="color:#fff">WTO</strong></td><td>Independent multilateral organization responsible for trade in services, non-tariff barriers, and broader trade liberalization.</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="divider">
+
+  <h3>Global Interstate System</h3>
+  <div class="highlight-box gold">
+    <strong>Origin of Nation-State:</strong> Traced to the <strong>Peace of Westphalia</strong> — established the notion that nation-states are <em>autonomous.</em>
+  </div>
+  <div class="card">
+    <p style="color:var(--muted); font-size:14px;">With globalization, nation-states face challenges: loss of control over economic flows, transnational organizations, and sovereignty. Although the nation-state's role has declined, it remains an important political structure.</p>
+  </div>
+
+  <h3>3 Forms of Global/Transnational Governance <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Multi-Stakeholder Initiatives</strong><br><span style="color:var(--muted);font-size:13px">Brings together public and private actors into policy networks. Involves at least one state actor, international institutions, INGOs, and private organizations. E.g., Global Fund to Fight AIDS, Tuberculosis, and Malaria.</span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Voluntary Regulations</strong><br><span style="color:var(--muted);font-size:13px">MNCs agree to social/environmental practices beyond stated laws. Standards are developed, monitored, and enforced through international organizations.</span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Courts and Lawyers (Non-International Law)</strong><br><span style="color:var(--muted);font-size:13px">Authority not based in international law. Independent investigations can create factual records that pressure states to adhere to their national laws.</span></div></li>
+  </ul>
+
+  <div class="highlight-box green">
+    <strong>Governance Definition (Hale and Held 2011):</strong> "Formal and informal rules and institutions that elicit compliance toward collective goals whereby rules are created, compliance is elicited, and goods are provided in pursuit of collective goals."
+  </div>
+
+  <h3>International Institutions</h3>
+  <div class="card">
+    <ul style="padding-left:16px;">
+      <li style="color:var(--muted);font-size:14px;margin-bottom:4px;"><strong style="color:#fff">UN</strong> — United Nations</li>
+      <li style="color:var(--muted);font-size:14px;margin-bottom:4px;"><strong style="color:#fff">UNICEF</strong> — UN Children's Fund</li>
+      <li style="color:var(--muted);font-size:14px;"><strong style="color:#fff">UNEP</strong> — UN Environment Programme</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========== PRACTICE Q&A ========== -->
+<div id="practice" class="tab-content">
+  <div class="section-label">Self-Test</div>
+  <h2>Practice Q&A</h2>
+  <p style="color:var(--muted); margin-bottom:24px; font-size:14px;">Test yourself — click <em>Reveal Answer</em> only after you've thought about it!</p>
+
+  <!-- Identification -->
+  <div class="quiz-section">
+    <h4>Identification</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. He defined globalization as "the shrinking of the world, the shortening of distances, and the closeness of things."</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Thomas Larsson</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. This 1944 agreement expressed currency in terms of gold or gold value to establish a par value.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">The Bretton Woods System</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. This theory models the world into Core, Semi-Periphery, and Periphery to explain global inequality.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Wallerstein's World-System Theory</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. In 1995, this organization replaced GATT. It now has 164 member countries representing 98% of all world trade.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">World Trade Organization (WTO)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. The concept that all countries benefit from free trade because each can produce goods at a lower cost than others. Introduced by David Ricardo in 1817.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Comparative Advantage</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">6. The origin of the modern nation-state is traced to what peace treaty?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">The Peace of Westphalia</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">7. This term means the original culture is maintained even when adopting or advancing to a new culture. Both are preserved.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Acculturation</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">8. Name the UN framework of 8 goals created in 2000 to address global problems.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Millennium Development Goals (MDGs)</div>
+    </div>
+  </div>
+
+  <!-- True or False -->
+  <div class="quiz-section">
+    <h4>Modified True or False</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. Assimilation means the original culture is preserved even when adopting a new culture.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — That is Acculturation. In Assimilation, the original culture is REPLACED.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. GATT was replaced by the WTO in 1998.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — GATT was replaced by the WTO in 1995.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. The IMF identified 4 basic aspects of globalization in 2000.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">TRUE</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. In Wallerstein's World-System Theory, Core countries are dependent on periphery nations for capital.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — PERIPHERY countries are dependent on core for capital (money).</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. Subsidies are taxes imposed on imports to increase their price in the domestic market.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">FALSE — That describes Tariffs. Subsidies are negative taxes/tax credits given to domestic producers by the government.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">6. According to the UN in 2015, extreme poverty refers to severe deprivation of basic human needs.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">TRUE</div>
+    </div>
+  </div>
+
+  <!-- Multiple Choice -->
+  <div class="quiz-section">
+    <h4>Multiple Choice</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. Which of the following is NOT one of the IMF's 4 basic aspects of globalization?<br><br>A. Trade and transactions &nbsp; B. Migration &nbsp; C. Military alliances &nbsp; D. Capital movements</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">C. Military alliances — The 4 aspects are: Trade & Transactions, Capital Movements & Investment, Migration, and Movement of People & Spreading of Knowledge.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. Which best describes protectionism?<br><br>A. Allowing unlimited imports from all countries &nbsp; B. Government intervention in trade to protect domestic producers &nbsp; C. Removing all tariffs between nations &nbsp; D. Creating a single world currency</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">B. Government intervention in trade to protect domestic producers.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. Who described globalization as "all those processes by which the peoples of the world are incorporated into a single world society"?<br><br>A. Thomas Larsson &nbsp; B. Roland Robertson &nbsp; C. Martin Albrow & Elizabeth King &nbsp; D. David Held</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">C. Martin Albrow & Elizabeth King</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. What is the greatest contributor to the fall in extreme poverty globally?<br><br>A. Humanitarian aid &nbsp; B. Better access to education &nbsp; C. Economic globalization &nbsp; D. Military interventions</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">C. Economic globalization</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. In Wallerstein's World-System Theory, which category describes India and Brazil?<br><br>A. Core &nbsp; B. Periphery &nbsp; C. Semi-Periphery &nbsp; D. Developing core</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">C. Semi-Periphery — They have intermediate economic positions and more diversified economies.</div>
+    </div>
+  </div>
+
+  <!-- Enumeration -->
+  <div class="quiz-section">
+    <h4>Enumeration Drills</h4>
+
+    <div class="q-item">
+      <div class="q-text">Enumerate the 5 Vectors of Globalization.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Economic &nbsp;&nbsp; 2. Military &nbsp;&nbsp; 3. Political &nbsp;&nbsp; 4. Religious &nbsp;&nbsp; 5. Cultural</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 4 Types of Protectionism.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Tariffs &nbsp;&nbsp; 2. Quotas &nbsp;&nbsp; 3. Subsidies &nbsp;&nbsp; 4. Standardization</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 4 Dimensions of Economic Globalization.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">a. Globalization of trade of goods and services &nbsp;&nbsp; b. Globalization of financial and capital markets &nbsp;&nbsp; c. Globalization of technology and communication &nbsp;&nbsp; d. Globalization of production</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 forms of Global/Transnational Governance.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Multi-Stakeholder Initiatives &nbsp;&nbsp; 2. Voluntary Regulations for MNCs &nbsp;&nbsp; 3. Governance through Courts and Lawyers (not based in international law)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 Impacts of Globalization.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Delocalization and Over-territoriality &nbsp;&nbsp; 2. Decline of Power of National Governments &nbsp;&nbsp; 3. Emergence of Global Brands and Institutions</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ESSAY GUIDE ========== -->
+<div id="essay" class="tab-content">
+  <div class="section-label">Essay Preparation</div>
+  <h2>Essay Guide</h2>
+  <p style="color:var(--muted); margin-bottom:24px; font-size:14px;">Use these structured guides to organize your essay responses. Remember: Introduction → Body (arguments + examples) → Conclusion.</p>
+
+  <div class="essay-prompt">
+    <div class="prompt-text">"Discuss the advantages and disadvantages of economic globalization, and explain how it affects developing countries."</div>
+    <ul class="guide-points">
+      <li>Define economic globalization (IMF 2008 or Szentes 2003 definition)</li>
+      <li>Pros: reduces extreme poverty (UN data — 1.9B to 836M), greater access to goods, growth of TNCs</li>
+      <li>Cons: increases dependency of periphery on core (Wallerstein), loss of national government power, digital era issues</li>
+      <li>Use examples: Coca-Cola/Nike as global brands, WTO free trade, MDGs progress</li>
+      <li>Conclude: Globalization is a double-edged sword — benefits are unequal depending on a country's position (core vs periphery)</li>
+    </ul>
+  </div>
+
+  <div class="essay-prompt">
+    <div class="prompt-text">"Compare and contrast protectionism and free trade. Which is more beneficial for a developing country?"</div>
+    <ul class="guide-points">
+      <li>Define protectionism (McAleese, 2007) and free trade/trade liberalization</li>
+      <li>Protectionism tools: tariffs, quotas, subsidies, standardization — explain each briefly</li>
+      <li>Free trade: GATT (1948) → WTO (1995); comparative advantage (David Ricardo, 1817)</li>
+      <li>For developing nations: free trade opens markets but may hurt local industries; protectionism shields domestic producers but can slow growth</li>
+      <li>Conclude: "Neither unrestricted free trade nor total protectionism will accomplish both goals (profit + people's protection)"</li>
+    </ul>
+  </div>
+
+  <div class="essay-prompt">
+    <div class="prompt-text">"Explain Wallerstein's World-System Theory and evaluate its relevance to understanding global inequality today."</div>
+    <ul class="guide-points">
+      <li>Introduce the theory: Core, Semi-Periphery, Periphery</li>
+      <li>Core: dominates, exploits labor & raw materials (Western Europe, N. America, Japan)</li>
+      <li>Periphery: dependent on core for capital, historically colonized (Africa, parts of Asia, Middle East)</li>
+      <li>Semi-Periphery: middle ground, less dependent (India, Brazil)</li>
+      <li>Relevance: political changes deepened, peripheral nations became more economically dependent; growth of multinational brands reinforces inequalities</li>
+      <li>Conclude: The theory remains relevant but is a simplification of a complex global system</li>
+    </ul>
+  </div>
+
+  <div class="essay-prompt">
+    <div class="prompt-text">"How did the Agricultural and Industrial Revolutions lay the foundation for market integration and economic globalization?"</div>
+    <ul class="guide-points">
+      <li>Agricultural Revolution (Pomeranz, 2000): domestication, surplus farming, trade networks, permanent settlements</li>
+      <li>Industrial Revolution (1800s): steam engines, mass production, wage labor, factory system</li>
+      <li>Economic casualties: inequality, poor working conditions → led to labor unions</li>
+      <li>Labor unions (Marxist inspiration) → minimum wage, reasonable hours, safety</li>
+      <li>Information Revolution: automation, outsourcing → shifts manufacturing-based to knowledge economy</li>
+      <li>Conclude: Each revolution expanded the scope of economic activity and set the stage for modern globalization</li>
+    </ul>
+  </div>
+
+  <div class="highlight-box gold" style="margin-top:20px;">
+    <strong>✍️ Essay Writing Tips:</strong><br>
+    • Always define key terms at the start<br>
+    • Use scholar names and dates as evidence (e.g., "According to Wallerstein…")<br>
+    • Reference real institutions: UN, WTO, IMF, World Bank<br>
+    • Use Philippine context when relevant (poverty threshold, ASEAN)<br>
+    • End with a clear, reasoned conclusion — don't just summarize
+  </div>
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function revealAnswer(btn) {
+  var answer = btn.nextElementSibling;
+  if (answer.style.display === 'block') {
+    answer.style.display = 'none';
+    btn.textContent = 'Reveal Answer';
+  } else {
+    answer.style.display = 'block';
+    btn.textContent = 'Hide Answer';
+  }
+}
+</script>
+</body>
+</html>
