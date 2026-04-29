@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPH Midterm Reviewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0e0610; --surface:#140c1a; --card:#1c1225;
+    --border:#312048; --accent:#b39ddb; --accent2:#f48fb1;
+    --accent3:#80cbc4; --accent4:#ffcc80; --accent5:#ef9a9a;
+    --text:#ede7f6; --muted:#7060a0; --tag-bg:rgba(179,157,219,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.75;}
+
+  header{background:linear-gradient(135deg,#0e0610,#1a0c28,#0e0e18);border-bottom:1px solid var(--border);padding:36px 20px 28px;text-align:center;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(179,157,219,.1) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(244,143,177,.07) 0%,transparent 60%);pointer-events:none;}
+  .course-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;border:1px solid rgba(179,157,219,.3);padding:4px 14px;border-radius:2px;margin-bottom:14px;}
+  header h1{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,44px);font-weight:900;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+  header p{color:var(--muted);font-size:13px;}
+
+  .exam-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:16px;}
+  .badge-item{font-family:'DM Mono',monospace;font-size:10px;padding:4px 12px;border-radius:20px;letter-spacing:1px;}
+  .b1{background:rgba(179,157,219,.12);color:var(--accent);}
+  .b2{background:rgba(244,143,177,.12);color:var(--accent2);}
+  .b3{background:rgba(128,203,196,.12);color:var(--accent3);}
+  .b4{background:rgba(255,204,128,.12);color:var(--accent4);}
+  .b5{background:rgba(239,154,154,.12);color:var(--accent5);}
+
+  .tabs-wrapper{position:sticky;top:0;z-index:100;background:rgba(14,6,16,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;gap:2px;padding:0 12px;-webkit-overflow-scrolling:touch;}
+  .tab-btn{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:15px 16px;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+  .tab-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .2s;}
+  .tab-btn.active{color:var(--accent);}
+  .tab-btn.active::after{transform:scaleX(1);}
+
+  .tab-content{display:none;padding:28px 16px;max-width:880px;margin:0 auto;}
+  .tab-content.active{display:block;}
+
+  .section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  h3{font-size:12px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 12px;}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:12px;}
+  .card:hover{border-color:rgba(179,157,219,.2);}
+  .card-title{font-weight:600;font-size:15px;color:#fff;margin-bottom:8px;}
+  .card p,.card li{color:var(--muted);font-size:14px;}
+  .card ul{padding-left:18px;}
+  .card li{margin-bottom:4px;}
+
+  .def-card{background:var(--card);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:8px;}
+  .def-card .term{font-weight:600;color:#fff;font-size:14px;margin-bottom:2px;}
+  .def-card .def{color:var(--muted);font-size:13.5px;}
+  .def-card.pink{border-left-color:var(--accent2);}
+  .def-card.teal{border-left-color:var(--accent3);}
+  .def-card.orange{border-left-color:var(--accent4);}
+  .def-card.red{border-left-color:var(--accent5);}
+
+  .highlight{border-radius:8px;padding:14px 16px;margin-bottom:12px;font-size:14px;}
+  .highlight.purple{background:rgba(179,157,219,.07);border:1px solid rgba(179,157,219,.2);}
+  .highlight.pink{background:rgba(244,143,177,.07);border:1px solid rgba(244,143,177,.2);}
+  .highlight.teal{background:rgba(128,203,196,.07);border:1px solid rgba(128,203,196,.2);}
+  .highlight.orange{background:rgba(255,204,128,.07);border:1px solid rgba(255,204,128,.2);}
+  .highlight.red{background:rgba(239,154,154,.07);border:1px solid rgba(239,154,154,.2);}
+  .highlight strong{color:#fff;}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  @media(max-width:580px){.two-col{grid-template-columns:1fr;}}
+
+  .styled-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13.5px;}
+  .styled-table th{background:rgba(179,157,219,.08);color:var(--accent);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
+  .styled-table td{padding:9px 12px;border-bottom:1px solid rgba(49,32,72,.5);color:var(--muted);vertical-align:top;}
+  .styled-table tr:hover td{background:rgba(255,255,255,.02);color:var(--text);}
+
+  .num-list{list-style:none;padding:0;}
+  .num-list li{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid rgba(49,32,72,.5);color:var(--text);font-size:14px;align-items:flex-start;}
+  .num-list li:last-child{border-bottom:none;}
+  .num-list .num{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);background:var(--tag-bg);padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:3px;}
+
+  .timeline-item{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start;}
+  .tl-year{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent4);background:rgba(255,204,128,.08);border:1px solid rgba(255,204,128,.2);padding:3px 10px;border-radius:4px;flex-shrink:0;min-width:60px;text-align:center;}
+  .tl-body{color:var(--text);font-size:14px;}
+  .tl-body strong{color:#fff;}
+
+  /* QUIZ */
+  .quiz-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px;}
+  .quiz-section h4{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent3);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .quiz-section h4::before{content:'';display:inline-block;width:16px;height:2px;background:var(--accent3);}
+  .q-item{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .q-text{font-size:14px;color:var(--text);font-weight:500;margin-bottom:8px;}
+  .q-sub{font-size:12px;color:var(--muted);margin-bottom:8px;font-family:'DM Mono',monospace;}
+  .q-answer{display:none;background:rgba(128,203,196,.06);border-left:3px solid var(--accent3);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;color:var(--accent3);margin-top:8px;}
+  .reveal-btn{background:none;border:1px solid rgba(128,203,196,.3);color:var(--accent3);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;padding:5px 14px;border-radius:4px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+  .reveal-btn:hover,.reveal-btn:active{background:rgba(128,203,196,.08);}
+
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0;}
+  .sp{color:var(--accent2);font-style:italic;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="course-tag">RPH · Readings in Philippine History</div>
+  <h1>Midterm Reviewer</h1>
+  <p>Spanish Colonial Philippines · Filipino Nationalism · 1500s–1890s</p>
+  <div class="exam-badges">
+    <span class="badge-item b1">Matching Type · 10 items</span>
+    <span class="badge-item b2">Chronology · 10 items</span>
+    <span class="badge-item b3">Source Classification · 10 items</span>
+    <span class="badge-item b4">Enumeration · 30 items</span>
+    <span class="badge-item b5">Fill in the Blanks · 10 items</span>
+  </div>
+  <p style="margin-top:12px;font-size:12px;color:#2a1840;font-family:'DM Mono',monospace;">Reviewer by Reindel Andrada</p>
+</header>
+
+<nav class="tabs-wrapper">
+  <button class="tab-btn active" onclick="showTab('colonial',this)">Spanish Colonial</button>
+  <button class="tab-btn" onclick="showTab('nationalism',this)">Nationalism</button>
+  <button class="tab-btn" onclick="showTab('timeline',this)">Chronology</button>
+  <button class="tab-btn" onclick="showTab('groups',this)">Groups & Movements</button>
+  <button class="tab-btn" onclick="showTab('qa',this)">Q&A Practice</button>
+</nav>
+
+<!-- ===== SPANISH COLONIAL ===== -->
+<div id="colonial" class="tab-content active">
+  <div class="section-label">Topic 1 — 1500s–1800s</div>
+  <h2>Encuentro & Spanish Colonial Philippines</h2>
+
+  <h3>Context: Age of Exploration — 4G & 4S</h3>
+  <div class="two-col">
+    <div class="card" style="border-top:3px solid var(--accent);">
+      <div class="card-title">4G</div>
+      <ul>
+        <li>God / Gospel</li>
+        <li>Gold</li>
+        <li>Gems</li>
+        <li>Glory</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent2);">
+      <div class="card-title">4S</div>
+      <ul>
+        <li>Spices</li>
+        <li>Silver</li>
+        <li>Silk</li>
+        <li>Slave</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>4 Strategies for Intrusion and Conquest</h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Policy of Attraction and Deception</strong><br><span style="color:var(--muted);font-size:13px">Misinterpretation of Filipino hospitality · sangduguan → pacto de sangre</span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Entrada</strong><br><span style="color:var(--muted);font-size:13px">All expeditions were military expeditions</span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Catolicismo</strong><br><span style="color:var(--muted);font-size:13px">Jives well with fundamentals of animism · instilling fear through "infierno" · "en cada fraile tenía el rey de España en Filipinas un capitán y un ejercito entero"</span></div></li>
+    <li><span class="num">4</span><div><strong style="color:#fff">Divide et impera</strong><br><span style="color:var(--muted);font-size:13px">Took advantage of geographical boundaries and existing feuds between barangays</span></div></li>
+  </ul>
+
+  <hr>
+
+  <h3>Administrative Policies</h3>
+  <div class="def-card">
+    <div class="term">Encomienda and Reducción</div>
+    <div class="def">Church-plaza complex · <em>bajo del son de las campanas</em> · caused internal and external metamorphosis of precolonial barangays</div>
+  </div>
+
+  <h3>Colonial Administration — Check-and-Balance</h3>
+  <div class="two-col">
+    <div class="def-card teal">
+      <div class="term">Residencia</div>
+      <div class="def">A formal review/audit of outgoing colonial officials before they could leave office.</div>
+    </div>
+    <div class="def-card teal">
+      <div class="term">Visita</div>
+      <div class="def">Surprise inspections conducted on colonial officials while still in office.</div>
+    </div>
+  </div>
+  <div class="highlight pink">
+    <strong>Frailocracia / La Soberanía Monacál:</strong> The amalgamation (union) of Church and State — amalgamated but disunited. The friars held enormous power; described as "each friar was a captain and an entire army of the King of Spain."
+  </div>
+
+  <hr>
+
+  <h3>Economic Institutions</h3>
+  <div class="def-card orange">
+    <div class="term">Encomienda</div>
+    <div class="def">≠ land grant. An administrative role entrusted to a conquistador. Evolved into two kinds: <strong>Encomienda de la real corona</strong> (crown) and <strong>Encomienda de particulares</strong> (private).</div>
+  </div>
+
+  <h3>Taxation Without Representation</h3>
+  <div class="card">
+    <ul>
+      <li><strong style="color:#fff">Tributo</strong> — income tax, customs duties</li>
+      <li><strong style="color:#fff">Bandalas / Compras reales</strong> — forced purchase of goods</li>
+      <li><strong style="color:#fff">Rentas estancadas</strong> — state monopolies on key goods</li>
+      <li><strong style="color:#fff">Samboangan / Donativo de Zamboanga</strong> — vinta, falua</li>
+      <li><strong style="color:#fff">Cedula personal</strong> — personal identification tax (replaced tributo in 1884)</li>
+    </ul>
+  </div>
+
+  <div class="def-card pink">
+    <div class="term">Polo y Servicios</div>
+    <div class="def"><em>Prestación personal</em> — forced labor. Polistas: 16–60 years old. Net effect: upset the village economy.</div>
+  </div>
+
+  <h3>Manila-Acapulco Galleon Trade</h3>
+  <div class="highlight purple">
+    <strong>Galleon de Manila</strong> vis-à-vis <strong>Nao de China</strong> · neglected native industries and arrested population growth · allowed intercultural exchange
+  </div>
+
+  <div class="two-col">
+    <div class="def-card teal">
+      <div class="term">Real Sociedad Economica de Amigos del País (1780–1805)</div>
+      <div class="def">Despotismo ilustrado · Plán Generál Economicó</div>
+    </div>
+    <div class="def-card orange">
+      <div class="term">Real Compania de Filipinas (1785–1814)</div>
+      <div class="def">Sought to unite American and Asian commerce to compete with the Manila-Acapulco Galleon Trade</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h3>Legacies of Spanish Colonization</h3>
+  <table class="styled-table">
+    <thead><tr><th>Category</th><th>Legacies</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--accent)">Political</td><td>Centralized government · unitary ≠ unified · highly-politicized Church · "weak state" · politics of patronage · leader → dealer</td></tr>
+      <tr><td style="color:var(--accent2)">Economic</td><td>Encomienda as nucleus of provinces · trope of retrogression · stunted potential developments · change in notion of "property"</td></tr>
+      <tr><td style="color:var(--accent3)">Socio-cultural</td><td>Partial hispanization · bahay kubo → casa mestiza · baro't saya → vestida mestiza · cementerio · Fiesta · compadrazgo · theocentric literature and arts · appropriated language</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Lasting Impacts of Spanish Colonial Experience</h3>
+  <div class="card">
+    <ul>
+      <li>Deep religiosity → false religiosity, dogmatism</li>
+      <li>Racial discrimination</li>
+      <li>Cultural and religious divide between Christians and others</li>
+      <li>Social climbing</li>
+      <li>Destroyed: valuing the past</li>
+      <li>Colonial mentality</li>
+      <li>Failure to come up with own national language</li>
+    </ul>
+    <div class="highlight purple" style="margin-top:12px;margin-bottom:0;font-size:13px;">
+      <strong>All these lead to the bases of Filipinism and Nationalism.</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NATIONALISM ===== -->
+<div id="nationalism" class="tab-content">
+  <div class="section-label">Topic 2 — 1700s–1800s</div>
+  <h2>From Indio to Filipino: Filipino Nationalism</h2>
+
+  <h3>Local Revolts — Why They Failed</h3>
+  <div class="highlight red">
+    <strong>Causes:</strong> Resistance to Spanish-imposed institutions · Religious Motives · Personal Motives<br>
+    <strong>Result:</strong> FAILURE<br>
+    <strong>Why?</strong> Absence of NATIONALISM
+  </div>
+
+  <h3>Conceptualizing Nationalism</h3>
+  <div class="two-col">
+    <div class="card" style="border-top:3px solid var(--accent2);">
+      <div class="card-title">Popular Dichotomies</div>
+      <p><strong style="color:#fff">reforma</strong> vs. <strong style="color:#fff">revolución</strong></p>
+      <p style="margin-top:6px;"><strong style="color:#fff">patriotismo</strong> vs. <strong style="color:#fff">Nacionalismo</strong></p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent);">
+      <div class="card-title">Definition of Nationalism</div>
+      <p>Belongingness to a <strong style="color:#fff">NACIÓN.</strong> A nation is an imagined community — people who will never know each other but share alive in their minds the image of their communion.</p>
+    </div>
+  </div>
+  <div class="highlight purple">
+    <strong>Filipino Nationalism</strong> = metamorphosis from <strong>INDIO</strong> to <strong>FILIPINO</strong><br>
+    Crucial requisite: Development of lingua franca and printing
+  </div>
+
+  <hr>
+
+  <h3>19th Century Context — 3 Milieus</h3>
+
+  <div class="card" style="border-left:3px solid var(--accent);">
+    <div class="card-title">Political Milieu: Administrative Reforms</div>
+    <ul>
+      <li><strong style="color:#fff">1760s:</strong> Fall of Manila to the British</li>
+      <li>Political Reforms: Real Situado · Representación a la Camara Española · Presa libre · Secularización de las parroquias</li>
+      <li><strong style="color:#fff">1861:</strong> Real Audiencia's loose administration → more power to alcaldes mayores (indulto de comercio)</li>
+      <li><strong style="color:#fff">1866:</strong> Alcalde mayor as judge of first instance</li>
+      <li><strong style="color:#fff">1869:</strong> Establishment of Guardia Civil; Bilibid at Fort Santiago for crimes against the state</li>
+      <li><strong style="color:#fff">1884:</strong> Tribute replaced with cedula personal — "attestation of tributary slavery to Madre España"</li>
+      <li><strong style="color:#fff">1887:</strong> Social activities declared crimes against the state</li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent2);">
+    <div class="card-title">Economic Milieu: Development of Export Economy</div>
+    <ul>
+      <li>First Industrial Revolution · Consolidation of Church wealth</li>
+      <li>Abolition of trade barriers (Galleon Trade, tobacco monopoly)</li>
+      <li><strong style="color:#fff">Cash crops:</strong> sugar cane · coffee bean · tobacco · hemp · indigo</li>
+      <li>Introduction of: <strong style="color:#fff">daang bakal</strong> (railroad), <strong style="color:#fff">bapor</strong> (steamship), <strong style="color:#fff">telegrapo</strong> (telegraph)</li>
+      <li><strong style="color:#fff">Comprador</strong> = Chinese middlemen who buy crops and sell to foreign agents · Tokay system</li>
+      <li>Effects: Inflated local economy · Proliferation of haciendas · Conversion of rice fields to cash crop fields</li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent3);">
+    <div class="card-title">Socio-cultural Milieu: Opportunity to Intellectualize</div>
+    <ul>
+      <li>Educational Decrees: opening of primary education</li>
+      <li>Return of the Jesuits: <strong style="color:#fff">Escuela Normal de Maestros</strong></li>
+      <li>Conversion of Escuela Pia to <strong style="color:#fff">Ateneo Municipal de Manila</strong> — humanistic and "modern" education</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <h3>Road to Nationalism: Key Events</h3>
+
+  <div class="def-card">
+    <div class="term">1860s: Comité de Reformadores</div>
+    <div class="def">Mandate: to guard reforms and uphold status of Philippines as a "province" of Spain. Demanded: Real Situado · Representación · Codigo Penal · Presa libre · Secularización. Members: secular priests (GomBurZa), laity (Maximo Paterno), students (Juventud Escolar Liberal — Gregorio Sanciangco, Paciano Mercado)</div>
+  </div>
+
+  <div class="def-card pink">
+    <div class="term">January 1872: La Algarada Caviteña (Cavite Mutiny)</div>
+    <div class="def">Not an ordinary revolt — planned by the Comité de Reformadores, a proto-national movement. Despite premature nature, still an attempt to overturn colonial rule.</div>
+  </div>
+
+  <div class="def-card red">
+    <div class="term">February 17, 1872: GomBurZa Execution</div>
+    <div class="def">Identified as the beginning of Filipino nationalism. Actors: secular priests. Place: Bagumbayan. Rizal connection: Paciano Mercado (Rizal's brother). Led to the Comité de Propaganda.</div>
+  </div>
+
+  <div class="def-card teal">
+    <div class="term">1872: Comité de Propaganda</div>
+    <div class="def">Objectives: dishearten reforms idea · pursue Fr. Jose Burgos' advocacy for separation · strengthen financial base · gather ideas for the Philippines' future. By 1882: full-blown — sent scholars abroad to the European front.</div>
+  </div>
+
+  <div class="def-card orange">
+    <div class="term">La Liga Filipina (1892)</div>
+    <div class="def">Fines (Goals): Unite the archipelago into a compact, vigorous, homogeneous body · Mutual protection in all want and necessity · Defense against violence and injustice · Encourage education, agriculture, industry, and commerce · Study and application of reforms</div>
+  </div>
+
+  <div class="def-card">
+    <div class="term">Katipunan / KKK (1892)</div>
+    <div class="def">Full name: Kataastaasan Kagalang-galangang Katipunan ng mga Anak ng Bayan. Objectives: Political (separation from Spain) · Moral (good manners, attacking fanaticism) · Civic (self-help, defense of the poor). Membership: Katipon (Anak ng Bayan) · Kawal (GomBurZa) · Bayani (Rizal). Structure: Sangguniang Bayan · Sangguniang Balangay · Sangguniang Hukuman. Publications: Kartilya · "Kalayaan" · Katungkulang gagawin ng mga anak ng bayan</div>
+  </div>
+</div>
+
+<!-- ===== CHRONOLOGY ===== -->
+<div id="timeline" class="tab-content">
+  <div class="section-label">Chronology — 10 items expected</div>
+  <h2>Timeline of Key Events</h2>
+  <div class="highlight purple">Study all dates! The chronology section will ask you to arrange events in the correct order.</div>
+
+  <h3>Spanish Colonial Period</h3>
+  <div class="timeline-item"><div class="tl-year">1500s</div><div class="tl-body"><strong>Age of Exploration begins</strong> — 4G and 4S motivate Spanish colonization</div></div>
+  <div class="timeline-item"><div class="tl-year">1780</div><div class="tl-body"><strong>Real Sociedad Economica de Amigos del País</strong> established (until 1805)</div></div>
+  <div class="timeline-item"><div class="tl-year">1785</div><div class="tl-body"><strong>Real Compania de Filipinas</strong> established (until 1814)</div></div>
+
+  <h3>Road to Nationalism</h3>
+  <div class="timeline-item"><div class="tl-year">1760s</div><div class="tl-body"><strong>Fall of Manila to the British</strong> — triggers political reforms</div></div>
+  <div class="timeline-item"><div class="tl-year">1860s</div><div class="tl-body"><strong>Comité de Reformadores</strong> formed</div></div>
+  <div class="timeline-item"><div class="tl-year">1861</div><div class="tl-body"><strong>Real Audiencia's loose administration</strong> — more power to alcaldes mayores (indulto de comercio)</div></div>
+  <div class="timeline-item"><div class="tl-year">1866</div><div class="tl-body"><strong>Alcalde mayor</strong> becomes judge of first instance</div></div>
+  <div class="timeline-item"><div class="tl-year">1869</div><div class="tl-body"><strong>Establishment of Guardia Civil</strong> · Bilibid at Fort Santiago · 1869 serenade to Gov. Gen. Carlos Ma. Dela Torre</div></div>
+  <div class="timeline-item"><div class="tl-year">Jan 1872</div><div class="tl-body"><strong>La Algarada Caviteña</strong> (Cavite Mutiny) — proto-national movement by Comité</div></div>
+  <div class="timeline-item"><div class="tl-year">Feb 17, 1872</div><div class="tl-body"><strong>GomBurZa Execution</strong> at Bagumbayan — beginning of Filipino nationalism</div></div>
+  <div class="timeline-item"><div class="tl-year">1872</div><div class="tl-body"><strong>Comité de Propaganda</strong> formed · Rizal decides to study at Ateneo Municipal de Manila</div></div>
+  <div class="timeline-item"><div class="tl-year">1882</div><div class="tl-body"><strong>Stronger resolve vs. reforms</strong> — Comité fully bloomed; scholars sent to European front · Circulo Hispano-Filipino established in Madrid by Juan Atayde</div></div>
+  <div class="timeline-item"><div class="tl-year">1884</div><div class="tl-body"><strong>Tribute replaced with cedula personal</strong></div></div>
+  <div class="timeline-item"><div class="tl-year">1887</div><div class="tl-body"><strong>Social activities declared crimes against the state</strong></div></div>
+  <div class="timeline-item"><div class="tl-year">1889</div><div class="tl-body"><strong>La Solidaridad (Sol)</strong> becomes official organ · Samahang Kidlat, Indios Bravos, Sociedad R.D.L.M., Asociación Internacional de Filipinistas (all Paris) · Asociación Hispano-Filipina (Madrid)</div></div>
+  <div class="timeline-item"><div class="tl-year">1890</div><div class="tl-body"><strong>Rizal's resolution:</strong> "I have lost my hope in Spain… the real battleground is in the Philippines."</div></div>
+  <div class="timeline-item"><div class="tl-year">1892</div><div class="tl-body"><strong>La Liga Filipina</strong> founded by Rizal · <strong>Katipunan (KKK)</strong> founded by Bonifacio</div></div>
+  <div class="timeline-item"><div class="tl-year">Jun 1896</div><div class="tl-body"><strong>Pio Valenzuela visits Rizal</strong> in Dapitan for advice on revolution</div></div>
+  <div class="timeline-item"><div class="tl-year">Aug 19, 1896</div><div class="tl-body"><strong>Discovery of Katipunan</strong> — Patiño through Honoria to Fr. Mariano Gil</div></div>
+  <div class="timeline-item"><div class="tl-year">Aug 24, 1896</div><div class="tl-body"><strong>Cry of Balintawak / Pugadlawin</strong> — "Mabuhay ang Pilipinas! Mabuhay ang Kalayaan! Mabuhay si Dr. Jose Rizal!"</div></div>
+  <div class="timeline-item"><div class="tl-year">1897</div><div class="tl-body"><strong>Tejeros Convention</strong> — Aguinaldo elected President; Bonifacio declared it null and void; <strong>Naic Military Agreement</strong> drafted; <strong>Trial and execution of Bonifacio</strong></div></div>
+  <div class="timeline-item"><div class="tl-year">1897</div><div class="tl-body"><strong>Biak-na-Bato Republic</strong> — Truce: Aguinaldo exiled to Hongkong; Spain to pay 800,000 pesos</div></div>
+  <div class="timeline-item"><div class="tl-year">Jun 12, 1898</div><div class="tl-body"><strong>Declaration of Independence</strong></div></div>
+  <div class="timeline-item"><div class="tl-year">Jan 23, 1899</div><div class="tl-body"><strong>Inauguration of the Philippine Republic in Malolos</strong></div></div>
+</div>
+
+<!-- ===== GROUPS ===== -->
+<div id="groups" class="tab-content">
+  <div class="section-label">Groups, Movements & Key People</div>
+  <h2>Organizations & Key Figures</h2>
+
+  <h3>European Front Organizations</h3>
+  <table class="styled-table">
+    <thead><tr><th>Organization</th><th>Year / Place</th><th>Key Details</th></tr></thead>
+    <tbody>
+      <tr><td style="color:#fff">Circulo Hispano-Filipino</td><td>1882, Madrid</td><td>Founded by Juan Atayde · HQ at Don Pablo Ortiga y Rey's residence · published "Revista del Circulo Hispano Filipino"</td></tr>
+      <tr><td style="color:#fff">Masoneria (Masonic Lodges)</td><td>Madrid</td><td>Logía de Acacia · Logía de la Solidaridad · Logía de la Revolución · Grán Oriente Español</td></tr>
+      <tr><td style="color:#fff">Asociación Hispano-Filipina</td><td>1889, Madrid</td><td>Campaigns for Philippine representation in Spanish Cortes · sections: Political (Del Pilar) · Literary (Mariano Ponce) · Sports (Arejola)</td></tr>
+      <tr><td style="color:#fff">Samahang Kidlat</td><td>1889, Paris</td><td>Social club of Filipinos during the Paris Exposition; temporary</td></tr>
+      <tr><td style="color:#fff">Indios Bravos</td><td>1889, Paris</td><td>Formed from Samahang Kidlat; inspired by "Buffalo Bull Exposition" of American Indians</td></tr>
+      <tr><td style="color:#fff">Sociedad R.D.L.M.</td><td>1889, Paris</td><td>Redención de los Malayos — ultimate objective: redemption of Malays (Rizal considered Filipinos part of the Malays)</td></tr>
+      <tr><td style="color:#fff">Asociación Internacional de Filipinistas</td><td>1889, Paris</td><td>Study Philippines from scientific and historical point of view; establish scientific bases of existence of Philippines as a distinct country</td></tr>
+      <tr><td style="color:#fff">La Solidaridad (Sol)</td><td>1889</td><td>Official organ of the Propaganda Movement · under M.H. Del Pilar's editorship advocated: removal of friars, freedom of speech, equality before law, representation in Spanish Cortes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Scientific Circles (Rizal's Network)</h3>
+  <div class="card">
+    <div class="card-title">Circles Rizal Joined</div>
+    <ul>
+      <li>Anthropological Society of Berlin</li>
+      <li>Geographical Society of Berlin</li>
+      <li>Ethnological Society</li>
+    </ul>
+    <div class="card-title" style="margin-top:12px;">Distinguished Scientists</div>
+    <ul>
+      <li><strong style="color:#fff">Feodor Jagor</strong> — scientist-traveller; author of "Travels in the Philippines"</li>
+      <li><strong style="color:#fff">Rudolph Virchow</strong> — German anthropologist</li>
+      <li><strong style="color:#fff">Adolph B. Meyer, Hans Meyer</strong></li>
+      <li><strong style="color:#fff">W. Joest</strong> — German geographer</li>
+      <li><strong style="color:#fff">Karl Ernest Schweigger</strong> — ophthalmologist</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <h3>Katipunan in Cavite</h3>
+  <table class="styled-table">
+    <thead><tr><th>Faction</th><th>Town</th><th>Leader</th></tr></thead>
+    <tbody>
+      <tr><td style="color:#fff">Magdalo</td><td>Kawit</td><td>Baldomero Aguinaldo</td></tr>
+      <tr><td style="color:#fff">Magdiwang</td><td>Noveleta</td><td>Mariano Alvarez</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tejeros Convention Officials (1897)</h3>
+  <table class="styled-table">
+    <thead><tr><th>Position</th><th>Person</th></tr></thead>
+    <tbody>
+      <tr><td>President</td><td style="color:#fff">Emilio Aguinaldo</td></tr>
+      <tr><td>Vice President</td><td style="color:#fff">Mariano Trias</td></tr>
+      <tr><td>Captain General</td><td style="color:#fff">Artemio Ricarte</td></tr>
+      <tr><td>Director of War</td><td style="color:#fff">Emiliano Riego de Dios</td></tr>
+      <tr><td>Director of Interior</td><td style="color:#fff">Andres Bonifacio</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Key People to Know</h3>
+  <table class="styled-table">
+    <thead><tr><th>Person</th><th>Significance</th></tr></thead>
+    <tbody>
+      <tr><td style="color:#fff">GomBurZa</td><td>Secular priests (Gomez, Burgos, Zamora) executed Feb 17, 1872 — identified as beginning of Filipino nationalism</td></tr>
+      <tr><td style="color:#fff">Andres Bonifacio</td><td>Founded Katipunan; executed after Tejeros Convention; declared it null via Acta de Tejeros; drafted Naic Military Agreement</td></tr>
+      <tr><td style="color:#fff">Emilio Aguinaldo</td><td>Hero of Cavite ("General Miong"); elected President at Tejeros; exiled to Hongkong via Truce of Biak-na-Bato; proclaimed Independence June 12, 1898</td></tr>
+      <tr><td style="color:#fff">M.H. Del Pilar</td><td>Editor of La Solidaridad; head of political section of Asociación Hispano-Filipina; advocated removal of friars and secularization</td></tr>
+      <tr><td style="color:#fff">Paciano Mercado</td><td>Rizal's brother; member of Juventud Escolar Liberal; link to GomBurZa</td></tr>
+      <tr><td style="color:#fff">Juan Atayde</td><td>Founded Circulo Hispano-Filipino in Madrid, 1882</td></tr>
+      <tr><td style="color:#fff">Pio Valenzuela</td><td>Visited Rizal in Dapitan (June 1896) to seek advice before the revolution</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== Q&A ===== -->
+<div id="qa" class="tab-content">
+  <div class="section-label">Practice by Exam Type</div>
+  <h2>Q&A Practice</h2>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:22px;">Organized by the actual test types — Matching, Chronology, Source Classification, Enumeration, Fill in the Blanks.</p>
+
+  <div class="quiz-section">
+    <h4>Matching Type (10 items)</h4>
+    <div class="q-item">
+      <div class="q-text">Match: Sangduguan</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Pacto de sangre — the blood compact used as policy of attraction and deception</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: Frailocracia</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">La Soberanía Monacál — the immense power of the friars over colonial Philippines; the amalgamation of Church and State</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: Comprador</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Chinese middlemen who bought crops and sold them to foreign agents, and bought/sold foreign products locally</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: Polistas</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Filipinos required to render forced labor (polo y servicios); ages 16–60</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: Indulto de comercio</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">The privilege of alcaldes mayores to engage in trade — a form of corruption tied to Real Audiencia's loose administration (1861)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: Despotismo ilustrado</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Enlightened despotism — the ideology behind the Real Sociedad Economica de Amigos del País (1780–1805)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: La Algarada Caviteña</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Cavite Mutiny (January 1872) — planned by Comité de Reformadores; a proto-national movement; launched a more important turning point: GomBurZa execution</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: Bayani (KKK membership level)</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Rizal — the highest level of KKK membership. Katipon = Anak ng Bayan · Kawal = GomBurZa · Bayani = Rizal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: Acta de Tejeros</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Document drafted by Bonifacio to nullify everything that transpired at the Tejeros Convention</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Match: Daang bakal, Bapor, Telegrapo</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Introduction of Western transportation and communication: Railroad · Steamship · Telegraph — part of the economic milieu developments in the 19th century</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Chronology (10 items) — Arrange in correct order</h4>
+    <div class="q-item">
+      <div class="q-text">Arrange: GomBurZa Execution · Cavite Mutiny · Comité de Reformadores · Comité de Propaganda</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Comité de Reformadores (1860s) → 2. Cavite Mutiny / La Algarada Caviteña (January 1872) → 3. GomBurZa Execution (February 17, 1872) → 4. Comité de Propaganda (1872)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange: La Liga Filipina · KKK · Discovery of Katipunan · Cry of Balintawak · Tejeros Convention · Biak-na-Bato</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. La Liga Filipina (1892) → 2. KKK (1892) → 3. Discovery of Katipunan (Aug 19, 1896) → 4. Cry of Balintawak (Aug 24, 1896) → 5. Tejeros Convention (1897) → 6. Biak-na-Bato Republic (1897)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">What came FIRST: Guardia Civil established OR Tribute replaced with cedula personal?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Guardia Civil (1869) came FIRST. Tribute replaced with cedula personal came in 1884.</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange: Circulo Hispano-Filipino · La Solidaridad as official organ · Asociación Hispano-Filipina · Samahang Kidlat · Indios Bravos</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Circulo Hispano-Filipino (1882) → 2. La Solidaridad as organ / Asociación Hispano-Filipina / Samahang Kidlat / Indios Bravos (all 1889)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Arrange: Declaration of Independence · Inauguration of Philippine Republic · Dictatorial Government · Revolutionary Government</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">May 24 (Dictatorial Government) → June 12 (Declaration of Independence) → June 23 (Revolutionary Government) → January 23, 1899 (Inauguration of Philippine Republic in Malolos)</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Source Classification (10 items) — Primary or Secondary? Who / What?</h4>
+    <div class="q-item">
+      <div class="q-text">Classify: "Travels in the Philippines" by Feodor Jagor</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — a first-hand account by a scientist-traveller who personally travelled and observed the Philippines during the colonial period</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: "Sobre la Indolencia de los Filipinos" published in La Solidaridad</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — landmark essay written by Rizal in the context of the Propaganda Movement, arguing against the Spanish-imposed narrative of Filipino laziness</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: "Filipinas dentro de cien años" published in La Solidaridad</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — another landmark essay by Rizal predicting the Philippines' future in 100 years; published during the Propaganda Movement</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: Kartilya ng Katipunan</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — the KKK's primary publication containing the moral and civic code of members; a direct artifact of the revolutionary organization</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: "Revista del Circulo Hispano Filipino"</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — published by the Circulo Hispano-Filipino (1882, Madrid); a direct publication of Filipino students abroad during the Propaganda period</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: "El Progreso de Filipinas" by Gregorio Sanciangco</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — directly written by a Filipino propagandist; discussed with Rizal and the Paternos in the Circulo Hispano-Filipino setting</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: Acta de Tejeros</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — drafted by Bonifacio himself to nullify the results of the Tejeros Convention; a direct historical document</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: Rizal's 1890 letter/statement — "Now, I tell you. I have lost my hope in Spain…"</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — Rizal's personal statement declaring his shift from reformist to revolutionary stance; a direct quote from a key historical figure</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: "Nosotros Filipinos hemos aspirado..." (Sol's Reformas section)</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Primary Source — the introductory line of La Solidaridad's reform agenda; a direct primary source of the Propaganda Movement's programmatic objectives</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Classify: A modern textbook summarizing the GomBurZa execution</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Secondary Source — a later account written by a historian analyzing and summarizing historical events from GomBurZa's time, not a direct participant account</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Enumeration (key lists — 30 items total)</h4>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 4G of the Age of Exploration.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">God/Gospel · Gold · Gems · Glory</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 4S of the Age of Exploration.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Spices · Silver · Silk · Slave</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 4 strategies for intrusion and conquest.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Policy of Attraction and Deception · 2. Entrada · 3. Catolicismo · 4. Divide et impera</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 2 kinds of Encomienda.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Encomienda de la real corona · 2. Encomienda de particulares</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 2 check-and-balance mechanisms of colonial administration.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Residencia · 2. Visita</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 5 cash crops introduced in the 19th century.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Sugar cane · Coffee bean · Tobacco · Hemp · Indigo</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 western transportation/communication systems introduced.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Daang bakal (railroad) · Bapor (steamship) · Telegrapo (telegraph)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 causes of local revolts and rebellions.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Resistance to Spanish-imposed institutions · 2. Religious Motives · 3. Personal Motives</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 4 political reforms demanded by the Comité de Reformadores.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Real Situado · Representación a la Camara Española · Presa libre · Secularización de las parroquias (also Codigo Penal)</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 objectives of the Katipunan (KKK).</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Political: separation from Spain · Moral: good manners, attacking fanaticism and obscurantism · Civic: self-help, defense of the poor and oppressed</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 membership levels of the KKK and who they represent.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Katipon = Anak ng Bayan · Kawal = GomBurZa · Bayani = Rizal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 structure levels of the KKK parallel to La Liga Filipina.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Sangguniang Bayan · Sangguniang Balangay · Sangguniang Hukuman</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 5 officials elected at the Tejeros Convention.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">President: Emilio Aguinaldo · VP: Mariano Trias · Captain General: Artemio Ricarte · Director of War: Emiliano Riego de Dios · Director of Interior: Andres Bonifacio</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate Rizal's 3 pieces of advice to Pio Valenzuela (June 1896).</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1. Attract/neutralize the wealthy · 2. Antonio Luna to direct military operations · 3. Enlist help/armaments from Japan</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Enumerate the 3 lasting impacts of the Spanish colonial experience (categories).</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Political (centralized government, weak state, politics of patronage) · Economic (encomienda as nucleus, trope of retrogression) · Socio-cultural (partial hispanization, compadrazgo, fiesta, theocentric arts)</div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h4>Fill in the Blanks (10 items)</h4>
+    <div class="q-item">
+      <div class="q-text">Filipino Nationalism = metamorphosis from ___ to ___.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">INDIO to FILIPINO</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">La Solidaridad became the official organ of the Propaganda Movement in ___.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">1889</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The ___ was the execution of three secular priests at Bagumbayan on February 17, 1872 and is identified as the beginning of Filipino nationalism.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">GomBurZa Execution</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The ___ replaced the Tribute in 1884, described as an "attestation of tributary slavery to Madre España."</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Cedula personal</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The Encomienda is NOT a land grant — it is an ___ role entrusted to a conquistador.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">administrative</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Nationalism = belongingness to a ___.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">NACIÓN</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The cry on August 24, 1896 is known as the Cry of ___ / ___.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Balintawak / Pugadlawin</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The Chinese middlemen in the export economy who bought crops and sold to foreign agents were called ___.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Comprador</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">The KKK's full name is Kataastaasan Kagalang-galangang Katipunan ng mga ___ ng Bayan.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Anak</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">Rizal's 1890 resolution: "The real battleground is in the ___ — and I shall now go home."</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Philippines</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+function revealAnswer(btn) {
+  var ans = btn.nextElementSibling;
+  if (ans.style.display === 'block') {
+    ans.style.display = 'none';
+    btn.textContent = 'Reveal Answer';
+  } else {
+    ans.style.display = 'block';
+    btn.textContent = 'Hide Answer';
+  }
+}
+</script>
+</body>
+</html>
