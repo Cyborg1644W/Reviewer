@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS-101 Java Programming & OOP — Exam Reviewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e14;
+    --surface: #16161f;
+    --card: #1d1d2b;
+    --border: #2a2a3e;
+    --accent: #c8a86b;
+    --accent2: #7b68ee;
+    --accent3: #5ec4a0;
+    --accent4: #e07b7b;
+    --text: #e8e6f0;
+    --muted: #8a88a0;
+    --tag-bg: rgba(200,168,107,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0e0e14 0%, #1a1530 50%, #0e1420 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(123,104,238,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(200,168,107,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .course-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    border: 1px solid rgba(200,168,107,0.3);
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px,5vw,48px);
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 300;
+  }
+  .exam-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .exam-type-badge {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* TABS */
+  .tabs-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14,14,20,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 16px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  .tab-btn.active { color: var(--accent); }
+  .tab-btn.active::after { transform: scaleX(1); }
+  .tab-btn:hover { color: var(--text); }
+
+  /* CONTENT */
+  .tab-content { display: none; padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 28px 0 14px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(200,168,107,0.3); }
+  .card-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title .icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .card p, .card li { color: var(--muted); font-size: 14px; }
+  .card ul, .card ol { padding-left: 18px; }
+  .card li { margin-bottom: 4px; }
+
+  /* DEFINITION CARDS */
+  .def-card {
+    background: var(--card);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+  .def-card .term {
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .def-card .def { color: var(--muted); font-size: 13.5px; }
+  .def-card .source {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    margin-top: 4px;
+  }
+
+  /* HIGHLIGHT BOXES */
+  .highlight-box {
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    font-size: 14px;
+  }
+  .highlight-box.gold {
+    background: rgba(200,168,107,0.08);
+    border: 1px solid rgba(200,168,107,0.25);
+  }
+  .highlight-box.purple {
+    background: rgba(123,104,238,0.08);
+    border: 1px solid rgba(123,104,238,0.25);
+  }
+  .highlight-box.green {
+    background: rgba(94,196,160,0.08);
+    border: 1px solid rgba(94,196,160,0.25);
+  }
+  .highlight-box.red {
+    background: rgba(224,123,123,0.08);
+    border: 1px solid rgba(224,123,123,0.25);
+  }
+  .highlight-box strong { color: #fff; }
+
+  /* TWO COLUMN */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media(max-width:600px){ .two-col { grid-template-columns:1fr; } }
+
+  /* TABLE */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+    font-size: 13.5px;
+  }
+  .styled-table th {
+    background: rgba(200,168,107,0.1);
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .styled-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(42,42,62,0.5);
+    color: var(--muted);
+  }
+  .styled-table tr:hover td { background: rgba(255,255,255,0.02); color: var(--text); }
+
+  /* NUMBERED LIST STYLE */
+  .num-list { list-style: none; padding: 0; }
+  .num-list li {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(42,42,62,0.5);
+    color: var(--text);
+    font-size: 14px;
+    align-items: flex-start;
+  }
+  .num-list li:last-child { border-bottom: none; }
+  .num-list .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--tag-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* QUIZ SECTION */
+  .quiz-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .quiz-section h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quiz-section h4::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 2px;
+    background: var(--accent3);
+  }
+  .q-item {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .q-text {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .q-answer {
+    display: none;
+    background: rgba(94,196,160,0.08);
+    border-left: 3px solid var(--accent3);
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13.5px;
+    color: var(--accent3);
+    margin-top: 8px;
+  }
+  .reveal-btn {
+    background: none;
+    border: 1px solid rgba(94,196,160,0.3);
+    color: var(--accent3);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reveal-btn:hover {
+    background: rgba(94,196,160,0.1);
+  }
+
+  /* ESSAY GUIDE */
+  .essay-prompt {
+    background: linear-gradient(135deg, rgba(123,104,238,0.05), rgba(200,168,107,0.05));
+    border: 1px solid rgba(123,104,238,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .essay-prompt .prompt-text {
+    font-size: 14px;
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .essay-prompt .guide-points { list-style: none; padding: 0; }
+  .essay-prompt .guide-points li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .essay-prompt .guide-points li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+  }
+
+  /* PROGRESS TAG */
+  .progress-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .tag-memorize { background: rgba(224,123,123,0.15); color: var(--accent4); }
+  .tag-understand { background: rgba(123,104,238,0.15); color: var(--accent2); }
+  .tag-apply { background: rgba(94,196,160,0.15); color: var(--accent3); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 28px 0;
+  }
+
+  /* MATERIALS BOX */
+  .materials-box {
+    background: rgba(200,168,107,0.06);
+    border: 1px dashed rgba(200,168,107,0.3);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+  .material-item {
+    font-size: 13px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .material-item::before { content: '✦'; font-size: 10px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="course-tag">CS-101 · Java Programming</div>
+  <h1>Exam Reviewer</h1>
+  <p>Topics 1 & 2 · Intro to Java, OOP Fundamentals, and Syntax</p>
+  <div class="exam-types">
+    <span class="exam-type-badge">Multiple Choice</span>
+    <span class="exam-type-badge">Code Tracing</span>
+    <span class="exam-type-badge">Identification</span>
+    <span class="exam-type-badge">Programming Problems</span>
+  </div>
+</header>
+
+<nav class="tabs-wrapper">
+  <button class="tab-btn active" onclick="showTab('materials', this)">📋 Exam Info</button>
+  <button class="tab-btn" onclick="showTab('topic1', this)">Topic 1: Intro to Java</button>
+  <button class="tab-btn" onclick="showTab('topic2', this)">Topic 2: OOP Concepts</button>
+  <button class="tab-btn" onclick="showTab('topic3', this)">Topic 3: Syntax & Rules</button>
+  <button class="tab-btn" onclick="showTab('practice', this)">🧠 Practice Q&A</button>
+  <button class="tab-btn" onclick="showTab('essay', this)">💻 Code Guide</button>
+</nav>
+
+<!-- ========== EXAM INFO ========== -->
+<div id="materials" class="tab-content active">
+  <div class="section-label">Before You Start</div>
+  <h2>Exam Information</h2>
+
+  <p style="color:var(--muted); margin-bottom:20px;">Ensure you review the following structures for your Java examination:</p>
+
+  <h3>Exam Format</h3>
+  <div class="card">
+    <ul class="num-list">
+      <li><span class="num">01</span><div><strong style="color:#fff">Multiple Choice</strong><br><span style="color:var(--muted); font-size:13px">Select the correct definition for OOP pillars or Java history facts.</span></div></li>
+      <li><span class="num">02</span><div><strong style="color:#fff">Code Tracing</strong><br><span style="color:var(--muted); font-size:13px">Read short snippets of Java code and determine the exact output, catching syntax errors if present.</span></div></li>
+      <li><span class="num">03</span><div><strong style="color:#fff">Identification</strong><br><span style="color:var(--muted); font-size:13px">Name the specific term (e.g., Encapsulation, JIT, JVM) based on its definition.</span></div></li>
+      <li><span class="num">04</span><div><strong style="color:#fff">Programming Problems</strong><br><span style="color:var(--muted); font-size:13px">Write small classes demonstrating object instantiation, methods, and correct syntax.</span></div></li>
+    </ul>
+  </div>
+
+  <h3>Topics Covered</h3>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title"><div class="icon" style="background:rgba(200,168,107,0.15)">☕</div>Topic 1</div>
+      <p>Intro to Java — history, features, how the JVM works, and application areas.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="icon" style="background:rgba(123,104,238,0.15)">📦</div>Topic 2</div>
+      <p>Object-Oriented Programming — classes, objects, encapsulation, inheritance, polymorphism, and abstraction.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="icon" style="background:rgba(94,196,160,0.15)">📝</div>Topic 3</div>
+      <p>Java Syntax — main method structure, variables, data types, identifiers, and naming conventions.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box gold">
+    <strong>💡 Study Tip:</strong> Memorize the exact syntax for the `main` method and understand the difference between primitive data types (like `int` and `char`) versus objects (like `String`).
+  </div>
+</div>
+
+<!-- ========== TOPIC 1 ========== -->
+<div id="topic1" class="tab-content">
+  <div class="section-label">Topic 1</div>
+  <h2>Introduction to Java</h2>
+
+  <h3>What is Java?</h3>
+  <div class="highlight-box gold">
+    <strong>Core Definition:</strong> Java is a high-level, object-oriented, and platform-independent programming language[cite: 2]. It was developed by Sun Microsystems in 1995 (now owned by Oracle)[cite: 2].
+  </div>
+
+  <h3>Key Features of Java <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Platform Independent</strong><br><span style="color:var(--muted); font-size:13px">Java programs run on any device with a Java Virtual Machine (JVM). This is known as "Write Once, Run Anywhere (WORA)"[cite: 2].</span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Object-Oriented</strong><br><span style="color:var(--muted); font-size:13px">Based on classes and objects, making programs modular, reusable, and easier to maintain[cite: 2].</span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Simple & Secure</strong><br><span style="color:var(--muted); font-size:13px">Has straightforward syntax and built-in security features like bytecode verification and automatic memory management (Garbage Collection)[cite: 2].</span></div></li>
+    <li><span class="num">4</span><div><strong style="color:#fff">Robust & Multithreaded</strong><br><span style="color:var(--muted); font-size:13px">Features exception handling to make applications reliable, and supports running multiple tasks simultaneously[cite: 2].</span></div></li>
+    <li><span class="num">5</span><div><strong style="color:#fff">High Performance</strong><br><span style="color:var(--muted); font-size:13px">Uses Just-In-Time (JIT) compilation to improve execution speed, even though it is interpreted by the JVM[cite: 2].</span></div></li>
+  </ul>
+
+  <hr class="divider">
+
+  <h3>How Java Works <span class="progress-tag tag-understand">Understand</span></h3>
+  <div class="card" style="border-left: 3px solid var(--accent3);">
+    <ul class="num-list">
+      <li><span class="num">1</span>Write the source code and save it as a <strong>.java</strong> file[cite: 2].</li>
+      <li><span class="num">2</span>Compile it using the Java compiler (<strong>javac</strong>), which produces bytecode in a <strong>.class</strong> file[cite: 2].</li>
+      <li><span class="num">3</span>The <strong>JVM</strong> executes the bytecode on any operating system that supports Java[cite: 2].</li>
+    </ul>
+  </div>
+
+  <h3>Applications of Java</h3>
+  <div class="card">
+    <ul style="padding-left:18px;">
+      <li style="color:var(--muted); font-size:14px;">Web and Android mobile applications[cite: 2].</li>
+      <li style="color:var(--muted); font-size:14px;">Desktop and Enterprise software[cite: 2].</li>
+      <li style="color:var(--muted); font-size:14px;">Banking, financial systems, cloud, and distributed applications[cite: 2].</li>
+      <li style="color:var(--muted); font-size:14px;">Games and embedded systems[cite: 2].</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========== TOPIC 2 ========== -->
+<div id="topic2" class="tab-content">
+  <div class="section-label">Topic 2</div>
+  <h2>Object-Oriented Programming (OOP)</h2>
+
+  <h3>What is OOP?</h3>
+  <div class="highlight-box purple">
+    <strong>Definition:</strong> Object-Oriented Programming (OOP) is a programming approach that organizes software around objects rather than functions or procedures[cite: 3].
+  </div>
+  <div class="two-col">
+    <div class="def-card" style="border-left-color: var(--accent);">
+      <div class="term">Attributes (Data)</div>
+      <div class="def">The characteristics of an object (e.g., name, age, studentID)[cite: 3].</div>
+    </div>
+    <div class="def-card" style="border-left-color: var(--accent2);">
+      <div class="term">Methods (Behavior)</div>
+      <div class="def">The actions an object can perform (e.g., study(), takeExam())[cite: 3].</div>
+    </div>
+  </div>
+  
+  <div class="two-col" style="margin-top:14px;">
+    <div class="def-card" style="border-left-color: var(--accent3);">
+      <div class="term">Class</div>
+      <div class="def">A blueprint for creating objects. It defines what properties an object should have[cite: 3].</div>
+    </div>
+    <div class="def-card" style="border-left-color: var(--accent4);">
+      <div class="term">Object</div>
+      <div class="def">An instance of a class[cite: 3].</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>The Four Pillars of OOP <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <ul class="num-list">
+    <li><span class="num">1</span><div><strong style="color:#fff">Encapsulation</strong><br><span style="color:var(--muted); font-size:13px">The process of hiding data and allowing access only through controlled methods[cite: 3]. It improves security and program reliability[cite: 3]. <em>Example: Using a private balance field and a public getBalance() method[cite: 3].</em></span></div></li>
+    <li><span class="num">2</span><div><strong style="color:#fff">Inheritance</strong><br><span style="color:var(--muted); font-size:13px">Allows one class to acquire properties and behaviors from another class, promoting code reuse[cite: 3]. <em>Example: A Dog class extends an Animal class to inherit its eat() method[cite: 3].</em></span></div></li>
+    <li><span class="num">3</span><div><strong style="color:#fff">Polymorphism</strong><br><span style="color:var(--muted); font-size:13px">Means "many forms." The same method can behave differently depending on the object[cite: 3]. <em>Example: Both Dog and Cat classes override a makeSound() method differently[cite: 3].</em></span></div></li>
+    <li><span class="num">4</span><div><strong style="color:#fff">Abstraction</strong><br><span style="color:var(--muted); font-size:13px">Hides implementation details and shows only essential features[cite: 3]. <em>Example: Using an ATM without needing to know how the bank processes the transaction internally[cite: 3].</em></span></div></li>
+  </ul>
+
+  <hr class="divider">
+
+  <h3>Programming Paradigms Comparison</h3>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Paradigm</th>
+        <th>Main Focus</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong style="color:#fff">Procedural</strong></td><td>Focuses on functions and procedures executed step by step[cite: 3]. Data and behavior are separate[cite: 3].</td></tr>
+      <tr><td><strong style="color:#fff">Object-Oriented</strong></td><td>Programs are built using classes and objects[cite: 3]. Data and behavior are grouped together[cite: 3].</td></tr>
+      <tr><td><strong style="color:#fff">Functional</strong></td><td>Emphasizes the use of functions and immutable data (supported in Java via Lambda and Streams)[cite: 3].</td></tr>
+      <tr><td><strong style="color:#fff">Event-Driven</strong></td><td>Program execution is controlled by events like button clicks or mouse actions[cite: 3].</td></tr>
+      <tr><td><strong style="color:#fff">Declarative</strong></td><td>Focuses on <em>what</em> should be done rather than <em>how</em> to do it[cite: 3].</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ========== TOPIC 3 ========== -->
+<div id="topic3" class="tab-content">
+  <div class="section-label">Topic 3</div>
+  <h2>Java Syntax & Rules</h2>
+
+  <h3>The Main Method Breakdown <span class="progress-tag tag-apply">Apply</span></h3>
+  <div class="highlight-box gold">
+    <code>public static void main(String[] args)</code><br>
+    The starting point of a traditional standalone Java application[cite: 2].
+  </div>
+  <table class="styled-table">
+    <thead>
+      <tr><th>Part</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>public</strong></td><td>An access modifier allowing the JVM to access the method[cite: 2].</td></tr>
+      <tr><td><strong>static</strong></td><td>Allows the method to run without creating an object first[cite: 2].</td></tr>
+      <tr><td><strong>void</strong></td><td>The method does not return a value[cite: 2].</td></tr>
+      <tr><td><strong>main</strong></td><td>The name of the method recognized as the application entry point[cite: 2].</td></tr>
+      <tr><td><strong>String[] args</strong></td><td>Stores command-line arguments[cite: 2].</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="divider">
+
+  <h3>Core Syntax Rules <span class="progress-tag tag-memorize">Memorize</span></h3>
+  <div class="card">
+    <ul class="num-list">
+      <li><span class="num">1</span><strong style="color:#fff">Case-Sensitive:</strong> Java distinguishes between uppercase and lowercase letters (e.g., `System` is not `system`)[cite: 2].</li>
+      <li><span class="num">2</span><strong style="color:#fff">Semicolons:</strong> Most Java statements (instructions performing operations) end with a semicolon `;`[cite: 2].</li>
+      <li><span class="num">3</span><strong style="color:#fff">Curly Braces:</strong> Java uses `{` and `}` to define and group blocks of code[cite: 2].</li>
+      <li><span class="num">4</span><strong style="color:#fff">File Naming:</strong> If a class is declared public, the filename should match the class name[cite: 2].</li>
+    </ul>
+  </div>
+
+  <h3>Variables and Data Types</h3>
+  <p style="color:var(--muted); margin-bottom:12px; font-size: 14px;">Java is a strongly typed language, meaning variables must have declared types[cite: 2].</p>
+  <div class="two-col">
+    <div class="def-card" style="border-left-color: var(--accent3);">
+      <div class="term">Primitive Types</div>
+      <div class="def"><code>int</code> (whole number), <code>double</code> (decimal number), <code>char</code> (single character, uses single quotes), <code>boolean</code> (true or false)[cite: 2].</div>
+    </div>
+    <div class="def-card" style="border-left-color: var(--accent4);">
+      <div class="term">Reference Types</div>
+      <div class="def"><code>String</code> (text, normally enclosed in double quotation marks)[cite: 2].</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>Identifiers & Naming Conventions</h3>
+  <div class="highlight-box purple">
+    <strong>Identifier Rules:</strong> Can contain letters, digits, `_`, and `$`[cite: 2]. Cannot begin with a digit, contain spaces, or be a Java keyword[cite: 2]. Is case-sensitive[cite: 2].
+  </div>
+  
+  <table class="styled-table">
+    <thead>
+      <tr><th>Element</th><th>Convention</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Classes</strong></td><td>PascalCase (first letter of every word is capitalized)[cite: 2].</td><td><code>StudentRecord</code>[cite: 2]</td></tr>
+      <tr><td><strong>Variables/Methods</strong></td><td>camelCase (first word lowercase, next words capitalized)[cite: 2].</td><td><code>studentName</code>, <code>calculateGrade()</code>[cite: 2]</td></tr>
+      <tr><td><strong>Constants</strong></td><td>UPPERCASE with underscores[cite: 2].</td><td><code>PI_VALUE</code>[cite: 2]</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ========== PRACTICE Q&A ========== -->
+<div id="practice" class="tab-content">
+  <div class="section-label">Self-Test</div>
+  <h2>Practice Q&A</h2>
+  <p style="color:var(--muted); margin-bottom:24px; font-size:14px;">Test yourself — click <em>Reveal Answer</em> only after you've thought about it!</p>
+
+  <!-- Identification -->
+  <div class="quiz-section">
+    <h4>Identification</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. What Java feature allows programs to run on any device with a JVM, often summarized as WORA?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Platform Independence (Write Once, Run Anywhere)[cite: 2].</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. What compiler command is used to turn a .java source file into bytecode?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer"><code>javac</code>[cite: 2].</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. Which OOP pillar involves hiding implementation details and showing only essential features?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Abstraction[cite: 3].</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">4. Which OOP pillar allows one class to acquire properties and behaviors from another?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">Inheritance[cite: 3].</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">5. What keyword allows the main method to run without creating an object first?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer"><code>static</code>[cite: 2].</div>
+    </div>
+  </div>
+
+  <!-- True or False / Formatting -->
+  <div class="quiz-section">
+    <h4>Syntax Rules & Data Types</h4>
+
+    <div class="q-item">
+      <div class="q-text">1. True or False: <code>1student</code> is a valid variable identifier in Java.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">False. Identifiers cannot begin with a digit[cite: 2].</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">2. True or False: Single characters in Java use double quotes, like <code>"A"</code>.</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">False. Single characters use single quotes, like <code>'A'</code>. Double quotes are used for String literals[cite: 2].</div>
+    </div>
+    <div class="q-item">
+      <div class="q-text">3. What is the naming convention used for writing class names in Java?</div>
+      <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="q-answer">PascalCase[cite: 2].</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CODE GUIDE ========== -->
+<div id="essay" class="tab-content">
+  <div class="section-label">Programming Preparation</div>
+  <h2>Code Guide</h2>
+  <p style="color:var(--muted); margin-bottom:24px; font-size:14px;">Use these guides to understand standard Java class construction and OOP implementations.</p>
+
+  <div class="essay-prompt">
+    <div class="prompt-text">Basic Class Structure and Method Execution</div>
+    <ul class="guide-points">
+      <li>Declare the class using `public class ClassName`[cite: 2].</li>
+      <li>Include the entry point: `public static void main(String[] args)`[cite: 2].</li>
+      <li>Declare variables using standard types: `String name = "Maria";`, `int age = 20;`[cite: 2].</li>
+      <li>Output text to the console using `System.out.println();`[cite: 2].</li>
+      <li>Ensure every executable statement ends with a semicolon `;`[cite: 2].</li>
+    </ul>
+  </div>
+
+  <div class="essay-prompt">
+    <div class="prompt-text">Implementing OOP: Classes, Objects, and Constructors</div>
+    <ul class="guide-points">
+      <li>Define a blueprint class with attributes (e.g., `class Student { String name; }`)[cite: 3].</li>
+      <li>Define methods to represent behavior (e.g., `void study() { ... }`)[cite: 3].</li>
+      <li>Use a constructor to initialize the object. The constructor shares the exact name of the class (e.g., `Student(String name)`)[cite: 3].</li>
+      <li>Instantiate the object in your main method using the `new` keyword: `Student s1 = new Student("Maria");`[cite: 3].</li>
+    </ul>
+  </div>
+
+  <div class="essay-prompt">
+    <div class="prompt-text">Implementing Inheritance & Polymorphism</div>
+    <ul class="guide-points">
+      <li>Create a parent class (e.g., `Animal` with method `makeSound()`)[cite: 3].</li>
+      <li>Create a child class using the `extends` keyword (e.g., `class Dog extends Animal`)[cite: 3].</li>
+      <li>Override the parent method in the child class using the `@Override` annotation[cite: 3].</li>
+      <li>Demonstrate polymorphism by instantiating the child class as the parent type: `Animal a1 = new Dog();`[cite: 3].</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function revealAnswer(btn) {
+  var answer = btn.nextElementSibling;
+  if (answer.style.display === 'block') {
+    answer.style.display = 'none';
+    btn.textContent = 'Reveal Answer';
+  } else {
+    answer.style.display = 'block';
+    btn.textContent = 'Hide Answer';
+  }
+}
+</script>
+</body>
+</html>
