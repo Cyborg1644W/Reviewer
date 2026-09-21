@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java & OOP Mastery Reviewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --card: #21262d;
+    --border: #30363d;
+    --accent-orange: #f78166;
+    --accent-blue: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-purple: #bc8cff;
+    --accent-red: #ff7b72;
+    --accent-yellow: #d29922;
+    --text-main: #c9d1d9;
+    --text-muted: #8b949e;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+  .tag {
+    display: inline-block;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+    border: 1px solid rgba(247,129,102,0.3);
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  header p { color: var(--text-muted); font-size: 14px; }
+
+  /* TABS */
+  .tabs {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 16px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { color: var(--accent-orange); border-bottom-color: var(--accent-orange); }
+  .tab-btn:hover:not(.active) { color: var(--text-main); }
+
+  /* CONTENT */
+  .tab-content { display: none; padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+  
+  h2 { font-size: 22px; font-weight: 600; margin-bottom: 24px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+  
+  /* MEMORIZE GRID STYLES */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media(max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .mem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .mem-card h3 {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--accent-blue);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mem-card ul { list-style: none; padding: 0; }
+  .mem-card li { 
+    margin-bottom: 8px; 
+    padding-bottom: 8px; 
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px;
+    color: var(--text-main);
+  }
+  .mem-card li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .mem-card strong { color: #fff; }
+  
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 6px;
+    font-family: 'Fira Code', monospace;
+  }
+  .bg-orange { background: rgba(247,129,102,0.15); color: var(--accent-orange); }
+  .bg-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); }
+  .bg-green { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+  .bg-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); }
+  .bg-yellow { background: rgba(210,153,34,0.15); color: var(--accent-yellow); }
+
+  /* QUIZ ITEM STYLES */
+  .q-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .q-text {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .q-answer {
+    display: none;
+    background: rgba(63,185,80,0.1);
+    border-left: 3px solid var(--accent-green);
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    color: var(--text-main);
+    margin-top: 12px;
+  }
+  .q-answer strong { color: var(--accent-green); }
+  
+  .reveal-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--accent-blue);
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reveal-btn:hover { background: rgba(88,166,255,0.1); border-color: var(--accent-blue); }
+
+  /* CODE BLOCKS */
+  pre {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #c9d1d9;
+    margin: 12px 0;
+  }
+  
+  .challenge-box {
+    border-left: 4px solid var(--accent-purple);
+    background: rgba(188,140,255,0.05);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">Active Recall Reviewer</div>
+  <h1>Java & OOP Mastery</h1>
+  <p>Test your knowledge on structures, rules, pillars, and paradigms.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" onclick="switchTab('memorize')">🧠 Memorize</button>
+  <button class="tab-btn" onclick="switchTab('ident')">Identification</button>
+  <button class="tab-btn" onclick="switchTab('tf')">True or False</button>
+  <button class="tab-btn" onclick="switchTab('challenge')">Problems & Challenges</button>
+</nav>
+
+<!-- MEMORIZE TAB (NEW) -->
+<div id="memorize" class="tab-content active">
+  <h2>Quick Recall Cheat Sheet</h2>
+
+  <div class="grid-2">
+    <!-- 4 Pillars -->
+    <div class="mem-card" style="border-top: 3px solid var(--accent-purple);">
+      <h3 style="color:var(--accent-purple)">🏛️ The 4 Pillars of OOP</h3>
+      <ul>
+        <li><span class="badge bg-purple">Encapsulation</span> getter/setter, prevent unauthorized mod</li>
+        <li><span class="badge bg-purple">Inheritance</span> code reusability</li>
+        <li><span class="badge bg-purple">Polymorphism</span> @override</li>
+        <li><span class="badge bg-purple">Abstraction</span> hides unnecessary details</li>
+      </ul>
+    </div>
+
+    <!-- Acronyms & Trivia -->
+    <div class="mem-card" style="border-top: 3px solid var(--accent-orange);">
+      <h3 style="color:var(--accent-orange)">💡 Trivia & Acronyms</h3>
+      <ul>
+        <li><strong>WORA:</strong> Write Once, Run Anywhere</li>
+        <li><strong>JVM:</strong> Java Virtual Machine</li>
+        <li><strong>Javac:</strong> Java compiler</li>
+        <li><strong>JIT:</strong> Just In Time</li>
+        <li><strong>Sun Microsystems:</strong> Created Java in 1995 (now Oracle)</li>
+      </ul>
+    </div>
+
+    <!-- Syntax & Rules -->
+    <div class="mem-card" style="border-top: 3px solid var(--accent-blue);">
+      <h3 style="color:var(--accent-blue)">⚙️ Java Rules & Syntax</h3>
+      <ul>
+        <li><strong>Case Sensitivity:</strong> strict differentiation</li>
+        <li><strong>Semicolon (;):</strong> Statements end with semi-colon</li>
+        <li><strong>Curly braces ({}):</strong> Define blocks</li>
+        <li><strong>Identifier:</strong> Name given to programming element (class, var, method, object, package)</li>
+        <li><strong>Java Keywords:</strong> Reserved words</li>
+        <li><strong>Strings:</strong> Uses double quotes <code>" "</code></li>
+        <li><strong>Variables:</strong> Must have data type, declaration, and assignment</li>
+      </ul>
+    </div>
+
+    <!-- Naming Conventions -->
+    <div class="mem-card" style="border-top: 3px solid var(--accent-yellow);">
+      <h3 style="color:var(--accent-yellow)">🏷️ Naming Conventions</h3>
+      <ul>
+        <li><span class="badge bg-yellow">PascalCase</span> ➔ Class & Struct</li>
+        <li><span class="badge bg-yellow">camelCase</span> ➔ Variable & methods</li>
+        <li><span class="badge bg-yellow">UPPER_CASE</span> ➔ Constant</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Paradigms -->
+    <div class="mem-card">
+      <h3 style="color:var(--text-muted)">🌐 Major Programming Paradigms</h3>
+      <ul>
+        <li>Procedural Programming</li>
+        <li>Object-Oriented Programming</li>
+        <li>Functional Programming</li>
+        <li>Event-driven Programming</li>
+        <li>Declarative Programming</li>
+        <li>Logic</li>
+      </ul>
+    </div>
+
+    <!-- Parts & Concepts -->
+    <div class="mem-card">
+      <h3 style="color:var(--text-muted)">📦 Structure & Concepts</h3>
+      <ul>
+        <li><strong>Parts of the program:</strong> Class declaration, main methods, statement, brace, comment</li>
+        <li><strong>Basic Concepts of OOP:</strong> Class, Object, Attributes, Methods</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- IDENTIFICATION TAB -->
+<div id="ident" class="tab-content">
+  <h2>Identification</h2>
+
+  <div class="q-item">
+    <div class="q-text">1. The principle of hiding unnecessary details and showing only the essential features of an object.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>Abstraction</strong></div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">2. The company that originally developed Java in 1995 (before it was acquired by Oracle).</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>Sun Microsystems</strong></div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">3. A programming paradigm that focuses on step-by-step execution rather than grouping data and behavior into objects.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>Procedural Programming</strong></div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">4. The specific Java compiler command used to translate <code>.java</code> files into bytecode.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>javac</strong></div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">5. The acronym representing Java's cross-platform capability, meaning you can compile the code one time and execute it on any device with a JVM.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>WORA</strong> (Write Once, Run Anywhere)</div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">6. The naming convention where the first letter of every word is capitalized, strictly used for Classes in Java.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>PascalCase</strong></div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">7. The OOP pillar that utilizes getters and setters to prevent unauthorized modification of data.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>Encapsulation</strong></div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">8. A general term for a name given to a programming element (such as a class, variable, method, object, or package).</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>Identifier</strong></div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">9. The engine within the JVM that improves performance by compiling bytecode into native machine code at runtime.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>JIT</strong> (Just-In-Time Compiler)</div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">10. The OOP pillar associated with code reusability, allowing a child class to adopt the properties of a parent class.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>Inheritance</strong></div>
+  </div>
+</div>
+
+<!-- TRUE OR FALSE TAB -->
+<div id="tf" class="tab-content">
+  <h2>True or False</h2>
+
+  <div class="q-item">
+    <div class="q-text">1. Because Java is case-sensitive, a variable named <code>studentAge</code> is treated as identical to <code>StudentAge</code>.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>False.</strong> Java distinguishes between uppercase and lowercase letters. <code>studentAge</code> and <code>StudentAge</code> are two different identifiers.</div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">2. In Java, String literals must be enclosed in double quotes, while primitive characters use single quotes.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>True.</strong> Example: <code>"Hello"</code> vs <code>'A'</code>.</div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">3. Polymorphism allows a method to have multiple forms, which is often implemented using the <code>@Override</code> annotation.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>True.</strong> A child class can override a parent's method to provide its own specific behavior.</div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">4. According to Java naming conventions, a constant variable should be written in <code>camelCase</code>.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>False.</strong> Constants should be written in <code>UPPER_CASE</code> with underscores (e.g., <code>MAX_VALUE</code>). camelCase is used for standard variables and methods.</div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">5. Event-Driven Programming is a paradigm where the flow of the program is determined by user actions, such as mouse clicks or keyboard inputs.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>True.</strong> </div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">6. A Class is an instance of an Object.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>False.</strong> It is the other way around: An Object is an instance of a Class. The Class is the blueprint.</div>
+  </div>
+
+  <div class="q-item">
+    <div class="q-text">7. Every single line of code in a Java program must end with a semicolon.</div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+    <div class="q-answer"><strong>False.</strong> Only <em>statements</em> end with semicolons. Class declarations, method signatures, and block definitions (which use curly braces <code>{}</code>) do not end with a semicolon.</div>
+  </div>
+</div>
+
+<!-- PROBLEM / CHALLENGE TAB -->
+<div id="challenge" class="tab-content">
+  <h2>Problems & Challenges</h2>
+
+  <div class="q-item challenge-box">
+    <div class="q-text">
+      <strong>Challenge 1: Syntax Debugging</strong><br>
+      The following code violates several Java syntax rules and naming conventions based on your notes. Identify and fix the errors.
+<pre>
+public class student record {
+    public static void main(String[] args)
+        string Student_Name = 'John'
+        int 1age = 20;
+        
+        System.out.println(Student_Name)
+    }
+}</pre>
+    </div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Solution</button>
+    <div class="q-answer">
+      <strong>Issues identified:</strong>
+      <ul>
+        <li>Class name has a space and violates PascalCase (<code>student record</code>).</li>
+        <li>Missing opening curly brace <code>{</code> for the main method.</li>
+        <li>Data type <code>string</code> must be capitalized (<code>String</code>).</li>
+        <li>Variable name <code>Student_Name</code> violates camelCase convention.</li>
+        <li>String literal <code>'John'</code> uses single quotes instead of double quotes <code>"John"</code>.</li>
+        <li>Missing semicolon at the end of the String assignment and the print statement.</li>
+        <li>Identifier <code>1age</code> starts with a number.</li>
+      </ul>
+      <strong>Corrected Code:</strong>
+<pre>
+public class StudentRecord {
+    public static void main(String[] args) {
+        String studentName = "John";
+        int age = 20;
+        
+        System.out.println(studentName);
+    }
+}</pre>
+    </div>
+  </div>
+
+  <div class="q-item challenge-box">
+    <div class="q-text">
+      <strong>Challenge 2: OOP Implementation (Encapsulation)</strong><br>
+      Write a short Java class named <code>BankAccount</code>. 
+      <ul>
+        <li>It must have a private attribute called <code>balance</code> (double).</li>
+        <li>Implement <strong>Encapsulation</strong> by providing a public method <code>deposit(double amount)</code> to add to the balance.</li>
+        <li>Provide a public getter method <code>getBalance()</code> to return the current balance.</li>
+      </ul>
+    </div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Solution</button>
+    <div class="q-answer">
+      <strong>Solution:</strong>
+<pre>
+public class BankAccount {
+    // Private attribute prevents unauthorized direct modification
+    private double balance;
+
+    // Public setter/modifier
+    public void deposit(double amount) {
+        if(amount > 0) {
+            balance = balance + amount;
+        }
+    }
+
+    // Public getter
+    public double getBalance() {
+        return balance;
+    }
+}</pre>
+    </div>
+  </div>
+
+  <div class="q-item challenge-box">
+    <div class="q-text">
+      <strong>Challenge 3: Paradigm Logic</strong><br>
+      If you are writing an application where you declare <em>what</em> output you want (e.g., querying a database for "all active users") without writing the exact loops and steps of <em>how</em> the computer should fetch them, which programming paradigm are you utilizing?
+    </div>
+    <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Solution</button>
+    <div class="q-answer">
+      <strong>Declarative Programming.</strong> Unlike procedural programming (which details the exact steps of <em>how</em> to do it), declarative programming focuses on <em>what</em> the desired result should be.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function revealAnswer(btn) {
+    var answer = btn.nextElementSibling;
+    if (answer.style.display === 'block') {
+      answer.style.display = 'none';
+      btn.textContent = 'Reveal Answer / Solution';
+    } else {
+      answer.style.display = 'block';
+      btn.textContent = 'Hide Answer';
+    }
+  }
+</script>
+</body>
+</html>
