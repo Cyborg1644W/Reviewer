@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Java OOP & Constructors - Complete Reviewer</title>
+  <style>
+    :root { --ink:#172033; --muted:#5b667c; --paper:#f7f9fc; --line:#dfe6f1; --blue:#3158d4; --violet:#7048e8; --teal:#087f8c; --gold:#a35f00; --red:#b42318; --white:#fff; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.58 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .hero { color:#fff; background:radial-gradient(circle at 80% 0%, #7698ff 0, transparent 30%), linear-gradient(125deg,#182454,#3a3f99 55%,#7035a5); padding:64px max(24px,calc((100vw - 1120px)/2)) 58px; }
+    .eyebrow { text-transform:uppercase; letter-spacing:.13em; font-size:.76rem; font-weight:800; color:#d8e1ff; margin:0 0 12px; }
+    h1 { font-size:clamp(2.25rem,6vw,4.6rem); line-height:1.02; max-width:850px; margin:0; letter-spacing:-.045em; }
+    .hero p { max-width:770px; margin:19px 0 0; font-size:1.1rem; color:#eef1ff; }
+    .chips { display:flex; flex-wrap:wrap; gap:9px; margin-top:25px; }
+    .chip { display:inline-block; padding:6px 11px; border:1px solid #aebcff70; border-radius:999px; background:#ffffff15; font-size:.87rem; }
+    .layout { display:grid; grid-template-columns:245px minmax(0,840px); gap:38px; max-width:1120px; margin:0 auto; padding:38px 24px 70px; }
+    nav { position:sticky; top:20px; align-self:start; padding:16px; border:1px solid var(--line); border-radius:15px; background:var(--white); box-shadow:0 8px 25px #23325c0d; }
+    nav strong { display:block; margin:0 0 8px 8px; font-size:.82rem; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); }
+    nav a { display:block; padding:7px 8px; color:#34415c; text-decoration:none; border-radius:7px; font-size:.9rem; }
+    nav a:hover { background:#edf1ff; color:var(--blue); }
+    main { min-width:0; }
+    section { scroll-margin-top:20px; margin-bottom:42px; }
+    h2 { font-size:1.95rem; line-height:1.12; margin:0 0 8px; letter-spacing:-.025em; }
+    h3 { margin:28px 0 10px; font-size:1.25rem; }
+    h4 { margin:0 0 8px; font-size:1rem; }
+    .lead { margin:0 0 20px; color:var(--muted); font-size:1.04rem; }
+    .card, details, .callout { background:var(--white); border:1px solid var(--line); border-radius:14px; padding:20px; margin:14px 0; box-shadow:0 6px 20px #20306009; }
+    .callout { border-left:5px solid var(--blue); background:#fafdff; }
+    .callout.warning { border-left-color:#e0921c; background:#fffaf0; }
+    .callout.correct { border-left-color:#15803d; background:#f3fff7; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .tile { padding:17px; border:1px solid var(--line); border-radius:12px; background:var(--white); }
+    .tile p { margin:4px 0 0; color:var(--muted); font-size:.94rem; }
+    .tile .num { display:block; color:var(--blue); font-weight:800; font-size:.78rem; letter-spacing:.08em; }
+    .pill { display:inline-block; padding:3px 8px; margin:1px 3px 1px 0; border-radius:5px; background:#eaf0ff; color:#294bba; font:.79rem ui-monospace,SFMono-Regular,Consolas,monospace; }
+    ul,ol { padding-left:1.25rem; }
+    li+li { margin-top:5px; }
+    code { padding:.1em .32em; border-radius:4px; background:#eef1f6; color:#c0254f; font: .9em ui-monospace,SFMono-Regular,Consolas,monospace; }
+    pre { overflow:auto; margin:12px 0 0; padding:17px; border-radius:11px; background:#152037; color:#e7f0ff; font: .86rem/1.52 ui-monospace,SFMono-Regular,Consolas,monospace; tab-size:4; }
+    pre code { padding:0; color:inherit; background:transparent; }
+    .code-label { display:block; margin-top:14px; color:var(--muted); font-weight:700; font-size:.84rem; }
+    table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:.93rem; }
+    th,td { text-align:left; vertical-align:top; padding:12px; border-bottom:1px solid var(--line); }
+    th { background:#f0f4fb; font-size:.81rem; text-transform:uppercase; letter-spacing:.055em; color:#465570; }
+    tr:last-child td { border-bottom:none; }
+    details { padding:0; overflow:hidden; }
+    summary { cursor:pointer; padding:16px 20px; font-weight:750; list-style:none; }
+    summary::-webkit-details-marker { display:none; }
+    summary::after { content:"+"; float:right; font-size:1.3rem; color:var(--blue); }
+    details[open] summary::after { content:"−"; }
+    details > div { padding:0 20px 18px; }
+    .flash { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .flash button { appearance:none; min-height:118px; padding:17px; text-align:left; border:1px solid #cad6fb; border-radius:12px; background:#f6f8ff; color:var(--ink); font:inherit; cursor:pointer; }
+    .flash button:hover { border-color:#8097ed; }
+    .flash .answer { display:none; margin-top:8px; color:#243b80; font-size:.93rem; }
+    .flash button.show .answer { display:block; }
+    .flash .hint { display:block; margin-top:9px; color:var(--blue); font-size:.78rem; font-weight:700; }
+    .quiz { display:grid; gap:12px; }
+    .question { padding:16px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .question p { margin:0 0 9px; font-weight:700; }
+    .question button { margin:4px 5px 0 0; padding:6px 10px; border:1px solid #cbd5e8; border-radius:7px; background:#fff; color:#2e3b55; cursor:pointer; font:inherit; }
+    .question button:hover { background:#eef3ff; }
+    .feedback { display:none; margin:10px 0 0; font-weight:700; font-size:.9rem; }
+    .feedback.good { color:#15803d; }.feedback.bad { color:#b42318; }
+    .footer { padding:22px; color:var(--muted); border-top:1px solid var(--line); font-size:.9rem; }
+    @media (max-width:800px) { .layout { display:block; padding:24px 16px 56px; } nav { position:relative; top:auto; margin-bottom:32px; } .grid,.grid.three,.flash { grid-template-columns:1fr; } .hero { padding:48px 20px; } th,td { padding:9px; } }
+    @media print { body { background:#fff; font-size:11pt; } .hero { padding:20px; background:#fff; color:#000; } .hero p,.eyebrow { color:#222; } nav,.chips,.quiz,.flash .hint { display:none; } .layout { display:block; max-width:none; padding:16px; } section { break-inside:avoid; margin-bottom:25px; } .card,details,.callout,.tile { box-shadow:none; } details > div { display:block; } summary::after { display:none; } pre { white-space:pre-wrap; } }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <p class="eyebrow">Lessons 1 and 2 + Constructors</p>
+    <h1>Java OOP &amp; Constructors<br>Complete Reviewer</h1>
+    <p>A study-ready guide covering Java foundations, program structure and syntax, object-oriented programming, and constructors. Examples have been standardized into valid Java where the source slides contained typographical errors.</p>
+    <div class="chips"><span class="chip">OOP foundations</span><span class="chip">Java syntax</span><span class="chip">POSSMRH</span><span class="chip">Constructors &amp; <code>this</code></span><span class="chip">Practice quiz</span></div>
+  </header>
+
+  <div class="layout">
+    <nav aria-label="Reviewer contents">
+      <strong>Contents</strong>
+      <a href="#quick">Quick recall</a>
+      <a href="#java">1. Java overview</a>
+      <a href="#structure">2. Program structure</a>
+      <a href="#syntax">3. Syntax &amp; rules</a>
+      <a href="#oop">4. OOP concepts</a>
+      <a href="#pillars">5. Four pillars</a>
+      <a href="#paradigms">6. Programming paradigms</a>
+      <a href="#constructors">7. Constructors</a>
+      <a href="#practice">8. Practice &amp; quiz</a>
+      <a href="#coverage">Coverage checklist</a>
+    </nav>
+
+    <main>
+      <section id="quick">
+        <h2>Quick recall</h2>
+        <p class="lead">Use this first for rapid review. Click a card to reveal the answer.</p>
+        <div class="flash">
+          <button type="button"><strong>WORA</strong><span class="answer">Write Once, Run Anywhere - Java source is compiled to bytecode that a compatible JVM can run on different operating systems.</span><span class="hint">Click to reveal</span></button>
+          <button type="button"><strong>JVM</strong><span class="answer">Java Virtual Machine - the runtime that executes Java bytecode.</span><span class="hint">Click to reveal</span></button>
+          <button type="button"><strong><code>javac</code></strong><span class="answer">The Java compiler. It translates a <code>.java</code> source file into a <code>.class</code> bytecode file.</span><span class="hint">Click to reveal</span></button>
+          <button type="button"><strong>JIT</strong><span class="answer">Just-In-Time compiler - the JVM can compile frequently used bytecode into native machine code while the program runs.</span><span class="hint">Click to reveal</span></button>
+          <button type="button"><strong>Class vs. object</strong><span class="answer">A class is a blueprint; an object is a specific instance made from that blueprint.</span><span class="hint">Click to reveal</span></button>
+          <button type="button"><strong>Constructor</strong><span class="answer">A special member that runs during object creation to initialize that object's state. It has the class name and no return type.</span><span class="hint">Click to reveal</span></button>
+        </div>
+      </section>
+
+      <section id="java">
+        <h2>1. Introduction to Java</h2>
+        <p class="lead">Java is a high-level, object-oriented, platform-independent language developed by Sun Microsystems (now owned by Oracle) in 1995. It is used for web, mobile, desktop, enterprise, cloud, financial, game, and embedded applications.</p>
+        <div class="callout"><strong>Core terms:</strong> Java is primarily object-oriented. Programs are organized using <strong>classes</strong> and <strong>objects</strong>. Java is designed to be reliable, secure, portable, and versatile for both beginners and professional-scale systems.</div>
+        <h3>Key features of Java - <em>POSSMRH</em></h3>
+        <div class="grid">
+          <div class="tile"><span class="num">P - PLATFORM INDEPENDENT</span><strong>JVM + WORA</strong><p>Java bytecode runs on any device or operating system with a compatible Java Virtual Machine. This is “Write Once, Run Anywhere.”</p></div>
+          <div class="tile"><span class="num">O - OBJECT-ORIENTED</span><strong>Classes and objects</strong><p>Supports modular, reusable, and maintainable programs through OOP concepts.</p></div>
+          <div class="tile"><span class="num">S - SIMPLE</span><strong>Approachable syntax</strong><p>Java removes many complex features found in languages such as C++ and has a large standard library.</p></div>
+          <div class="tile"><span class="num">S - SECURE</span><strong>Safer runtime model</strong><p>Bytecode verification and automatic memory management are built-in security-related features.</p></div>
+          <div class="tile"><span class="num">M - MULTITHREADED</span><strong>Multiple tasks</strong><p>Java can perform multiple tasks concurrently through threads.</p></div>
+          <div class="tile"><span class="num">R - ROBUST</span><strong>Reliable applications</strong><p>Exception handling and garbage collection help applications manage errors and memory safely.</p></div>
+          <div class="tile"><span class="num">H - HIGH PERFORMANCE</span><strong>JIT optimization</strong><p>The JVM's Just-In-Time compilation can improve execution speed by compiling code during execution.</p></div>
+        </div>
+        <h3>Applications and advantages</h3>
+        <div class="grid">
+          <div class="card"><h4>Applications of Java</h4><ul><li>Web applications</li><li>Android mobile applications</li><li>Desktop applications</li><li>Enterprise software</li><li>Banking and financial systems</li><li>Cloud and distributed applications</li><li>Games and embedded systems</li></ul></div>
+          <div class="card"><h4>Advantages of Java</h4><ul><li>Easy to learn and use</li><li>Cross-platform compatibility</li><li>Large standard library</li><li>Strong community support</li><li>Automatic memory management (garbage collection)</li><li>Excellent for large-scale applications</li></ul></div>
+        </div>
+        <h3>How Java works</h3>
+        <ol><li>Write source code in a <code>.java</code> file.</li><li>Compile it with the Java compiler, <code>javac</code>.</li><li>The compiler creates bytecode in a <code>.class</code> file.</li><li>The JVM executes that bytecode on a supported operating system.</li></ol>
+        <pre><code>HelloWorld.java  --javac-->  HelloWorld.class (bytecode)  --JVM-->  program runs
+</code></pre>
+      </section>
+
+      <section id="structure">
+        <h2>2. Java program structure</h2>
+        <p class="lead">A traditional standalone Java program starts in its <code>main</code> method. This example identifies every required lesson component.</p>
+        <pre><code>// A documentation or single-line comment
+public class HelloWorld {                 // 1. class declaration + opening brace
+    public static void main(String[] args) { // 2. main method + opening brace
+        System.out.println("Hello, Java!");  // 3. statement
+    }                                    // 4. closing brace for main
+}                                        // 4. closing brace for class
+</code></pre>
+        <div class="grid">
+          <div class="card"><h4>1. Class declaration</h4><p>A class is Java's basic building block. <code>public</code> is an access modifier; <code>class</code> is the keyword; <code>HelloWorld</code> is the class name. If a top-level class is <code>public</code>, its filename must match: <code>HelloWorld.java</code>.</p></div>
+          <div class="card"><h4>2. Main method</h4><p>The entry point of a traditional application is <code>public static void main(String[] args)</code>.</p><table><tr><th>Part</th><th>Meaning</th></tr><tr><td><code>public</code></td><td>Allows the JVM to access the method.</td></tr><tr><td><code>static</code></td><td>Runs without creating a <code>Main</code> object first.</td></tr><tr><td><code>void</code></td><td>Returns no value.</td></tr><tr><td><code>main</code></td><td>The recognized application entry-point name.</td></tr><tr><td><code>String[] args</code></td><td>Stores command-line arguments.</td></tr></table></div>
+          <div class="card"><h4>3. Statement</h4><p>A statement is an instruction that tells the computer to perform an operation. Example: <code>System.out.println("Hello");</code>. Most Java statements end with a semicolon (<code>;</code>).</p></div>
+          <div class="card"><h4>4. Braces <code>{ }</code></h4><p>Braces define a block of code. The outer pair belongs to the class; the inner pair belongs to <code>main()</code>.</p></div>
+          <div class="card"><h4>5. Comments</h4><p>Comments are notes in source code. The compiler ignores them.</p><p><code>// single-line</code><br><code>/* multi-line */</code><br><code>/** documentation comment */</code></p></div>
+        </div>
+      </section>
+
+      <section id="syntax">
+        <h2>3. Java syntax and rules</h2>
+        <p class="lead">Syntax is the set of rules that determines how Java must be written. Incorrect syntax normally causes a compiler error - like incorrect grammar in a sentence.</p>
+        <details open><summary>A. Java is case-sensitive</summary><div><p>Uppercase and lowercase letters are different. <code>Student</code> and <code>student</code> are different identifiers. Likewise, <code>System.out.println()</code> is correct; <code>system.out.println()</code> is not, because <code>System</code> has a capital <code>S</code>.</p></div></details>
+        <details><summary>B. Most statements end with a semicolon</summary><div><pre><code>int age = 18;
+System.out.println(age);</code></pre><p>Missing semicolons on ordinary statements cause compilation errors. Not every Java construct ends with one: an <code>if</code> block itself does not need a semicolon after its closing brace.</p><pre><code>if (age >= 18) {
+    System.out.println("Adult");
+}</code></pre></div></details>
+        <details><summary>C. Curly braces define blocks</summary><div><p>Java uses <code>{</code> and <code>}</code> to group statements. Both <code>println</code> calls below belong to the <code>if</code> block.</p><pre><code>if (score >= 75) {
+    System.out.println("Passed");
+    System.out.println("Good job!");
+}</code></pre></div></details>
+        <details><summary>D. Identifiers: names for program elements</summary><div><p>An identifier is a name given to a class, variable, method, object, or package.</p><ol><li>Can contain letters.</li><li>Can contain digits.</li><li>Can contain underscore (<code>_</code>).</li><li>Can contain <code>$</code>, though it is normally avoided in application code.</li><li>Cannot begin with a digit.</li><li>Cannot contain spaces.</li><li>Cannot be a Java keyword.</li><li>Is case-sensitive.</li></ol><p><strong>Valid:</strong> <span class="pill">studentName</span><span class="pill">age2</span><span class="pill">_total</span><br><strong>Invalid:</strong> <span class="pill">2age</span><span class="pill">student name</span><span class="pill">class</span></p></div></details>
+        <details><summary>E. Java keywords (reserved words)</summary><div><p>Keywords have special meaning and cannot be used as variable names. The standard reserved-keyword set includes:</p><p><span class="pill">abstract</span><span class="pill">assert</span><span class="pill">boolean</span><span class="pill">break</span><span class="pill">byte</span><span class="pill">case</span><span class="pill">catch</span><span class="pill">char</span><span class="pill">class</span><span class="pill">const</span><span class="pill">continue</span><span class="pill">default</span><span class="pill">do</span><span class="pill">double</span><span class="pill">else</span><span class="pill">enum</span><span class="pill">extends</span><span class="pill">final</span><span class="pill">finally</span><span class="pill">float</span><span class="pill">for</span><span class="pill">goto</span><span class="pill">if</span><span class="pill">implements</span><span class="pill">import</span><span class="pill">instanceof</span><span class="pill">int</span><span class="pill">interface</span><span class="pill">long</span><span class="pill">native</span><span class="pill">new</span><span class="pill">package</span><span class="pill">private</span><span class="pill">protected</span><span class="pill">public</span><span class="pill">return</span><span class="pill">short</span><span class="pill">static</span><span class="pill">strictfp</span><span class="pill">super</span><span class="pill">switch</span><span class="pill">synchronized</span><span class="pill">this</span><span class="pill">throw</span><span class="pill">throws</span><span class="pill">transient</span><span class="pill">try</span><span class="pill">void</span><span class="pill">volatile</span><span class="pill">while</span></p><p><strong>Modern Java note:</strong> <code>_</code> is reserved; <code>var</code>, <code>yield</code>, <code>record</code>, <code>sealed</code>, <code>permits</code>, and module words such as <code>module</code>, <code>requires</code>, <code>exports</code>, <code>opens</code>, <code>uses</code>, and <code>provides</code> have restricted contextual use. Avoid all of them as your own names.</p><pre><code>// Incorrect: int class = 10;
+int classNumber = 10; // Correct</code></pre></div></details>
+        <details><summary>F. Strings use double quotes; <code>char</code> uses single quotes</summary><div><pre><code>String name = "John"; // String: text
+char grade = 'A';      // char: one character</code></pre><p><code>"A"</code> is a <code>String</code>; <code>'A'</code> is a <code>char</code>.</p></div></details>
+        <details><summary>G-H. Types, declaration, assignment, and initialization</summary><div><p>Java is strongly typed: variables must have declared data types.</p><table><tr><th>Data type</th><th>Example</th><th>Description</th></tr><tr><td><code>int</code></td><td><code>20</code></td><td>Whole number</td></tr><tr><td><code>double</code></td><td><code>95.50</code></td><td>Decimal number</td></tr><tr><td><code>char</code></td><td><code>'A'</code></td><td>Single character</td></tr><tr><td><code>boolean</code></td><td><code>true</code></td><td>True or false</td></tr><tr><td><code>String</code></td><td><code>"John"</code></td><td>Text</td></tr></table><pre><code>int age = 18;  // declaration and assignment together
+int score;     // declaration first
+score = 95;    // assignment later
+
+// System.out.println(score); is only valid after score is assigned.</code></pre></div></details>
+        <details><summary>I. Naming conventions</summary><div><table><tr><th>Element</th><th>Convention</th><th>Example</th></tr><tr><td>Class</td><td>PascalCase: every word begins with a capital letter</td><td><code>StudentRecord</code></td></tr><tr><td>Variable</td><td>camelCase: first word lowercase; later words capitalized</td><td><code>studentName</code></td></tr><tr><td>Method</td><td>camelCase</td><td><code>calculateAverage()</code></td></tr><tr><td>Constant</td><td>UPPER_CASE with underscores</td><td><code>MAX_STUDENTS</code></td></tr></table><p>These are conventions, not syntax requirements, but they make code easier to read and maintain. “Struct” is not a standard Java type; use PascalCase for Java classes.</p></div></details>
+        <h3>Complete Java example: Student information</h3>
+        <pre><code>public class Student {
+    public static void main(String[] args) {
+        String name = "Ana";
+        int age = 19;
+        char grade = 'A';
+        boolean enrolled = true;
+
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Grade: " + grade);
+        System.out.println("Enrolled: " + enrolled);
+    }
+}</code></pre>
+        <p>The <code>+</code> operator combines text and variable values. Every executable statement above ends in <code>;</code>.</p>
+      </section>
+
+      <section id="oop">
+        <h2>4. Object-oriented programming (OOP)</h2>
+        <p class="lead">OOP organizes software around <strong>objects</strong> rather than only functions or procedures. An object represents a real-world entity and contains attributes (data) and methods (behavior).</p>
+        <div class="grid four">
+          <div class="tile"><span class="num">1. CLASS</span><strong>Blueprint</strong><p>A definition of what an object will have and what it can do.</p></div>
+          <div class="tile"><span class="num">2. OBJECT</span><strong>Instance</strong><p>A specific thing created from a class.</p></div>
+          <div class="tile"><span class="num">3. ATTRIBUTES</span><strong>Data / fields</strong><p>Information about an object, such as a name, age, or ID.</p></div>
+          <div class="tile"><span class="num">4. METHODS</span><strong>Behavior</strong><p>Actions an object can perform, such as <code>study()</code> or <code>takeExam()</code>.</p></div>
+        </div>
+        <h3>Real-world example: Student</h3>
+        <p><strong>Attributes:</strong> student ID, name, age. &nbsp; <strong>Methods:</strong> <code>study()</code>, <code>takeExam()</code>, <code>attendClass()</code>.</p>
+        <pre><code>class Student {
+    String studentId;
+    String name;
+    int age;
+
+    void study() {
+        System.out.println(name + " is studying.");
+    }
+
+    void takeExam() {
+        System.out.println(name + " is taking an exam.");
+    }
+
+    void attendClass() {
+        System.out.println(name + " is attending class.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student student1 = new Student();
+        student1.studentId = "2026-001";
+        student1.name = "Maria";
+        student1.age = 18;
+        student1.study();
+    }
+}</code></pre>
+        <p><code>Student</code> is the class. <code>student1</code> is an object. <code>studentId</code>, <code>name</code>, and <code>age</code> are attributes. <code>void</code> means a method does not return a value.</p>
+        <h3>Why use OOP?</h3>
+        <div class="grid"><div class="card"><h4>Programs become organized</h4><p>Instead of putting all code in one large file, each class can own a responsibility.</p></div><div class="card"><h4>Benefits</h4><ul><li>Modular</li><li>Reusable</li><li>Maintainable</li><li>Secure</li><li>Scalable</li></ul></div></div>
+      </section>
+
+      <section id="pillars">
+        <h2>5. The four pillars of OOP</h2>
+        <div class="card"><h3>1. Encapsulation - controlled access to data</h3><p>Encapsulation hides data and allows access through controlled methods. Its benefits are data security, prevention of unauthorized modification, and improved reliability. Commonly, fields are <code>private</code> and public getters/setters provide controlled access.</p><pre><code>class BankAccount {
+    private double balance; // cannot be changed directly outside this class
+
+    public double getBalance() { return balance; }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+}</code></pre></div>
+        <div class="card"><h3>2. Inheritance - code reusability</h3><p>Inheritance lets one class acquire properties and behavior from another. It reduces duplication and makes maintenance easier. Use <code>extends</code>.</p><pre><code>class Animal {
+    void eat() { System.out.println("Animal eats"); }
+}
+
+class Dog extends Animal {
+    void bark() { System.out.println("Dog barks"); }
+}
+
+// A Dog can use both bark() and the inherited eat().</code></pre></div>
+        <div class="card"><h3>3. Polymorphism - many forms</h3><p>The same method call can behave differently depending on the actual object. Method overriding is the common example; <code>@Override</code> asks the compiler to check that a parent method is really being overridden.</p><pre><code>class Animal {
+    void sound() { System.out.println("Some sound"); }
+}
+class Dog extends Animal {
+    @Override void sound() { System.out.println("Bark"); }
+}
+class Cat extends Animal {
+    @Override void sound() { System.out.println("Meow"); }
+}
+
+Animal pet1 = new Dog();
+Animal pet2 = new Cat();
+pet1.sound(); // Bark
+pet2.sound(); // Meow</code></pre><p>Although both variables are declared as <code>Animal</code>, Java selects the correct overridden method based on the actual object type.</p></div>
+        <div class="card"><h3>4. Abstraction - essential features only</h3><p>Abstraction hides implementation details and shows only what is necessary. An ATM lets a user withdraw money or check a balance without exposing the bank's internal processing.</p><pre><code>abstract class Shape {
+    abstract double area(); // no implementation here
+}
+class Circle extends Shape {
+    private double radius;
+    Circle(double radius) { this.radius = radius; }
+    @Override double area() { return Math.PI * radius * radius; }
+}
+
+Shape shape = new Circle(2);
+System.out.println(shape.area());</code></pre></div>
+        <h3>Advantages of OOP</h3>
+        <ol><li><strong>Code reusability:</strong> inheritance can reuse existing code.</li><li><strong>Easy maintenance:</strong> each class handles a specific task.</li><li><strong>Security:</strong> encapsulation protects sensitive data.</li><li><strong>Scalability:</strong> new classes can be added more easily.</li></ol>
+        <div class="callout correct"><strong>OOP in action - Student Information System:</strong> <code>Person</code> can be the parent with shared name, ID, and common behaviors. <code>Student</code> enrolls in courses and takes exams; <code>Faculty</code> encodes grades and manages classes; <code>Administrator</code> manages records and settings. This combines encapsulation (private fields), inheritance (<code>Person → Student/Faculty</code>), polymorphism (overridden methods), and abstraction (shared parent behaviors).</div>
+      </section>
+
+      <section id="paradigms">
+        <h2>6. Major programming paradigms</h2>
+        <p class="lead">A paradigm is a broad way to organize a program and solve problems. Java is strongly object-oriented but supports several paradigms.</p>
+        <table><tr><th>Paradigm</th><th>Main focus</th><th>Key characteristics / Java support</th></tr><tr><td>1. Procedural</td><td>Functions and procedures</td><td>Step-by-step, sequential execution; uses functions/methods; suited to simple programs.</td></tr><tr><td>2. Object-Oriented</td><td>Objects and classes</td><td>Classes/objects, encapsulation, inheritance, abstraction, and polymorphism.</td></tr><tr><td>3. Functional</td><td>Functions and immutable data</td><td>Java supports it through lambda expressions, the Stream API, and functional interfaces.</td></tr><tr><td>4. Event-Driven</td><td>Events and handlers</td><td>Execution responds to button clicks, mouse actions, keyboard input, and similar events.</td></tr><tr><td>5. Declarative</td><td>Desired result</td><td>States <em>what</em> should happen instead of every step of <em>how</em>; Java can provide declarative-style APIs.</td></tr><tr><td>6. Logic</td><td>Facts and rules</td><td>Focuses on rules and logical inference; Java has limited direct support compared with logic languages.</td></tr></table>
+        <div class="callout"><strong>OOP vs. procedural:</strong> In procedural code, data and behavior often live separately. OOP groups related data and behavior together inside a class, which can make a large system easier to organize.</div>
+      </section>
+
+      <section id="constructors">
+        <h2>7. Constructors</h2>
+        <p class="lead">A constructor is a special class member that initializes a newly created object. It runs when <code>new</code> creates the object.</p>
+        <div class="grid"><div class="card"><h4>Constructor rules</h4><ul><li>Its name matches the class name exactly.</li><li>It has <strong>no return type</strong> - not even <code>void</code>.</li><li>It can have an access modifier such as <code>public</code>.</li><li>It initializes attributes and/or runs setup code.</li><li>A constructor is invoked automatically through <code>new ClassName(...)</code>.</li></ul></div><div class="card"><h4>Important added detail</h4><p>If you declare <strong>no constructor</strong>, Java supplies a default no-argument constructor. Once you declare any constructor yourself, Java does not automatically supply that default constructor.</p></div></div>
+        <pre><code>class Product {
+    Product() { // constructor: same name as class, no return type
+        System.out.println("Product created");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Product p1 = new Product();
+        Product p2 = new Product();
+        Product p3 = new Product();
+        Product p4 = new Product();
+        // "Product created" is printed four times.
+    }
+}</code></pre>
+        <h3>The <code>this</code> keyword</h3>
+        <p><code>this</code> refers to the current object. It is especially useful when a parameter has the same name as a field: <code>this.name</code> means the field, while <code>name</code> means the parameter.</p>
+        <pre><code>class Product {
+    String name;
+    float price;
+
+    Product(String name, float price) {
+        this.name = name;
+        this.price = price;
+        System.out.println(name + " created");
+    }
+}
+
+Product p1 = new Product("Milk", 150.0f);
+Product p2 = new Product("Coffee", 250.0f);
+Product p3 = new Product("Choco", 100.0f);</code></pre>
+        <div class="callout warning"><strong>Common error corrected:</strong> <code>name = name;</code> only assigns a parameter to itself. Use <code>this.name = name;</code> to save the parameter into the object's field. A <code>float</code> literal such as <code>150.0f</code> needs the trailing <code>f</code>.</div>
+        <h3>Person exercise - corrected version</h3>
+        <pre><code>class Person {
+    String firstName;
+    String lastName;
+    char gender;
+    int age;
+
+    Person(String firstName, String lastName, char gender, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.age = age;
+    }
+}
+
+Person p1 = new Person("Andres", "Bonifacio", 'M', 37);
+Person p2 = new Person("Miguel", "Malvar", 'M', 35);
+Person p3 = new Person("Gabriela", "Silang", 'F', 24);
+System.out.println(p1.firstName); // Andres
+System.out.println(p2.lastName);  // Malvar</code></pre>
+        <h3>Creating an object through user input</h3>
+        <p>Create a class, read values with <code>Scanner</code>, then pass those values to a constructor. Use <code>nextFloat()</code> for a decimal <code>float</code> - not <code>nextFLine()</code>.</p>
+        <pre><code>import java.util.Scanner;
+
+class Product {
+    String name;
+    float price;
+    Product(String name, float price) {
+        this.name = name;
+        this.price = price;
+        System.out.println(name + " created");
+        System.out.println(price + " entered");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Price: ");
+        float price = scanner.nextFloat();
+        Product p1 = new Product(name, price);
+    }
+}</code></pre>
+        <h3>Overloading constructors</h3>
+        <p>Constructor overloading creates multiple constructors with different parameter lists so an object can be created with the information available. They must differ in number, types, or order of parameters; changing only a return type is impossible because constructors have no return type.</p>
+        <pre><code>class Employee {
+    String firstName, lastName, position, address, gender;
+    int age;
+
+    Employee(String firstName, String lastName, String position,
+             String address, String gender, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.position = position;
+        this.address = address;
+        this.gender = gender;
+        this.age = age;
+    }
+
+    Employee(String firstName, String lastName, String position) {
+        this(firstName, lastName, position, "N/A", "N/A", 0);
+    }
+
+    Employee() {
+        this("N/A", "N/A", "N/A");
+    }
+}
+
+Employee e1 = new Employee("Jose", "Rizal", "Doctor");</code></pre>
+      </section>
+
+      <section id="practice">
+        <h2>8. Practice and self-check</h2>
+        <h3>Constructor exercise: Dog</h3>
+        <p>The original exercise asks for a program that displays a pet name and age, including examples like Alpha (3), Bravo (2), and Charlie (5). This completed version demonstrates no-argument, one-argument, and two-argument constructors.</p>
+        <pre><code>class Dog {
+    String name;
+    int age;
+
+    Dog() {
+        this("Alpha", 3);
+    }
+    Dog(String name) {
+        this(name, 0);
+    }
+    Dog(int age) {
+        this("Alpha", age);
+    }
+    Dog(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    void display() {
+        System.out.println(name + " " + age);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        new Dog().display();             // Alpha 3
+        new Dog("Bravo", 2).display();  // Bravo 2
+        new Dog("Charlie", 5).display();// Charlie 5
+    }
+}</code></pre>
+        <h3>Mini quiz</h3>
+        <div class="quiz">
+          <div class="question"><p>1. What turns a <code>.java</code> file into bytecode?</p><button data-answer="wrong">JVM</button><button data-answer="correct">javac</button><button data-answer="wrong">JIT</button><div class="feedback"></div></div>
+          <div class="question"><p>2. Which pillar prevents uncontrolled changes to private data?</p><button data-answer="wrong">Inheritance</button><button data-answer="correct">Encapsulation</button><button data-answer="wrong">Polymorphism</button><div class="feedback"></div></div>
+          <div class="question"><p>3. Which is a valid constructor declaration for class <code>Book</code>?</p><button data-answer="wrong">void Book()</button><button data-answer="correct">Book()</button><button data-answer="wrong">book()</button><div class="feedback"></div></div>
+          <div class="question"><p>4. Which naming convention fits a constant?</p><button data-answer="wrong">maxStudents</button><button data-answer="wrong">MaxStudents</button><button data-answer="correct">MAX_STUDENTS</button><div class="feedback"></div></div>
+        </div>
+      </section>
+
+      <section id="coverage">
+        <h2>Coverage checklist</h2>
+        <p class="lead">Everything in the provided lesson outlines is represented below; repeated title/thank-you slides were not duplicated.</p>
+        <table><tr><th>Source</th><th>Included content</th></tr><tr><td>Lesson 1: Introduction to OOP in Java</td><td>OOP definition; attributes and methods; Student example; why OOP; class, object, attributes, methods; all four pillars with benefits and examples; constructor introduction; OOP advantages; all six programming paradigms and comparison; OOP vs procedural; Student Information System example.</td></tr><tr><td>Lesson 2: Java Programming</td><td>Java history and uses; POSSMRH features; applications and advantages; WORA, JVM, <code>javac</code>, bytecode, JIT; program parts; all syntax rules A-I; identifier rules; data types; naming conventions; complete Student example.</td></tr><tr><td>Constructors</td><td>Definition and creation; project/class workflow; repeated object creation; <code>this</code>; parameterized constructors; Person exercise; Scanner user input; constructor overloading; Employee examples; Dog exercise. Code fragments that were malformed in the slides were corrected and labelled.</td></tr></table>
+      </section>
+    </main>
+  </div>
+  <footer class="footer">Prepared as a standalone reviewer from the supplied Java OOP, Java Programming, and Constructors lessons. Tip: use your browser's Print command to save a study-friendly PDF.</footer>
+  <script>
+    document.querySelectorAll('.flash button').forEach((card) => {
+      card.addEventListener('click', () => card.classList.toggle('show'));
+    });
+    document.querySelectorAll('.question button').forEach((button) => {
+      button.addEventListener('click', () => {
+        const question = button.closest('.question');
+        const feedback = question.querySelector('.feedback');
+        const correct = button.dataset.answer === 'correct';
+        feedback.textContent = correct ? 'Correct!' : 'Not quite - review this section and try again.';
+        feedback.className = 'feedback ' + (correct ? 'good' : 'bad');
+        feedback.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>
