@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inheritance – Exam Reviewer</title>
+<style>
+:root{--bg:#f5f8fa;--card:#fff;--ink:#16252e;--mute:#51636e;--line:#cfdbe2;--acc:#0b6e7f;--accbg:#e1f1f4;--warn:#9a3412;--warnbg:#fdeee3;--code:#14232b;--codeink:#e4eef2;--outbg:#0e3b2e;--outink:#c8f5df}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1a20;--card:#17262e;--ink:#e3edf1;--mute:#9db1bb;--line:#2b4250;--acc:#5cc4d6;--accbg:#12353d;--warn:#fdba74;--warnbg:#3a2415;--code:#0a141a;--codeink:#e4eef2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Segoe UI",system-ui,-apple-system,sans-serif;padding:0 14px 60px}
+main{max-width:860px;margin:0 auto}
+header{padding:36px 0 14px;border-bottom:3px solid var(--acc);margin-bottom:22px}
+h1{font-size:2.3rem;margin:0;letter-spacing:-.5px}
+header p{margin:4px 0 0;color:var(--mute)}
+section{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:6px;padding:6px 22px 18px;margin:20px 0}
+h2{font-size:1.35rem;margin:16px 0 8px;color:var(--acc)}
+h3{font-size:1.05rem;margin:18px 0 4px}
+p{margin:8px 0}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--accbg)}
+td:first-child{font-weight:600}
+pre{background:var(--code);color:var(--codeink);padding:13px 15px;border-radius:5px;overflow-x:auto;font:.88rem/1.5 ui-monospace,Consolas,Menlo,monospace;margin:8px 0 0}
+pre.out{background:var(--outbg);color:var(--outink);border-radius:0 0 5px 5px;margin:0;border-top:2px dashed #3f8f72}
+pre.out::before{content:"Output";display:block;font:600 .78rem system-ui,sans-serif;color:#7fd8b0;margin-bottom:4px}
+pre:not(.out)+pre.out{margin-top:0}
+pre:has(+pre.out){border-radius:5px 5px 0 0}
+code.i{background:var(--accbg);padding:1px 6px;border-radius:3px;font:.9em ui-monospace,Consolas,monospace}
+.note{background:var(--accbg);border-left:4px solid var(--acc);padding:8px 13px;border-radius:0 5px 5px 0;margin:12px 0}
+.mistake{background:var(--warnbg);border-left:4px solid var(--warn)}
+ol,ul{padding-left:22px;margin:8px 0}
+li{margin:3px 0}
+.exp{margin:6px 0 0}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Inheritance</h1>
+<p>Java OOP – complete exam reviewer based on the lesson PDF</p>
+</header>
+
+<section>
+<h2>I. Learning Outcomes</h2>
+<ol>
+<li>Define inheritance in Object-Oriented Programming.</li>
+<li>Explain the purpose and benefits of inheritance in Java.</li>
+<li>Identify the parent/superclass and child/subclass.</li>
+<li>Use <code class="i">extends</code> to establish inheritance.</li>
+<li>Explain inherited fields and methods.</li>
+<li>Create and trace simple inheritance programs.</li>
+<li>Distinguish IS-A from HAS-A relationships.</li>
+<li>Use inheritance in a university information system.</li>
+<li>Analyze and debug inheritance programs.</li>
+<li>Apply inheritance in a small Java project.</li>
+</ol>
+</section>
+
+<section>
+<h2>II. Review: The Four Pillars of OOP</h2>
+<table>
+<tr><th>Pillar</th><th>Main Idea</th></tr>
+<tr><td>Encapsulation</td><td>Hiding data and controlling access.</td></tr>
+<tr><td>Inheritance</td><td>Acquiring properties and behaviors from another class.</td></tr>
+<tr><td>Polymorphism</td><td>The same method can behave differently depending on the object.</td></tr>
+<tr><td>Abstraction</td><td>Focusing on essential/shared behavior while hiding unnecessary details.</td></tr>
+</table>
+<div class="note">The attached OOP lesson identifies inheritance as one of the four pillars and gives <b>code reuse, reduced duplication, and easier maintenance</b> as major benefits.</div>
+</section>
+
+<section>
+<h2>III. What Is Inheritance?</h2>
+<p><b>Inheritance</b> is an OOP mechanism that allows one class to acquire properties and behaviors from another class.</p>
+<p><b>Simple idea:</b> a child class can reuse what already exists in a parent class.</p>
+<p><b>Example:</b> Animal → Dog. A Dog is an Animal, so common animal behavior can be placed in <code class="i">Animal</code> and reused by <code class="i">Dog</code>.</p>
+<div class="note">The attached lesson specifically demonstrates that the <code class="i">Dog</code> class inherits the <code class="i">eat()</code> method from <code class="i">Animal</code>.</div>
+</section>
+
+<section>
+<h2>IV. Important Terms</h2>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Parent / Superclass</td><td>The class from which another class inherits.</td></tr>
+<tr><td>Child / Subclass</td><td>The class that inherits from another class.</td></tr>
+<tr><td><code class="i">extends</code></td><td>Java keyword used to establish class inheritance.</td></tr>
+<tr><td>Inherited member</td><td>An accessible field or method available through inheritance.</td></tr>
+<tr><td>IS-A relationship</td><td>The child is a type of the parent, e.g., Dog IS-A Animal.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>V. Basic Syntax</h2>
+<pre>class ChildClass extends ParentClass {
+    // child attributes and methods
+}</pre>
+<p><b>Example:</b></p>
+<pre>class Dog extends Animal {
+}</pre>
+<p><code class="i">Dog</code> is the child/subclass; <code class="i">Animal</code> is the parent/superclass.</p>
+</section>
+
+<section>
+<h2>VI. Basic Animal–Dog Example</h2>
+<pre>class Animal {
+    void eat() {
+        System.out.println("Animal is eating.");
+    }
+}
+
+class Dog extends Animal {
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.eat();
+    }
+}</pre>
+<pre class="out">Animal is eating.</pre>
+<p class="exp"><b>Explanation:</b> <code class="i">eat()</code> is declared in <code class="i">Animal</code>. Because <code class="i">Dog</code> extends <code class="i">Animal</code>, the <code class="i">Dog</code> object can access the inherited method.</p>
+</section>
+
+<section>
+<h2>VII. Child Class With Its Own Behavior</h2>
+<pre>class Animal {
+    void eat() {
+        System.out.println("Animal is eating.");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog is barking.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.eat();
+        d.bark();
+    }
+}</pre>
+<pre class="out">Animal is eating.
+Dog is barking.</pre>
+<div class="note">The child can use inherited behavior <b>and</b> can also define its own behavior.</div>
+</section>
+
+<section>
+<h2>VIII. Why Use Inheritance?</h2>
+<ul>
+<li><b>Code reuse</b> – common code can be reused by several child classes.</li>
+<li><b>Reduced duplication</b> – common attributes and methods do not need to be repeated.</li>
+<li><b>Easier maintenance</b> – common behavior can be maintained in the parent.</li>
+<li><b>Specialization</b> – child classes can add features specific to their roles.</li>
+<li><b>Logical modeling</b> – inheritance can represent meaningful IS-A relationships.</li>
+</ul>
+<div class="note">The first three benefits (code reuse, reduced duplication, easier maintenance) are explicitly identified in the attached lesson.</div>
+</section>
+
+<section>
+<h2>IX. IS-A Versus HAS-A</h2>
+<p>Use inheritance when the relationship is logically <b>IS-A</b>.</p>
+<ul>
+<li>Dog IS-A Animal → inheritance is appropriate.</li>
+<li>Student IS-A Person → inheritance is appropriate.</li>
+<li>Faculty IS-A Person → inheritance is appropriate.</li>
+<li>Student HAS-A Address → use a field/association rather than making Address the superclass.</li>
+</ul>
+<table>
+<tr><th>Relationship</th><th>Java form</th></tr>
+<tr><td>IS-A</td><td><pre>class Student extends Person {
+}</pre></td></tr>
+<tr><td>HAS-A</td><td><pre>class Student {
+    Address address;
+}</pre></td></tr>
+</table>
+</section>
+
+<section>
+<h2>X. University Information System Example</h2>
+<p>The attached lesson presents <code class="i">Person</code> as a shared parent and <code class="i">Student</code>, <code class="i">Faculty</code>, and <code class="i">Administrator</code> as specialized roles.</p>
+<pre>class Person {
+    String name;
+    int id;
+
+    void displayInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("ID: " + id);
+    }
+}
+
+class Student extends Person {
+    void enroll() {
+        System.out.println(name + " is enrolling in courses.");
+    }
+}
+
+class Faculty extends Person {
+    void teach() {
+        System.out.println(name + " is teaching.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student s = new Student();
+        s.name = "Juan";
+        s.id = 1001;
+        s.displayInfo();
+        s.enroll();
+
+        Faculty f = new Faculty();
+        f.name = "Maria";
+        f.id = 2001;
+        f.displayInfo();
+        f.teach();
+    }
+}</pre>
+<pre class="out">Name: Juan
+ID: 1001
+Juan is enrolling in courses.
+Name: Maria
+ID: 2001
+Maria is teaching.</pre>
+</section>
+
+<section>
+<h2>XI. What Does the Child Inherit?</h2>
+<p><code class="i">Student</code> can use the inherited <code class="i">name</code>, <code class="i">id</code>, and <code class="i">displayInfo()</code> from <code class="i">Person</code>, while <code class="i">enroll()</code> belongs specifically to <code class="i">Student</code>.</p>
+<p><b>Hierarchy:</b></p>
+<pre>Person
+ ├── name
+ ├── id
+ └── displayInfo()
+        ↓
+     Student
+      └── enroll()</pre>
+</section>
+
+<section>
+<h2>XII. Inheritance and Constructors</h2>
+<p>A child constructor can call a matching parent constructor using <code class="i">super(...)</code>.</p>
+<pre>class Person {
+    String name;
+
+    Person(String name) {
+        this.name = name;
+    }
+}
+
+class Student extends Person {
+    Student(String name) {
+        super(name);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student s = new Student("Juan");
+        System.out.println(s.name);
+    }
+}</pre>
+<pre class="out">Juan</pre>
+<div class="note"><code class="i">this</code> refers to the current object. <code class="i">super</code> refers to the parent class and can invoke a parent constructor.</div>
+</section>
+
+<section>
+<h2>XIII. this Versus super</h2>
+<table>
+<tr><th>Keyword</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code class="i">this</code></td><td>Current object</td><td><code class="i">this.name = name;</code></td></tr>
+<tr><td><code class="i">super</code></td><td>Parent class</td><td><code class="i">super(name);</code></td></tr>
+</table>
+</section>
+
+<section>
+<h2>XIV. Inheritance and Method Overriding</h2>
+<p>Inheritance also supports polymorphism. A child can provide its own implementation of an inherited method.</p>
+<pre>class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound.");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Dog barks.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.sound();
+    }
+}</pre>
+<pre class="out">Dog barks.</pre>
+<div class="note">The attached lesson explains polymorphism as the same method behaving differently depending on the object, and illustrates it with method overriding.</div>
+</section>
+
+<section>
+<h2>XV. Types of Inheritance Structures</h2>
+<h3>1. Single inheritance</h3>
+<p>Person → Student</p>
+<pre>class Student extends Person { }</pre>
+<h3>2. Multilevel inheritance</h3>
+<p>Person → Employee → Manager</p>
+<pre>class Employee extends Person { }
+class Manager extends Employee { }</pre>
+<h3>3. Hierarchical inheritance</h3>
+<p>Person → Student<br>Person → Faculty</p>
+<pre>class Student extends Person { }
+class Faculty extends Person { }</pre>
+</section>
+
+<section>
+<h2>XVI. Common Mistakes</h2>
+<table>
+<tr><th>Mistake</th><th>Fix / Reminder</th></tr>
+<tr><td>Missing <code class="i">extends</code></td><td>Correct: <code class="i">class Dog extends Animal { }</code></td></tr>
+<tr><td>Reversing the relationship</td><td>Usually <code class="i">Dog extends Animal</code> because Dog IS-A Animal.</td></tr>
+<tr><td>Confusing <code class="i">this</code> and <code class="i">super</code></td><td><code class="i">this</code> = current object; <code class="i">super</code> = parent class.</td></tr>
+<tr><td>Using inheritance without an IS-A relationship</td><td>Use composition/association when the relationship is HAS-A.</td></tr>
+<tr><td>Forgetting child-specific behavior</td><td>A child can add its own fields and methods.</td></tr>
+</table>
+</section>
+</main>
+</body>
+</html>
