@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OOP Reviewer: Encapsulation, Inheritance, Polymorphism, Abstraction</title>
+<style>
+:root{--bg:#f2f5f8;--card:#fff;--ink:#17212b;--mute:#566574;--line:#cdd7e0;--acc:#1f4fd8;--ok:#0d7a57;--bad:#b3261e;--okbg:#e2f4ed;--badbg:#fbe7e5;--code:#0f1822;--codeink:#e4ecf3}
+@media(prefers-color-scheme:dark){:root{--bg:#10171e;--card:#18222c;--ink:#e6edf3;--mute:#98a8b7;--line:#2d3b48;--acc:#7da2ff;--ok:#4cc9a0;--bad:#ff8a80;--okbg:#12342b;--badbg:#3a1d1b;--code:#0a1016}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Iowan Old Style","Palatino Linotype",Georgia,serif}
+header,main{max-width:860px;margin:0 auto;padding:0 18px}
+header{padding-top:26px}
+h1{font-size:1.9rem;line-height:1.2;margin:0 0 6px}
+.sub{color:var(--mute);margin:0 0 16px;max-width:62ch}
+nav{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:0}
+nav button{font:inherit;font-size:.95rem;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;padding:8px 12px;color:var(--mute);cursor:pointer}
+nav button[aria-selected=true]{color:var(--ink);border-color:var(--acc);font-weight:700}
+nav small{display:block;font-size:.75rem;font-weight:400}
+h2{font-size:1.5rem;margin:24px 0 8px}
+h3.sec{font-size:1.2rem;margin:30px 0 4px}
+.hint,.notes{max-width:68ch}
+.hint{color:var(--mute);margin:0 0 12px}
+.notes li{margin:5px 0}
+code{font:.88em ui-monospace,Menlo,Consolas,monospace;background:var(--line);padding:1px 5px;border-radius:3px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.92rem;background:var(--card)}
+.tw{overflow-x:auto}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--line)}
+article{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:4px;padding:14px 16px;margin:14px 0}
+article.right{border-left-color:var(--ok)}article.wrong{border-left-color:var(--bad)}
+article h4{margin:0 0 8px;font-size:1rem}
+pre{margin:0 0 10px;background:var(--code);color:var(--codeink);padding:12px 14px;border-radius:4px;overflow-x:auto;font:.84rem/1.5 ui-monospace,Menlo,Consolas,monospace}
+.q{margin:0 0 10px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btns button,.again{font:.9rem inherit;font-family:inherit;background:var(--card);color:var(--ink);border:1.5px solid var(--acc);border-radius:4px;padding:7px 12px;cursor:pointer}
+.btns button:hover:not(:disabled){background:var(--acc);color:var(--card)}
+.btns button:disabled{opacity:.55;cursor:default}
+.btns button.pick{opacity:1;border-width:3px}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.res{margin-top:12px}
+.v{display:inline-block;padding:3px 10px;border-radius:3px;font-weight:700;font-size:.9rem}
+.right .v{background:var(--okbg);color:var(--ok)}.wrong .v{background:var(--badbg);color:var(--bad)}
+.res pre{margin:8px 0;background:var(--bg);color:var(--ink);border:1px dashed var(--line)}
+.why{margin:6px 0 8px}
+.again{border-color:var(--line);color:var(--mute)}
+footer{max-width:860px;margin:30px auto;padding:0 18px;color:var(--mute);font-size:.9rem}
+</style></head><body>
+<header>
+<h1>OOP reviewer: the four pillars in Java</h1>
+<p class="sub">Key ideas from your Encapsulation, Inheritance, Polymorphism, and Abstraction lessons, followed by edge cases. For each edge case, decide whether the code compiles and what it prints, then check.</p>
+<nav id="tabs" role="tablist"></nav>
+</header>
+<main id="main"></main>
+<footer>Compile-error wording is paraphrased from javac, so your IDE may word it a little differently. The verdict (compiles or not) is what matters.</footer>
+<script>
+const T=[
+{id:'enc',name:'Encapsulation',notes:[
+`Make fields <code>private</code>. Expose them through public getters and setters that <b>validate</b> before saving.`,
+`<code>private</code> works per class, not per object: code inside <code>User</code> can read another <code>User</code>’s private field.`,
+`Setters guard the rules: grade 0 to 100, balance never negative, salary 0 or higher, name never blank.`,
+`A rejected value leaves the old value alone. If nothing was ever set, you get the default: <code>0</code>, <code>0.0</code>, <code>false</code>, or <code>null</code>.`,
+`A constructor can set private fields, but outside classes still can’t write <code>obj.field = x</code>.`,
+`Public fields (<code>emp.salary = -5000</code>) let anyone bypass validation. That is exactly what encapsulation prevents.`],
+cases:[
+['out',`// Student: private name/grade, setGrade accepts 0..100
+Student s = new Student();
+s.setGrade(95);
+s.setGrade(150);
+System.out.println(s.getGrade());`,`What prints?`,`Invalid grade! Enter 0 to 100.
+95.0`,`150 fails the check, so the grade stays 95. A <code>double</code> prints as 95.0.`],
+['out',`Student s = new Student();
+System.out.println(s.getName() + " " + s.getGrade());`,`No setter was ever called. What prints?`,`null 0.0`,`Unset fields take defaults: null for String, 0.0 for double. No setter ran, so no validation ran either.`],
+['err',`// in Main (a different class)
+User u = new User(123456, "jdc", "Juan", "Cruz");
+u.userID = 123456;`,`The constructor already accepts the ID. Does this line compile?`,`error: userID has private access in User`,`The constructor can set it, but Main cannot touch a private field. Use a setter or getter.`],
+['out',`class User {
+  private int id;
+  User(int id){ this.id = id; }
+  boolean same(User o){ return id == o.id; }
+}
+// in Main:
+System.out.println(new User(7).same(new User(7)));`,`<code>o.id</code> is private. Does it compile?`,`true`,`private is class-level. Inside User, you may read another User’s private field.`],
+['out',`BankAccount a = new BankAccount(1000);
+a.withdraw(1000);
+System.out.println(a.getBalance());`,`Withdrawing exactly the whole balance. What happens?`,`Withdrawn: P1000.0
+0.0`,`The rejection test is amount > balance. Equal is allowed, so the balance becomes 0.0.`],
+['out',`Employee e = new Employee();
+e.setEmployeeName("   ");
+System.out.println(e.getEmployeeName());`,`The name is only spaces. What prints?`,`Invalid name! Name cannot be blank.
+null`,`trim().isEmpty() is true, so the setter rejects it. The name was never set, so it is still null.`]]},
+{id:'inh',name:'Inheritance',notes:[
+`<code>extends</code> models <b>IS-A</b>: Dog IS-A Animal, Student IS-A Person. For <b>HAS-A</b> (Student has an Address), use a field instead.`,
+`A child reuses the parent’s accessible fields and methods and can add its own. Private members are not accessible in the child.`,
+`Constructors are <b>not</b> inherited. Every child constructor starts with <code>super(...)</code>. If you omit it, Java inserts <code>super()</code>. The parent constructor runs first.`,
+`Java allows one superclass only. Multilevel (Person → Employee → Manager) and hierarchical (Person → Student, Faculty) are fine.`,
+`<code>this</code> is the current object. <code>super</code> is the parent class.`,
+`The <b>reference type</b> decides which members you may call, even when the object is a subclass.`],
+cases:[
+['out',`class A { A(){ System.out.println("A"); } }
+class B extends A { B(){ System.out.println("B"); } }
+// in Main:
+new B();`,`<code>B</code>’s constructor never calls super(). What prints?`,`A
+B`,`Java inserts super() automatically, so the parent constructor runs before the child body.`],
+['err',`class Person { Person(String name){ } }
+class Student extends Person { }`,`Student has no constructor written. Does it compile?`,`error: constructor Person in class Person cannot be applied to given types`,`Student gets a default constructor that calls super(). Person has no no-argument constructor. Fix: <code>Student(String n){ super(n); }</code>.`],
+['err',`Animal a = new Dog();   // Dog has bark()
+a.bark();`,`The object really is a Dog. Does this compile?`,`error: cannot find symbol: method bark() in Animal`,`The reference type (Animal) decides what you can call. Fix: <code>((Dog) a).bark();</code>.`],
+['rt',`Animal a = new Animal();
+Dog d = (Dog) a;`,`Does it compile? Does it run?`,`Exception in thread "main" java.lang.ClassCastException:
+  class Animal cannot be cast to class Dog`,`The cast compiles because Dog is a subtype of Animal. At runtime the object is not a Dog, so it fails.`],
+['err',`class Person { private String name; }
+class Student extends Person {
+  void show(){ System.out.println(name); }
+}`,`Student IS-A Person. Can it print name?`,`error: name has private access in Person`,`Private members aren’t accessible in the child. Add <code>getName()</code>, or make the field <code>protected</code>.`]]},
+{id:'poly',name:'Polymorphism',notes:[
+`<b>Overloading</b> is compile-time (static binding). The compiler picks a method using the <i>declared types</i> of the arguments.`,
+`<b>Overriding</b> is runtime (dynamic binding). Java picks the method from the <i>actual object</i>: <code>Animal a = new Dog(); a.makeSound();</code> runs Dog’s version.`,
+`Overriding needs the same name and parameters. Change the parameter list and you have created a new overload. <code>@Override</code> turns that mistake into a compile error.`,
+`Only <b>instance methods</b> are polymorphic. Fields and static methods use the reference type.`,
+`A different return type alone is not overloading.`],
+table:{head:['','Overloading','Overriding'],rows:[['Binding','Compile-time, early','Runtime, late'],['Where','Same class','Parent and child'],['Parameters','Must differ','Same'],['Inheritance needed','No','Yes']]},
+cases:[
+['out',`void show(Animal a){ System.out.println("Animal"); }
+void show(Dog d){ System.out.println("Dog"); }
+// in Main:
+Animal a = new Dog();
+show(a);`,`Which overload runs?`,`Animal`,`Overloads are chosen at compile time from the reference type (Animal), not the object.`],
+['out',`class Animal { void makeSound(){ System.out.println("Animal makes a sound"); } }
+class Dog extends Animal { void makeSound(String s){ System.out.println("Dog barks"); } }
+// in Main:
+Animal a = new Dog();
+a.makeSound();`,`Dog "overrides" makeSound with a typo (extra parameter). What prints?`,`Animal makes a sound`,`A changed parameter list makes a new overload, not an override. With <code>@Override</code> on it, this would not compile.`],
+['out',`class P { String x = "P"; }
+class C extends P { String x = "C"; }
+// in Main:
+P p = new C();
+System.out.println(p.x);`,`Is a field polymorphic like a method?`,`P`,`Fields are resolved by the reference type. Only instance methods dispatch dynamically.`],
+['out',`class P { static void hi(){ System.out.println("P"); } }
+class C extends P { static void hi(){ System.out.println("C"); } }
+// in Main:
+P p = new C();
+p.hi();`,`Static method in both classes. What prints?`,`P`,`Static methods are hidden, not overridden. The reference type decides.`],
+['out',`class P { P(){ init(); } void init(){ System.out.println("P init"); } }
+class C extends P {
+  int x = 5;
+  void init(){ System.out.println("C init x=" + x); }
+}
+// in Main:
+new C();`,`The parent constructor calls an overridden method. What prints?`,`C init x=0`,`Dynamic dispatch already picks C.init() while P’s constructor runs. C’s field initializer hasn’t run yet, so x is still 0.`],
+['err',`int calculate(int a, int b){ return a + b; }
+double calculate(int a, int b){ return a + b; }`,`Is this valid overloading?`,`error: method calculate(int,int) is already defined`,`Changing only the return type doesn’t overload. The parameter list must differ.`]]},
+{id:'abs',name:'Abstraction & Interfaces',notes:[
+`Abstraction means focusing on <b>what</b> an object does and hiding <b>how</b>. It is the principle. An interface is one Java tool for it, and plain private helpers hide details too (CoffeeMachine.makeCoffee).`,
+`An interface is a contract. A class <code>implements</code> it and must supply every abstract method, or be declared <code>abstract</code> itself.`,
+`Interface methods are implicitly <code>public abstract</code>, so the implementation must be <code>public</code> (you can’t weaken access). Interface fields are <code>public static final</code> constants.`,
+`Interfaces can’t be instantiated. Use a parent reference: <code>Payment p = new CashPayment();</code>.`,
+`The reference type limits what you can call: only methods declared in the interface.`,
+`A class can implement many interfaces but extend only one class.`],
+table:{head:['','Interface','Abstract class'],rows:[['Used with','implements','extends'],['Purpose','Contract or capability','Shared base, state, code'],['Instance fields','No (constants only)','Yes'],['Constructor','No','Yes'],['How many','Many','One superclass']]},
+cases:[
+['err',`interface Printable { void print(); }
+class LaserPrinter implements Printable { }`,`The class body is empty. Does it compile?`,`error: LaserPrinter is not abstract and does not override abstract method print() in Printable`,`A concrete class must implement every abstract method.`],
+['err',`class LaserPrinter implements Printable {
+  void print(){ System.out.println("Printing"); }
+}`,`The method exists, but there is no <code>public</code>. Does it compile?`,`error: print() in LaserPrinter cannot implement print() in Printable
+  attempting to assign weaker access privileges; was public`,`Interface methods are public, so the implementation must be public too.`],
+['err',`Payment p = new Payment();   // Payment is an interface`,`Can you create an object from an interface?`,`error: Payment is abstract; cannot be instantiated`,`Instantiate an implementing class instead and keep a Payment reference.`],
+['err',`// EWalletPayment implements Payment and also has refund()
+Payment p = new EWalletPayment();
+p.refund();`,`The object has refund(). Does this compile?`,`error: cannot find symbol: method refund()
+  location: variable p of type Payment`,`Through an interface reference you only see what the interface declares.`],
+['out',`abstract class Shape { Shape(){ System.out.println("Shape created"); } }
+class Circle extends Shape { Circle(){ System.out.println("Circle created"); } }
+// in Main:
+Shape s = new Circle();`,`An abstract class can’t be instantiated. Does this work, and what prints?`,`Shape created
+Circle created`,`You’re instantiating Circle, not Shape. Abstract classes have constructors, and the parent’s runs first.`],
+['out',`interface Greeter { default void hello(){ System.out.println("Hello"); } }
+class A implements Greeter { }
+// in Main:
+new A().hello();`,`A does not define hello(). Does it compile?`,`Hello`,`A default method has a body, so implementing classes aren’t forced to override it.`]]}
+];
+const L={out:'Compiles and runs',err:'Compile error',rt:'Compiles, then runtime exception'};
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+let cur=0;const A={};
+const tabs=document.getElementById('tabs'),main=document.getElementById('main');
+function count(t){let r=0,n=0;t.cases.forEach((c,i)=>{const a=A[t.id+i];if(a){n++;if(a===c[0])r++}});return[r,n]}
+function drawTabs(){let all=0,tot=0;tabs.innerHTML=T.map((t,i)=>{const[r,n]=count(t);all+=r;tot+=t.cases.length;return`<button role="tab" data-t="${i}" aria-selected="${i==cur}">${t.name}<small>${r}/${t.cases.length} right</small></button>`}).join('')}
+function card(t,c,i){
+ const k=t.id+i,a=A[k],cls=a?(a===c[0]?'right':'wrong'):'';
+ let h=`<article class="${cls}" data-k="${i}"><h4>Case ${i+1}</h4><pre>${esc(c[1])}</pre><p class="q">${c[2]}</p><div class="btns">`;
+ for(const g in L)h+=`<button data-g="${g}" ${a?'disabled':''} class="${a===g?'pick':''}">${L[g]}</button>`;
+ h+='</div>';
+ if(a)h+=`<div class="res"><span class="v">${a===c[0]?'Correct':'Not quite'}: ${L[c[0]]}</span><pre>${esc(c[3])}</pre><p class="why">${c[4]}</p><button class="again">Try again</button></div>`;
+ return h+'</article>'}
+function show(){
+ const t=T[cur];
+ let h=`<h2>${t.name}</h2><ul class="notes">${t.notes.map(n=>`<li>${n}</li>`).join('')}</ul>`;
+ if(t.table)h+=`<div class="tw"><table><tr>${t.table.head.map(x=>`<th>${x}</th>`).join('')}</tr>${t.table.rows.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join('')}</tr>`).join('')}</table></div>`;
+ h+=`<h3 class="sec">Edge cases: predict the result</h3><p class="hint">Assume the lesson’s classes already exist. Pick one answer, then read the real output and the reason.</p>`;
+ t.cases.forEach((c,i)=>h+=card(t,c,i));
+ main.innerHTML=h;drawTabs()}
+tabs.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;cur=+b.dataset.t;show();window.scrollTo(0,0)});
+main.addEventListener('click',e=>{
+ const art=e.target.closest('article');if(!art)return;
+ const t=T[cur],i=+art.dataset.k,g=e.target.dataset.g;
+ if(g)A[t.id+i]=g;else if(e.target.classList.contains('again'))delete A[t.id+i];else return;
+ art.outerHTML=card(t,t.cases[i],i);drawTabs()});
+show();
+</script></body></html>
